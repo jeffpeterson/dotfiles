@@ -1,0 +1,6 @@
+Importer addSearchPath("/Users/jeffpeterson/code/io/extensions/")
+Importer addSearchPath("/Users/jeffpeterson/code/io/pack/")
+
+Extensions
+Pack
+Regex
