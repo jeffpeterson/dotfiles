@@ -20,6 +20,7 @@ Bundle 'tpope/vim-haml'
 Bundle 'msp.vim'
 Bundle 'slim-template/vim-slim'
 Bundle 'tpope/vim-markdown'
+Bundle 'zaiste/tmux.vim'
 let g:markdown_fenced_languages = ['io']
 
 Bundle 'chriskempson/vim-tomorrow-theme'
