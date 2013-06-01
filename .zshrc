@@ -21,6 +21,6 @@ export VISUAL=vim
 export EDITOR=vim
 
 PROMPT="%{$fg[magenta]%}> %{$reset_color%}"
-RPROMPT="%{$fg[red]%}%2~ %{$fg[yellow]%}%n%{$reset_color%} %{$fg[blue]%}%m%{$reset_color%}"
+RPROMPT="%{$fg[green]%}\$(current_branch) %{$fg[red]%}%~ %{$fg[yellow]%}%n%{$reset_color%} %{$fg[blue]%}%m%{$reset_color%}"
 
 export VIM_APP_DIR="$HOME/Applications"
