@@ -49,16 +49,16 @@ def table rows
 end
 
 class Object
-  def method_lookup *args, result
+  def method_lookup *args, result, &block
     public_methods(false).select do |name|
       begin
         begin
-          next clone.send(name, *args) == result
+          next clone.send(name, *args, &block) == result
         rescue TypeError
-          next send(name, *args) == result
+          next send(name, *args, &block) == result
         end
 
-        send(name, *args) == result
+        send(name, *args, &block) == result
       rescue
       end
     end
