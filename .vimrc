@@ -12,11 +12,12 @@ call vundle#rc()
 
 " Bundle 'FredKSchott/CoVim'
 Bundle 'airblade/vim-gitgutter'
+Bundle 'briancollins/vim-jst'
 Bundle 'chriskempson/vim-tomorrow-theme'
-Bundle 'uggedal/go-vim'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
+Bundle 'itspriddle/vim-marked'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
@@ -35,6 +36,7 @@ Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
+Bundle 'uggedal/go-vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'xhr/vim-io'
@@ -44,7 +46,7 @@ let g:AutoCloseExpandEnterOn                            = ""
 let g:ctrlp_follow_symlinks                             = 1
 let g:EasyMotion_leader_key                             = ',,'
 let g:indent_guides_enable_on_vim_startup               = 1
-let g:markdown_fenced_languages                         = ['io']
+let g:markdown_fenced_languages                         = ['io', 'javascript', 'coffee']
 let g:UltiSnipsExpandTrigger                            = '<c-l>'
 " let g:UltiSnipsJumpBackwardTrigger                      = '<c-k>'
 " let g:UltiSnipsJumpForwardTrigger                       = '<c-j>'
@@ -109,13 +111,16 @@ nnoremap <C-l> <C-w>l
 nnoremap <leader><space> :%s/ \+$//eg<return>
 nnoremap <leader>= <C-w>=
 nnoremap <leader>a vip:sort i<return>
-nnoremap <leader>b <leader>r:BundleInstall<return>
+nmap <leader>b <leader>r:BundleInstall<return>
+nnoremap <leader>` :MarkedOpen<return>
 nnoremap <leader>H :so $VIMRUNTIME/syntax/hitest.vim<return>
 nnoremap <leader>h <<
 nnoremap <leader>l >>
 nnoremap <leader>m :Tabularize /=<return>
 nnoremap <leader>n :NERDTree<return>
 nnoremap <leader>R :call ReloadAllSnippets()<return>
+nnoremap <leader>1 yypVr=
+nnoremap <leader>2 yypVr-
 nnoremap <leader>r :source $MYVIMRC<return>:source ~/.gvimrc<return>
 nnoremap <leader>s mqHmw<C-w>s`wzt`q<C-w>j`q
 nnoremap <leader>t :Tabularize /
@@ -133,10 +138,25 @@ noremap ;; ;
 command! W w !sudo tee % > /dev/null
 
 
+function! StatuslineCurrentHighlight()
+  let name = synIDattr(synID(line('.'),col('.'),1),'name')
+  if name == ''
+    return ''
+  else
+    return name
+  endif
+endfunction
+
+
 " autocmd InsertEnter * :set number
 " autocmd InsertLeave * :set relativenumber
 
-set statusline=%L\ %03v\ %=%<%r%F\ %h%m%y
+autocmd BufEnter * sign define dummy
+autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
+
+set statusline=%7L
+set statusline+=\ %3v
+set statusline+=\ %{StatuslineCurrentHighlight()}%=%<%r%F\ %h%m%y
 set laststatus=2
 
 set cursorline
@@ -144,22 +164,25 @@ set cursorline
 set background=light
 colorscheme Tomorrow
 
-" hi ColorColumn ctermbg=7
-" hi ColorColumn guibg=Gray
-" colorscheme solarized
 
-" hi Directory        cterm=NONE ctermbg=NONE     ctermfg=magenta
-" hi IndentGuidesOdd ctermbg=darkred
-" hi MatchParen       cterm=NONE ctermbg=NONE     ctermfg=darkred
-" hi NERDTreeCWD      cterm=NONE ctermbg=NONE     ctermfg=red
-" hi NERDTreeDirSlash cterm=NONE ctermbg=NONE     ctermfg=darkblue
-" hi slcolumn         cterm=NONE ctermbg=red      ctermfg=black
-" hi Visual           cterm=NONE ctermbg=magenta  ctermfg=lightmagenta
-hi CursorLine       cterm=NONE ctermbg=lightgray
-hi CursorLineNr     cterm=NONE ctermbg=lightgray  ctermfg=brown guibg=#efefef guifg=#f5871f gui=NONE
-hi LineNr           cterm=NONE ctermbg=white      ctermfg=darkgray
-hi StatusLine       cterm=NONE ctermbg=darkblue   ctermfg=white  guibg=#f5871f guifg=#ffffff gui=NONE
-hi StatusLineNC     cterm=NONE ctermbg=darkcyan   ctermfg=white guibg=#8e908c guifg=#ffffff gui=NONE
+" background  #ffffff
+" curLine     #efefef
+" selection   #d6d6d6
+" comment     #8e908c
+" red         #c82829
+" orange      #f5871f
+" yellow      #eab700
+" green       #718c00
+" aqua        #3e999f
+" blue        #4271ae
+" purple      #8959a8
+
+hi CursorLineNr guibg=#efefef guifg=#f5871f gui=NONE
+hi StatusLine   guibg=#f5871f guifg=#ffffff gui=NONE
+hi StatusLineNC guibg=#8e908c guifg=#ffffff gui=NONE
+hi sassProperty guifg=#c82829
+hi SignColumn   guibg=#fafafa
+
 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 
@@ -187,6 +210,7 @@ augroup ENDutocmd CursorHold * checktime
 set commentstring=//\ %s
 
 autocmd FileType asm      set commentstring=;\ %s
+autocmd BufNewFile,BufRead *.hamlc setf haml
 autocmd FileType c        set commentstring=//\ %s
 autocmd FileType coffee   set commentstring=#\ %s
 autocmd FileType css      set commentstring=//\ %s

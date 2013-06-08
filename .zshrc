@@ -15,12 +15,13 @@ plugins=(git rails3 ruby coffee osx gem heroku lein pow powder rvm python github
 
 which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux set-option -g default-command "reattach-to-user-namespace -l zsh" > /dev/null;
 
-export PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH"
-export CDPATH="$HOME/code:$CDPATH"
-export VISUAL=vim
-export EDITOR=vim
+CDPATH="$HOME/code:$CDPATH"
+EDITOR=vim
+PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH"
+TZ=America/Chicago
+VIM_APP_DIR="$HOME/Applications"
+VISUAL=vim
 
 PROMPT="%{$fg[magenta]%}> %{$reset_color%}"
 RPROMPT="%{$fg[green]%}\$(current_branch) %{$fg[red]%}%~ %{$fg[yellow]%}%n%{$reset_color%} %{$fg[blue]%}%m%{$reset_color%}"
 
-export VIM_APP_DIR="$HOME/Applications"
