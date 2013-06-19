@@ -17,6 +17,7 @@ Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
+Bundle 'groenewege/vim-less'
 Bundle 'itspriddle/vim-marked'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
@@ -39,6 +40,7 @@ Bundle 'tpope/vim-surround'
 Bundle 'uggedal/go-vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'vim-ruby/vim-ruby'
+Bundle 'wavded/vim-stylus'
 Bundle 'xhr/vim-io'
 Bundle 'zaiste/tmux.vim'
 
@@ -119,6 +121,8 @@ nnoremap <leader>l >>
 nnoremap <leader>m :Tabularize /=<return>
 nnoremap <leader>n :NERDTree<return>
 nnoremap <leader>R :call ReloadAllSnippets()<return>
+nnoremap <leader>gb :Gblame<return>
+nnoremap <leader>gd :Gdiff<return>
 nnoremap <leader>1 yypVr=
 nnoremap <leader>2 yypVr-
 nnoremap <leader>r :source $MYVIMRC<return>:source ~/.gvimrc<return>
@@ -156,7 +160,9 @@ autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('
 
 set statusline=%7L
 set statusline+=\ %3v
-set statusline+=\ %{StatuslineCurrentHighlight()}%=%<%r%F\ %h%m%y
+set statusline+=\ %{StatuslineCurrentHighlight()}
+set statusline+=%=%{fugitive#head()}
+set statusline+=\ %<%r%F\ %h%m%y
 set laststatus=2
 
 set cursorline
