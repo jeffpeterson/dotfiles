@@ -6,6 +6,11 @@ compinit
 zstyle ':completion:*' menu select
 
 alias n=note;
+function setup_environment() {
+  git clone --depth=1 https://github.com/gmarik/vundle.git        ~/.vim/bundle/vundle
+  git clone --depth=1 git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+  . ~/.zshrc
+}
 
 COMPLETION_WAITING_DOTS="true";
 
