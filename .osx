@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# disable Dock
+defaults write com.apple.Dock autohide-delay -float 500
+
+# disable dashboard
+defaults write com.apple.dashboard mcx-disabled -bool true
+
+# don't show dashboard as a space
+defaults write com.apple.dock dashboard-in-overlay -bool true
+
+# speed up expose
+defaults write com.apple.dock expose-animation-duration -float 0.1
+
+# allow text selection on quick look
+defaults write com.apple.finder QLEnableTextSelection -bool TRUE
+
+# enable key repeat
+defaults write -g ApplePressAndHoldEnabled -bool false
+
+# super fast key repeat rate
+defaults write NSGlobalDomain KeyRepeat -int 0
+
+#
+# Finder
+#
+
+# set sidebar icon size to small
+defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
+
+# allow quitting
+defaults write com.apple.finder QuitMenuItem -bool true
+
+# search current folder by default
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+# show filename extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+#
+# Safari
+#
+
+# prevent opening of safe files
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+
+# enable debug menu
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+
+# enable develop menu
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+
+
+
+# restart finder and dock
+killall Finder
+killall Dock
