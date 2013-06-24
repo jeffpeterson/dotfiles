@@ -1,0 +1,17 @@
+[user]
+	name = Jeff Peterson
+	email = jeff@petersonj.com
+[core]
+	editor = vim
+	autocrlf = input
+[push]
+	default = simple
+[color]
+	ui = auto
+[alias]
+	co = checkout
+	l = log --all --graph --format='%C(yellow)%h %C(magenta)%d %C(reset)%s %C(cyan)%cn'
+[diff]
+	algorithm = patience
+[pull]
+	rebase = true
