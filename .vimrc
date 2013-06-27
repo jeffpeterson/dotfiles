@@ -35,6 +35,7 @@ Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'uggedal/go-vim'
@@ -82,6 +83,7 @@ set smartcase
 set smartindent
 set smarttab
 set softtabstop=2
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.DS_Store
 set tabstop=2
 set textwidth=0
 set vb
@@ -102,30 +104,31 @@ imap Jk jk
 imap jK jk
 inoremap <C-U> <C-G>u<C-U>
 map ; :
-map Q gq
 map \ <nop>
+map Q gq
+nmap <leader>bi <leader>r:BundleInstall<return>
+nmap <leader>bu <leader>r:BundleUpdate<return>
 nmap n nzz
 nmap N Nzz
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+nnoremap <leader>1 yypVr=
+nnoremap <leader>2 yypVr-
 nnoremap <leader><space> :%s/ \+$//eg<return>
 nnoremap <leader>= <C-w>=
-nnoremap <leader>a vip:sort i<return>
-nmap <leader>b <leader>r:BundleInstall<return>
 nnoremap <leader>` :MarkedOpen<return>
+nnoremap <leader>a vip:sort i<return>
+nnoremap <leader>gb :Gblame<return>
+nnoremap <leader>gd :Gdiff<return>
 nnoremap <leader>H :so $VIMRUNTIME/syntax/hitest.vim<return>
 nnoremap <leader>h <<
 nnoremap <leader>l >>
 nnoremap <leader>m :Tabularize /=<return>
 nnoremap <leader>n :NERDTree<return>
-nnoremap <leader>R :call ReloadAllSnippets()<return>
-nnoremap <leader>gb :Gblame<return>
-nnoremap <leader>gd :Gdiff<return>
-nnoremap <leader>1 yypVr=
-nnoremap <leader>2 yypVr-
-nnoremap <leader>r :source $MYVIMRC<return>:source ~/.gvimrc<return>
+nnoremap <leader>rs :call ReloadAllSnippets()<return>
+nnoremap <leader>rv :source $MYVIMRC<return>:source ~/.gvimrc<return>
 nnoremap <leader>s mqHmw<C-w>s`wzt`q<C-w>j`q
 nnoremap <leader>t :Tabularize /
 nnoremap <leader>v mqHmw<C-w>v`wzt`q<C-w>l`q
