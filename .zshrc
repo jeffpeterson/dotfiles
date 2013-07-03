@@ -12,7 +12,7 @@ function setup_environment() {
   . ~/.zshrc
 
   git clone --depth=1 https://github.com/gmarik/vundle.git        ~/.vim/bundle/vundle
-  vim +BundleInstall +qall
+#  vim +BundleInstall +qall
 }
 
 function f() {
@@ -29,7 +29,7 @@ which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux s
 
 CDPATH="$HOME/code:$CDPATH"
 EDITOR=vim
-PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$HOME/.rbenv/bin:$PATH"
+PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH"
 TZ=America/Chicago
 VIM_APP_DIR="$HOME/Applications"
 VISUAL=vim
