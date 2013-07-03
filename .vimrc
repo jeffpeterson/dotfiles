@@ -2,15 +2,18 @@ let mapleader   = ","
 let g:mapleader = ","
 
 set nocompatible
+set shell=bash
 
 " required! for vundle
 
+filetype on
 filetype off
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Bundle 'FredKSchott/CoVim'
+" Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'briancollins/vim-jst'
 Bundle 'chriskempson/vim-tomorrow-theme'
@@ -23,6 +26,7 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'mileszs/ack.vim'
 Bundle 'msp.vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/nerdtree'
@@ -39,7 +43,6 @@ Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'uggedal/go-vim'
-Bundle 'Valloric/YouCompleteMe'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'wavded/vim-stylus'
 Bundle 'xhr/vim-io'
@@ -106,8 +109,8 @@ inoremap <C-U> <C-G>u<C-U>
 map ; :
 map \ <nop>
 map Q gq
-nmap <leader>bi <leader>r:BundleInstall<return>
-nmap <leader>bu <leader>r:BundleUpdate<return>
+nmap <leader>bi <leader>rv:BundleInstall<return>
+nmap <leader>bu <leader>rv:BundleUpdate<return>
 nmap n nzz
 nmap N Nzz
 nnoremap <C-h> <C-w>h
@@ -128,7 +131,8 @@ nnoremap <leader>l >>
 nnoremap <leader>m :Tabularize /=<return>
 nnoremap <leader>n :NERDTree<return>
 nnoremap <leader>rs :call ReloadAllSnippets()<return>
-nnoremap <leader>rv :source $MYVIMRC<return>:source ~/.gvimrc<return>
+nnoremap <leader>rv :source $MYVIMRC<return>
+nnoremap <leader>rg :source ~/.gvimrc<return>
 nnoremap <leader>s mqHmw<C-w>s`wzt`q<C-w>j`q
 nnoremap <leader>t :Tabularize /
 nnoremap <leader>v mqHmw<C-w>v`wzt`q<C-w>l`q
