@@ -13,6 +13,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Bundle 'FredKSchott/CoVim'
+" Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'briancollins/vim-jst'
@@ -30,7 +31,6 @@ Bundle 'mileszs/ack.vim'
 Bundle 'msp.vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/nerdtree'
-Bundle 'SirVer/ultisnips'
 Bundle 'slim-template/vim-slim'
 Bundle 'tomtom/tlib_vim'
 Bundle 'tpope/vim-commentary'
