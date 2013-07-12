@@ -16,6 +16,7 @@ call vundle#rc()
 " Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
+Bundle 'bling/vim-airline'
 Bundle 'briancollins/vim-jst'
 Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'derekwyatt/vim-scala'
@@ -48,20 +49,39 @@ Bundle 'wavded/vim-stylus'
 Bundle 'xhr/vim-io'
 Bundle 'zaiste/tmux.vim'
 
+" let g:airline_section_a      (the mode indicator)
+" let g:airline_section_b      (the fugitive branch indicator)
+" let g:airline_section_c      (bufferline or filename)
+" let g:airline_section_gutter (syntastic and readonly flag)
+" let g:airline_section_x      (filetype)
+" let g:airline_section_y      (fileencoding, fileformat)
+" let g:airline_section_z      (percentage, line number, column number)
+" let g:UltiSnipsJumpBackwardTrigger                      = '<c-k>'
+" let g:UltiSnipsJumpForwardTrigger                       = '<c-j>'
+" let g:UltiSnipsListSnippets                             = '<c-m>'
+let g:airline_enable_fugitive=1
+let g:airline_powerline_fonts=1
+let g:airline_theme                                     = 'simple'
 let g:AutoCloseExpandEnterOn                            = ""
 let g:ctrlp_follow_symlinks                             = 1
+let g:ctrlp_max_files                                   = 0
 let g:EasyMotion_leader_key                             = ',,'
 let g:indent_guides_enable_on_vim_startup               = 1
 let g:markdown_fenced_languages                         = ['io', 'javascript', 'coffee']
 let g:UltiSnipsExpandTrigger                            = '<c-l>'
-" let g:UltiSnipsJumpBackwardTrigger                      = '<c-k>'
-" let g:UltiSnipsJumpForwardTrigger                       = '<c-j>'
-" let g:UltiSnipsListSnippets                             = '<c-m>'
 let g:ycm_add_preview_to_completeopt                    = 0
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
 let g:ycm_complete_in_comments                          = 1
 let g:ycm_complete_in_strings                           = 1
 let g:ycm_min_num_of_chars_for_completion               = 1
+
+let g:ctrlp_user_command = {
+  \ 'types': {
+    \ 1: ['.git', 'cd %s && git ls-files'],
+    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+    \ },
+  \ 'fallback': 'find %s -type f'
+  \ }
 
 filetype plugin indent on
 syntax on
@@ -165,12 +185,13 @@ endfunction
 autocmd BufEnter * sign define dummy
 autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 
-set statusline=%7L
-set statusline+=\ %3v
-set statusline+=\ %{StatuslineCurrentHighlight()}
-set statusline+=%=%{fugitive#head()}
-set statusline+=\ %<%r%F\ %h%m%y
 set laststatus=2
+" set statusline=%7L
+" set statusline+=\ %3v
+" set statusline+=\ %{StatuslineCurrentHighlight()}
+" set statusline+=%=%{fugitive#head()}
+" set statusline+=\ %<%r%F\ %h%m%y
+" set laststatus=2
 
 set cursorline
 
@@ -195,6 +216,13 @@ hi StatusLine   guibg=#f5871f guifg=#ffffff gui=NONE
 hi StatusLineNC guibg=#8e908c guifg=#ffffff gui=NONE
 hi sassProperty guifg=#c82829
 hi SignColumn   guibg=#fafafa
+
+" hi Al4
+" hi Al7
+" hi Al9
+" hi Al5
+" hi Al3
+" hi Al2
 
 
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
