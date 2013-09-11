@@ -16,7 +16,7 @@ call vundle#rc()
 " Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
-Bundle 'bling/vim-airline'
+" Bundle 'bling/vim-airline'
 Bundle 'briancollins/vim-jst'
 Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'derekwyatt/vim-scala'
@@ -65,9 +65,10 @@ let g:airline_theme                                     = 'simple'
 let g:AutoCloseExpandEnterOn                            = ""
 let g:ctrlp_follow_symlinks                             = 1
 let g:ctrlp_max_files                                   = 0
+let g:ctrlp_match_window                                = 'bottom,order:btt,min:1,max:50'
 let g:EasyMotion_leader_key                             = ',,'
 let g:indent_guides_enable_on_vim_startup               = 1
-let g:markdown_fenced_languages                         = ['io', 'javascript', 'coffee']
+let g:markdown_fenced_languages                         = ['io', 'javascript', 'coffee', 'ruby']
 let g:UltiSnipsExpandTrigger                            = '<c-l>'
 let g:ycm_add_preview_to_completeopt                    = 0
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
@@ -102,65 +103,70 @@ set shiftwidth=2
 set showcmd     " display incomplete commands
 set sidescroll=1
 set sidescrolloff=15
-set smartcase
 set smartindent
 set smarttab
 set softtabstop=2
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.DS_Store
 set tabstop=2
 set textwidth=0
-set vb
+set visualbell
 set virtualedit=all
+set ignorecase
+set smartcase
 
 " set colorcolumn=80
-
-" set pastetoggle=<leader>p
 
 set mouse=a
 set clipboard=unnamed
 
-
-cmap w!! w !sudo tee % >/dev/null
-imap jk <esc>`^:s/ \+$//eg<return>`^
-imap JK jk
-imap Jk jk
-imap jK jk
-inoremap <C-U> <C-G>u<C-U>
-map ; :
-map \ <nop>
-map Q gq
-nmap <leader>bi <leader>rv:BundleInstall<return>
-nmap <leader>bu <leader>rv:BundleUpdate<return>
-nmap n nzz
-nmap N Nzz
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-nnoremap <leader>1 yypVr=
-nnoremap <leader>2 yypVr-
-nnoremap <leader><space> :%s/ \+$//eg<return>
-nnoremap <leader>= <C-w>=
-nnoremap <leader>` :MarkedOpen<return>
-nnoremap <leader>a vip:sort i<return>
-nnoremap <leader>gb :Gblame<return>
-nnoremap <leader>gd :Gdiff<return>
-nnoremap <leader>H :so $VIMRUNTIME/syntax/hitest.vim<return>
-nnoremap <leader>h <<
-nnoremap <leader>l >>
-nnoremap <leader>m :Tabularize /=<return>
-nnoremap <leader>n :NERDTree<return>
-nnoremap <leader>rs :call ReloadAllSnippets()<return>
-nnoremap <leader>rv :source $MYVIMRC<return>
-nnoremap <leader>rg :source ~/.gvimrc<return>
-nnoremap <leader>s mqHmw<C-w>s`wzt`q<C-w>j`q
-nnoremap <leader>t :Tabularize /
-nnoremap <leader>v mqHmw<C-w>v`wzt`q<C-w>l`q
-nnoremap <leader>w :w<return>
-nnoremap <leader>z zf}
-nnoremap gn gt
-nnoremap gp gT
-noremap ;; ;
+cmap     w!!              w !sudo tee % >/dev/null
+imap     jk               <esc>`^:s/ \+$//eg<return>`^
+imap     JK               jk
+imap     Jk               jk
+imap     jK               jk
+inoremap <C-U>            <C-G>u<C-U>
+map      ;                :
+map      <leader>cc       :s/\v%(\l)@<=_(\l)/\u\1/ge<return>
+map      <leader>cC       :s/\v%(%(\l)@<=_\|<)(\l)/\u\1/ge<return>
+map      <leader>cu       :s/\v%(\l)@<=(\u)/_\l\1/ge<return>
+map      \                <nop>
+map      Q                gq
+nmap     <leader>bi       <leader>rv:BundleInstall<return>
+nmap     <leader>bu       <leader>rv:BundleUpdate<return>
+nmap     n                nzz
+nmap     N                Nzz
+nnoremap <C-h>            <C-w>h
+nnoremap <C-j>            <C-w>j
+nnoremap <C-k>            <C-w>k
+nnoremap <C-l>            <C-w>l
+nnoremap <leader>1        yypVr=
+nnoremap <leader>2        yypVr-
+nnoremap <leader><space>  :%s/ \+$//eg<return>
+nnoremap <leader>=        <C-w>=
+nnoremap <leader>`        :MarkedOpen<return>
+nnoremap <leader>a        vip:sort i<return>
+nnoremap <leader>gb       :Gblame<return>
+nnoremap <leader>gd       :Gdiff<return>
+nnoremap <leader>H        :so $VIMRUNTIME/syntax/hitest.vim<return>
+nnoremap <leader>h        <<
+nnoremap <leader>l         >>
+nnoremap <leader>mx       :!chmod a+x %<return>
+nnoremap <leader>mX       :!chmod a-x %<return>
+nnoremap <leader>n        :NERDTree<return>
+nnoremap <leader>rg       :source ~/.gvimrc<return>
+nnoremap <leader>rs       :call ReloadAllSnippets()<return>
+nnoremap <leader>rv       :source $MYVIMRC<return>
+nnoremap <leader>s        mqHmw<C-w>s`wzt`q<C-w>j`q
+nnoremap <leader>t:       :Tabularize /[\w']:\zs/l0l1<return>
+nnoremap <leader>t<space> :Tabularize/ /l0<return>
+nnoremap <leader>t=       :Tabularize /=<return>
+nnoremap <leader>tt       :Tabularize /
+nnoremap <leader>v        mqHmw<C-w>v`wzt`q<C-w>l`q
+nnoremap <leader>w        :w<return>
+nnoremap <leader>z        zf}
+nnoremap gn               gt
+nnoremap gp               gT
+noremap  ;;               ;
 
 " command WQ wq
 " command Wq wq
@@ -185,13 +191,13 @@ endfunction
 autocmd BufEnter * sign define dummy
 autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 
-set laststatus=2
-" set statusline=%7L
-" set statusline+=\ %3v
-" set statusline+=\ %{StatuslineCurrentHighlight()}
-" set statusline+=%=%{fugitive#head()}
-" set statusline+=\ %<%r%F\ %h%m%y
 " set laststatus=2
+set statusline=%7L
+set statusline+=\ %3v
+set statusline+=\ %{StatuslineCurrentHighlight()}
+set statusline+=%=%{fugitive#head()}
+set statusline+=\ %<%r%F\ %h%m%y
+set laststatus=2
 
 set cursorline
 

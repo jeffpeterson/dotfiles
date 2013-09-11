@@ -12,14 +12,13 @@ function setup_environment() {
   . ~/.zshrc
 
   git clone --depth=1 https://github.com/gmarik/vundle.git        ~/.vim/bundle/vundle
-#  vim +BundleInstall +qall
 }
 
 function f() {
   find . -name "*$1*"
 }
 
-COMPLETION_WAITING_DOTS="true";
+COMPLETION_WAITING_DOTS=true;
 
 plugins=(git rails3 ruby coffee osx gem heroku lein pow powder rvm python github brew clouapp rspec);
 
@@ -27,12 +26,11 @@ plugins=(git rails3 ruby coffee osx gem heroku lein pow powder rvm python github
 
 which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux set-option -g default-command "reattach-to-user-namespace -l zsh" > /dev/null;
 
-CDPATH="$HOME/code:$CDPATH"
-EDITOR=vim
-PATH="$HOME/bin:/usr/local/heroku/bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$HOME/.rbenv/bin:$PATH"
-TZ=America/Chicago
-VIM_APP_DIR="$HOME/Applications"
-VISUAL=vim
+export CDPATH="$CDPATH:$HOME/code:$HOME/work"
+export EDITOR=vim
+export TZ=America/Chicago
+export VIM_APP_DIR="$HOME/Applications"
+export VISUAL=vim
 
 PROMPT="%{$fg[magenta]%}> %{$reset_color%}"
 RPROMPT="%{$fg[green]%}\$(current_branch) %{$fg[red]%}%~ %{$fg[yellow]%}%n%{$reset_color%} %{$fg[blue]%}%m%{$reset_color%}"

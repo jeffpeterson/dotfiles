@@ -1,7 +1,13 @@
-# export CURL_CA_BUNDLE='/System/Library/OpenSSL/certs/cert.pem'
-# export SSL_CERT_FILE='/System/Library/OpenSSL/certs/cert.pem'
+PADD=$HOME/bin
+PADD=$PADD:$HOME/.rbenv/bin
+PADD=$PADD:/usr/local/bin
+PADD=$PADD:/usr/local/sbin
+PADD=$PADD:/usr/local/heroku/bin
+PADD=$PADD:/usr/local/share/npm/bin
+PADD=$PADD:$HOME/code/go/projects/bin
+PADD=$PADD:$HOME/code/arcanist/bin
 
-export PATH=$HOME/.rbenv/bin:$PATH
+export   PATH=$PADD:$PATH
+export GOPATH=$HOME/code/go/projects
 
-#if which rbenv > /dev/null; then eval "$(rbenv init - --no-rehash)"; fi
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+if which rbenv > /dev/null; then eval "$(rbenv init - --no-rehash)"; fi
