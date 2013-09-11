@@ -10,8 +10,12 @@
 	ui = auto
 [alias]
 	co = checkout
-	l = log --all --graph --format='%C(yellow)%h %C(magenta)%d %C(reset)%s %C(cyan)%cn'
+	l = log --all --graph --format='%C(yellow)%h %C(magenta)%d %C(reset)%s %C(cyan)%cn (%ar)'
 [diff]
 	algorithm = patience
 [pull]
 	rebase = true
+[help]
+	autocorrect = 1
+[rerere]
+	enabled = true
