@@ -15,20 +15,23 @@ call vundle#rc()
 " Bundle 'FredKSchott/CoVim'
 " Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
-Bundle 'airblade/vim-gitgutter'
 " Bundle 'bling/vim-airline'
+Bundle 'airblade/vim-gitgutter'
 Bundle 'briancollins/vim-jst'
 Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'derekwyatt/vim-scala'
+Bundle 'flazz/vim-colorschemes'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
 Bundle 'groenewege/vim-less'
 Bundle 'itspriddle/vim-marked'
+Bundle 'jonathanfilip/vim-lucius'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'mileszs/ack.vim'
+Bundle 'mintplant/vim-literate-coffeescript'
 Bundle 'msp.vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/nerdtree'
@@ -48,6 +51,11 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'wavded/vim-stylus'
 Bundle 'xhr/vim-io'
 Bundle 'zaiste/tmux.vim'
+
+Bundle 'garbas/vim-snipmate'
+Bundle 'honza/vim-snippets'
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tomtom/tlib_vim'
 
 " let g:airline_section_a      (the mode indicator)
 " let g:airline_section_b      (the fugitive branch indicator)
@@ -88,13 +96,13 @@ filetype plugin indent on
 syntax on
 
 set autoindent
-set autoread
+"set autoread
 set expandtab
 set hidden
 set history=100 " keep 100 lines of command line history
 set incsearch   " do incremental searching
 set list
-set listchars=tab:..,trail:.,extends:#,nbsp:.
+set listchars=tab:→\ ,trail:•,extends:#,nbsp:.
 set number
 set numberwidth=6
 set ruler       " show the cursor position all the time
@@ -126,9 +134,9 @@ imap     Jk               jk
 imap     jK               jk
 inoremap <C-U>            <C-G>u<C-U>
 map      ;                :
-map      <leader>cc       :s/\v%(\l)@<=_(\l)/\u\1/ge<return>
-map      <leader>cC       :s/\v%(%(\l)@<=_\|<)(\l)/\u\1/ge<return>
-map      <leader>cu       :s/\v%(\l)@<=(\u)/_\l\1/ge<return>
+map      <leader>cC       viw:s/\v%(%(\l)@<=_\|<)(\l)/\u\1/ge<return>
+map      <leader>cc       viw:s/\v%(\l)@<=_(\l)/\u\1/ge<return>
+map      <leader>cu       viw:s/\v%(\l)@<=(\u)/_\l\1/ge<return>
 map      \                <nop>
 map      Q                gq
 nmap     <leader>bi       <leader>rv:BundleInstall<return>
@@ -142,6 +150,7 @@ nnoremap <C-l>            <C-w>l
 nnoremap <leader>1        yypVr=
 nnoremap <leader>2        yypVr-
 nnoremap <leader><space>  :%s/ \+$//eg<return>
+nnoremap <leader><tab>    :retab<return>
 nnoremap <leader>=        <C-w>=
 nnoremap <leader>`        :MarkedOpen<return>
 nnoremap <leader>a        vip:sort i<return>
@@ -167,6 +176,7 @@ nnoremap <leader>z        zf}
 nnoremap gn               gt
 nnoremap gp               gT
 noremap  ;;               ;
+vnoremap <leader>sa       :sort i<return>
 
 " command WQ wq
 " command Wq wq
@@ -201,27 +211,7 @@ set laststatus=2
 
 set cursorline
 
-set background=light
-colorscheme Tomorrow
-
-
-" background  #ffffff
-" curLine     #efefef
-" selection   #d6d6d6
-" comment     #8e908c
-" red         #c82829
-" orange      #f5871f
-" yellow      #eab700
-" green       #718c00
-" aqua        #3e999f
-" blue        #4271ae
-" purple      #8959a8
-
-hi CursorLineNr guibg=#efefef guifg=#f5871f gui=NONE
-hi StatusLine   guibg=#f5871f guifg=#ffffff gui=NONE
-hi StatusLineNC guibg=#8e908c guifg=#ffffff gui=NONE
-hi sassProperty guifg=#c82829
-hi SignColumn   guibg=#fafafa
+runtime schemes/kolor.vim
 
 " hi Al4
 " hi Al7
