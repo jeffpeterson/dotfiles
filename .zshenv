@@ -7,7 +7,15 @@ PADD=$PADD:/usr/local/share/npm/bin
 PADD=$PADD:$HOME/code/go/projects/bin
 PADD=$PADD:$HOME/code/arcanist/bin
 
-export   PATH=$PADD:$PATH
-export GOPATH=$HOME/code/go/projects
+GOADD=$HOME/code/go/projects
+
+PYTHONADD=''
+
+NODEADD='/usr/local/lib/node_modules'
+
+export       PATH="$PADD:$PATH"
+export     GOPATH="$GOADD:$GOPATH"
+export PYTHONPATH="$PYTHONADD:$PYTHONPATH"
+export  NODE_PATH="$NODEADD:$NODE_PATH"
 
 if which rbenv > /dev/null; then eval "$(rbenv init - --no-rehash)"; fi
