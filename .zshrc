@@ -8,10 +8,20 @@ zstyle ':completion:*' menu select
 alias n=note;
 
 function setup_environment() {
-  git clone --depth=1 git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-  . ~/.zshrc
+  defaults write com.apple.Dock autohide-delay -float 0;
+  defaults write com.apple.dock expose-animation-duration -float 0.12;
+  defaults write com.apple.finder QLEnableTextSelection -bool TRUE;
+  defaults write -g ApplePressAndHoldEnabled -bool false;
+  defaults write com.apple.dashboard mcx-disabled -boolean YES;
 
-  git clone --depth=1 https://github.com/gmarik/vundle.git        ~/.vim/bundle/vundle
+  if [ ! -d ~/.oh-my-zsh ]; then
+    git clone --depth=1 git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh;
+    . ~/.zshrc
+  fi
+
+  if [ ! -d ~/.vim/bundle/vundle ]; then
+    git clone --depth=1 https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle;
+  fi
 }
 
 function f() {
@@ -20,7 +30,7 @@ function f() {
 
 COMPLETION_WAITING_DOTS=true;
 
-plugins=(git rails3 ruby coffee osx gem heroku lein pow powder rvm python github brew clouapp rspec);
+plugins=(git rails ruby coffee osx gem heroku lein pow powder rvm python github brew cloudapp rspec);
 
 [[ (-d "$ZSH") ]] && source "$ZSH/oh-my-zsh.sh";
 
