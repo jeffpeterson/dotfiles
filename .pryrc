@@ -40,16 +40,8 @@ class Object
 
     puts "Source not available. Is this a C extension?"
   end
-end
 
-def table rows
-  rows.each do |row|
-    puts row
-  end
-end
-
-class Object
-  def method_lookup *args, result
+  def find_method *args, result
     public_methods(false).select do |name|
       begin
         begin
@@ -62,5 +54,15 @@ class Object
       rescue
       end
     end
+  end
+end
+
+def y obj
+  puts obj.to_yaml
+end
+
+def table rows
+  rows.each do |row|
+    puts row
   end
 end
