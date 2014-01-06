@@ -10,7 +10,8 @@
 	ui = auto
 [alias]
 	co = checkout
-	l = log --all --graph --format='%C(yellow)%h %C(magenta)%d %C(reset)%s %C(cyan)%cn (%ar)'
+	l = log --graph --format='%C(yellow)%h %C(magenta)%d %C(reset)%s %C(cyan)%cn (%ar)'
+	s = status
 [diff]
 	algorithm = patience
 [pull]
