@@ -1,0 +1,35 @@
+config checkDefaultsOnLoad true
+config defaultToCurrentScreen true
+config modalEscapeKey esc
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+config secondsBetweenRepeat 0.1
+
+
+alias leader cmd,g
+
+
+bind u:${leader} undo
+bind r:${leader} relaunch
+
+bind tab:${leader} switch
+
+bind space:${leader} shell path:~/ '~/bin/dash'
+
+bind i:${leader} move screenOriginX;screenOriginY screenSizeX;screenSizeY
+
+# bind v:${leader} move windowTopLeftX;windowTopLeftY screenSizeX/2;windowSizeY
+# bind s:${leader} move windowTopLeftX;windowTopLeftY windowSizeX;screenSizeY/2
+
+bind h:${leader} move screenOriginX;screenOriginY screenSizeX/3*2;screenSizeY
+bind l:${leader} move screenOriginX+screenSizeX/3;screenOriginY screenSizeX/3*2;screenSizeY
+
+bind k:${leader} move screenOriginX;screenOriginY screenSizeX;screenSizeY/3*2
+bind j:${leader} move screenOriginX;screenSizeY/3 screenSizeX;screenSizeY/3*2
+
+bind h:shift,${leader} move screenOriginX;screenOriginY screenSizeX/3;screenSizeY
+bind l:shift,${leader} move screenOriginX+screenSizeX/3*2;screenOriginY screenSizeX/3;screenSizeY
+
+bind k:shift,${leader} move screenOriginX;screenOriginY screenSizeX;screenSizeY/3
+bind j:shift,${leader} move screenOriginX;screenSizeY/3 screenSizeX;screenSizeY/3
+
