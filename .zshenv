@@ -17,5 +17,6 @@ export       PATH="$PADD:$PATH"
 export     GOPATH="$GOADD:$GOPATH"
 export PYTHONPATH="$PYTHONADD:$PYTHONPATH"
 export  NODE_PATH="$NODEADD:$NODE_PATH"
+export  ATOM_PATH="$HOME/Applications/Atom.app"
 
 if which rbenv > /dev/null; then eval "$(rbenv init - --no-rehash)"; fi
