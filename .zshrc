@@ -1,5 +1,6 @@
 ZSH="$HOME/.oh-my-zsh"
 
+setopt noautocd
 autoload -U colors && colors
 autoload -U compinit
 compinit
