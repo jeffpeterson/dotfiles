@@ -7,6 +7,7 @@ compinit
 zstyle ':completion:*' menu select
 
 alias n=note;
+alias be='bundle exec';
 
 function setup_environment() {
   defaults write com.apple.Dock autohide-delay -float 0;
