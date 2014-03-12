@@ -61,7 +61,7 @@ which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux s
 
 export CDPATH="$CDPATH:$HOME/code:$HOME/work"
 export EDITOR=vim
-export TZ=America/Chicago
+export TZ=America/Los_Angeles
 export VIM_APP_DIR="$HOME/Applications"
 export VISUAL=vim
 
