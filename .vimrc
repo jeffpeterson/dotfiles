@@ -12,16 +12,17 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+" Bundle 'bling/vim-airline'
 " Bundle 'FredKSchott/CoVim'
 " Bundle 'SirVer/ultisnips'
 " Bundle 'Valloric/YouCompleteMe'
-" Bundle 'bling/vim-airline'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'briancollins/vim-jst'
 Bundle 'chriskempson/vim-tomorrow-theme'
 Bundle 'derekwyatt/vim-scala'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'gmarik/vundle'
+Bundle 'rking/ag.vim'
 Bundle 'godlygeek/tabular'
 Bundle 'groenewege/vim-less'
 Bundle 'itspriddle/vim-marked'
@@ -33,8 +34,11 @@ Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'mileszs/ack.vim'
 Bundle 'mintplant/vim-literate-coffeescript'
 Bundle 'msp.vim'
+Bundle 'mxw/vim-jsx'
+Bundle 'pangloss/vim-javascript'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/syntastic'
 Bundle 'slim-template/vim-slim'
 Bundle 'tomtom/tlib_vim'
 Bundle 'tpope/vim-commentary'
@@ -67,23 +71,31 @@ Bundle 'tomtom/tlib_vim'
 " let g:UltiSnipsJumpBackwardTrigger                      = '<c-k>'
 " let g:UltiSnipsJumpForwardTrigger                       = '<c-j>'
 " let g:UltiSnipsListSnippets                             = '<c-m>'
-let g:airline_enable_fugitive=1
-let g:airline_powerline_fonts=1
-let g:airline_theme                                     = 'simple'
-let g:AutoCloseExpandEnterOn                            = ""
-let g:ctrlp_follow_symlinks                             = 1
-let g:ctrlp_max_files                                   = 0
-let g:ctrlp_match_window                                = 'bottom,order:btt,min:1,max:50'
-let g:EasyMotion_leader_key                             = ',,'
-let g:indent_guides_enable_on_vim_startup               = 1
-let g:markdown_fenced_languages                         = ['io', 'javascript', 'coffee', 'ruby']
-let g:UltiSnipsExpandTrigger                            = '<c-l>'
+
+let g:airline_enable_fugitive = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme           = 'simple'
+
+let g:AutoCloseExpandEnterOn = ""
+
+let g:EasyMotion_leader_key               = ',,'
+let g:indent_guides_enable_on_vim_startup = 1
+let g:markdown_fenced_languages           = ['io', 'javascript', 'coffee', 'ruby']
+
+let g:UltiSnipsExpandTrigger = '<c-l>'
+
 let g:ycm_add_preview_to_completeopt                    = 0
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
 let g:ycm_complete_in_comments                          = 1
 let g:ycm_complete_in_strings                           = 1
 let g:ycm_min_num_of_chars_for_completion               = 1
 
+let javascript_enable_domhtmlcss = 1
+let g:javascript_conceal         = 1
+
+let g:ctrlp_follow_symlinks = 1
+let g:ctrlp_max_files       = 0
+let g:ctrlp_match_window    = 'bottom,order:btt,min:1,max:50'
 let g:ctrlp_user_command = {
   \ 'types': {
     \ 1: ['.git', 'cd %s && git ls-files'],
@@ -141,8 +153,6 @@ map      \                <nop>
 map      Q                gq
 nmap     <leader>bi       <leader>rv:BundleInstall<return>
 nmap     <leader>bu       <leader>rv:BundleUpdate<return>
-nmap     n                nzz
-nmap     N                Nzz
 nnoremap <C-h>            <C-w>h
 nnoremap <C-j>            <C-w>j
 nnoremap <C-k>            <C-w>k
