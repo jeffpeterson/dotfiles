@@ -146,9 +146,9 @@ imap     Jk               jk
 imap     jK               jk
 inoremap <C-U>            <C-G>u<C-U>
 map      ;                :
-map      <leader>cC       viw:s/\v%(%(\l)@<=_\|<)(\l)/\u\1/ge<return>
-map      <leader>cc       viw:s/\v%(\l)@<=_(\l)/\u\1/ge<return>
-map      <leader>cu       viw:s/\v%(\l)@<=(\u)/_\l\1/ge<return>
+map      <leader>cC       viw:s/\v%(%(\l)@<=_\|<)(\l)/\u\1/ge<c-o><return>
+map      <leader>cc       viw:s/\v%(\l)@<=_(\l)/\u\1/ge<c-o><return>
+map      <leader>cu       viw:s/\v%(\l)@<=(\u)/_\l\1/ge<c-o><return>
 map      \                <nop>
 map      Q                gq
 nmap     <leader>bi       <leader>rv:BundleInstall<return>
