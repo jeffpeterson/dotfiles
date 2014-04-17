@@ -82,7 +82,7 @@ let g:EasyMotion_leader_key               = ',,'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:markdown_fenced_languages           = ['io', 'javascript', 'coffee', 'ruby']
 
-let g:UltiSnipsExpandTrigger = '<c-l>'
+" let g:UltiSnipsExpandTrigger = '<c-l>'
 
 let g:ycm_add_preview_to_completeopt                    = 0
 let g:ycm_collect_identifiers_from_comments_and_strings = 0
@@ -98,7 +98,7 @@ let g:ctrlp_max_files       = 0
 let g:ctrlp_match_window    = 'bottom,order:btt,min:1,max:50'
 let g:ctrlp_user_command = {
   \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files'],
+    \ 1: ['.git', 'cd %s && git ls-files --others --cached --exclude-standard'],
     \ 2: ['.hg', 'hg --cwd %s locate -I .'],
     \ },
   \ 'fallback': 'find %s -type f'
