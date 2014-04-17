@@ -53,7 +53,7 @@ f() {
 
 COMPLETION_WAITING_DOTS=true;
 
-plugins=(git rails ruby coffee osx gem heroku lein pow powder rvm python github brew cloudapp rspec);
+plugins=(git rails bundler ruby coffee osx gem heroku pow powder rvm python github brew cloudapp rspec);
 
 [[ (-d "$ZSH") ]] && source "$ZSH/oh-my-zsh.sh";
 
