@@ -9,7 +9,7 @@ PADD=$PADD:$HOME/code/arcanist/bin
 
 GOADD=$HOME/code/go/projects
 
-PYTHONADD=''
+PYTHONADD=/usr/local/lib/python2.7/site-packages
 
 NODEADD='/usr/local/lib/node_modules'
 
