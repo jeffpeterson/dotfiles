@@ -15,7 +15,8 @@
 	c  = commit
 	s  = status
 	f  = fetch
-	r = remote update -p
+	r  = remote update -p
+	d  = diff
 
 [diff]
 	algorithm = patience
