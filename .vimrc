@@ -221,7 +221,7 @@ set laststatus=2
 
 set cursorline
 
-runtime schemes/kolor.vim
+runtime schemes/solarized-light.vim
 
 " hi Al4
 " hi Al7
