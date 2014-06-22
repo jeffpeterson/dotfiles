@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-ls -A1 | egrep -v '^(install|\.git|\.gitignore)$' | xargs -on1 -I{} ln -hvis "`pwd`/{}" ~/{}
+ls -A1 | egrep -v '^(install|\.git|\.gitignore)$' | xargs -n1 -I{} bash -c '</dev/tty ln -nvis "`pwd`/{}" ~/{}'
