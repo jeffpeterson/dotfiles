@@ -1,0 +1,6 @@
+[
+	{
+		"keys": ["shift+alt+command+p"],
+		"command": "scope_to_clipboard"
+	}
+]
