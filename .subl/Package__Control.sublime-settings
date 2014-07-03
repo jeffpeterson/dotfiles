@@ -1,8 +1,16 @@
 {
 	"installed_packages":
 	[
+		"Better CoffeeScript",
+		"EditorConfig",
+		"PackageResourceViewer",
+		"Quick File Move",
+		"Sass",
 		"Tag",
+		"tern_for_sublime",
+		"Theme - Afterglow",
 		"Theme - Soda SolarizedDark",
-		"Theme - Sodarized"
+		"Theme - Sodarized",
+		"Zen Tabs"
 	]
 }

@@ -1,17 +1,50 @@
 {
 	"auto_complete_commit_on_tab": true,
-	"color_scheme": "Packages/Color Scheme - Default/Solarized (Light).tmTheme",
+	"binary_file_patterns":
+	[
+		"*.jpg",
+		"*.jpeg",
+		"*.png",
+		"*.gif",
+		"*.ttf",
+		"*.tga",
+		"*.dds",
+		"*.ico",
+		"*.eot",
+		"*.pdf",
+		"*.swf",
+		"*.jar",
+		"*.zip",
+		"*.scssc"
+	],
+	"color_inactive_tabs": true,
+	"color_scheme": "Packages/Theme - Afterglow/Afterglow.tmTheme",
 	"ensure_newline_at_eof_on_save": true,
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		"dist",
+		"node_modules",
+		"bower_components"
+	],
 	"font_size": 13,
 	"highlight_line": true,
-	"tab_size": 2,
-	"soft_tabs": true,
+	"highlight_modified_tabs": true,
 	"ignored_packages":
 	[
 		"Vintage"
 	],
 	"line_padding_bottom": 1,
 	"line_padding_top": 1,
-	"theme": "Sodarized Dark 3.sublime-theme",
+	"open_tab_limit": 10,
+	"soft_tabs": true,
+	"tab_size": 2,
+	"tabs_medium": true,
+	"tern_command": "tern",
+	"theme": "Afterglow-blue.sublime-theme",
+	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true
 }

@@ -3,10 +3,12 @@
 tap caskroom/cask
 install brew-cask
 
-cask alfred
-cask google-chrome
-cask dropbox
-cask airfoil
+cask install alfred
+cask install google-chrome
+cask install dropbox
+cask install airfoil
+cask install xscope
+
 
 install wget
 install zsh
@@ -20,6 +22,7 @@ install the_silver_searcher
 install node
 install heroku-toolbelt
 install imagemagick
+install autotrace
 install minidlna
 install phantomjs
 install postgresql
