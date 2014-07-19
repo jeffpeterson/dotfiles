@@ -3,14 +3,18 @@
 	[
 		"Better CoffeeScript",
 		"EditorConfig",
+		"Git",
+		"JSHint",
 		"PackageResourceViewer",
 		"Quick File Move",
 		"Sass",
+		"Stylus",
 		"Tag",
 		"tern_for_sublime",
 		"Theme - Afterglow",
 		"Theme - Soda SolarizedDark",
 		"Theme - Sodarized",
+		"Tmux",
 		"Zen Tabs"
 	]
 }
