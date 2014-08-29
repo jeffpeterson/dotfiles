@@ -17,6 +17,7 @@
 	f  = fetch
 	r  = remote update -p
 	d  = diff
+	cat = "!sh -c 'git show $(git log --all --max-count=1 --format=%H -- $1)^:$1 | cat'" -
 
 [diff]
 	algorithm = patience
