@@ -18,7 +18,7 @@
 		"*.scssc"
 	],
 	"color_inactive_tabs": true,
-	"color_scheme": "Packages/Theme - Afterglow/Afterglow.tmTheme",
+	"color_scheme": "Packages/User/Espresso Soda.tmTheme",
 	"ensure_newline_at_eof_on_save": true,
 	"folder_exclude_patterns":
 	[
@@ -26,9 +26,10 @@
 		".git",
 		".hg",
 		"CVS",
-		"dist",
 		"node_modules",
-		"bower_components"
+		"bower_components",
+		"build",
+		"dist"
 	],
 	"font_size": 13,
 	"highlight_line": true,
@@ -39,13 +40,10 @@
 	],
 	"line_padding_bottom": 1,
 	"line_padding_top": 1,
-	"open_tab_limit": 10,
-	"soft_tabs": true,
 	"tab_size": 2,
 	"tabs_medium": true,
 	"tern_command": "tern",
-	"theme": "Afterglow-blue.sublime-theme",
-	"translate_tabs_to_spaces": true,
+	"theme": "Soda Light 3.sublime-theme",
 	"trim_trailing_white_space_on_save": true,
 	"word_separators": "./\\()\"':,.;<>~!@%^&*|+=[]{}`~?"
 }
