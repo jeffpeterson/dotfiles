@@ -1,1 +1,6 @@
-.vim/bundle
+/.vim/bundle
+/.atom/*
+!/.atom/snippets.cson
+!/.atom/init.coffee
+!/.atom/keymap.cson
+!/.atom/styles.less
