@@ -12,6 +12,7 @@ cask install xscope
 
 install wget
 install zsh
+install bash
 install tmux
 install reattach-to-user-namespace
 install git
