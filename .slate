@@ -31,5 +31,5 @@ bind h:shift,${leader} move screenOriginX;screenOriginY screenSizeX/3;screenSize
 bind l:shift,${leader} move screenOriginX+screenSizeX/3*2;screenOriginY screenSizeX/3;screenSizeY
 
 bind k:shift,${leader} move screenOriginX;screenOriginY screenSizeX;screenSizeY/3
-bind j:shift,${leader} move screenOriginX;screenSizeY/3 screenSizeX;screenSizeY/3
+bind j:shift,${leader} move screenOriginX;screenOriginY+screenSizeY/3*2 screenSizeX;screenSizeY/3
 
