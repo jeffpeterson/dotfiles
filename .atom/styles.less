@@ -8,30 +8,42 @@
  * http://www.lesscss.org
  */
 
-.tree-view {
+atom-text-editor::shadow {
+  // .indent-guide {
+  //   color: rgba(0,0,0, 0.1);
+  // }
+  //
+  // .invisible-character {
+  //   color: #ddd;
+  // }
 
+  .bracket-matcher.highlight {
+    border: 0;
+  }
+
+  .bracket-matcher.region {
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+  }
 }
-
-.editor {
-  font-family: Menlo, Inconsolata, Monaco, Consolas, 'Courier New', Courier;
-  line-height: 1.5;
-}
-
-// .editor .cursor {
 //
+// .theme-tomorrow-night-eighties atom-text-editor::shadow {
+//   .indent-guide {
+//     color: rgba(255,255,255, 0.1);
+//   }
 // }
 
-.editor .indent-guide {
-  box-shadow: inset 1px 0 0 #eee;
+.autocomplete-plus.popover-list ol.list-group li .label {
+  opacity: 1;
 }
 
+// autocomplete-suggestion-list {
+//   top: -25px !important;
+//   box-shadow: none !important;
+//   background-color: white !important;
+//   padding: 0 !important;
 //
-// .tree-view .entry.directory.status-added > .header,
-// .tree-view .entry.file.status-added {
-//   color: #26C26A;
-// }
-//
-// .tree-view .entry.directory.status-modified > .header,
-// .tree-view .entry.file.status-modified {
-//   color: #FE972C;
+//   .selected {
+//     background-color: transparent !important;
+//   }
 // }

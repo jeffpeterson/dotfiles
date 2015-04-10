@@ -6,6 +6,7 @@ PADD=$PADD:/usr/local/heroku/bin
 PADD=$PADD:/usr/local/share/npm/bin
 PADD=$PADD:$HOME/code/go/projects/bin
 PADD=$PADD:$HOME/code/arcanist/bin
+PADD=$PADD:$HOME/code/autobin
 
 GOADD=$HOME/code/go/projects
 

@@ -12,3 +12,12 @@
 #   editor = editorView.getEditor()
 #   if path.extname(editor.getPath()) is '.md'
 #     editor.setSoftWrap(true)
+
+path = require 'path'
+
+atom.workspaceView.eachEditorView (editorView) ->
+  editor = editorView.getEditor()
+
+  # use hard tabs
+  if path.basename(editor.getPath()) is 'Makefile'
+    editor.setSoftTabs(false)

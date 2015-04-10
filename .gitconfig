@@ -8,16 +8,22 @@
 	default = simple
 [color]
 	ui = auto
+[color "log"]
+  meta = yellow
 [alias]
 	co = checkout
-	l  = log --graph --format='%C(yellow)%h %C(magenta)%d %C(reset)%s %C(cyan)%cn (%ar)'
-	b  = branch
+	l  = log --graph --format='%C(yellow)%h %C(reset)- (%ar)%C(magenta)%d %C(reset)%s %C(green)%an'
+	; l  = log --graph --format='%h - (%ar) %d %s %cn'
+	b  = branch -vv
 	c  = commit
 	s  = status
 	f  = fetch
 	r  = remote update -p
+  sync = fetch origin staging:staging
 	d  = diff
+	pr = !hub pull-request
 	cat = "!sh -c 'git show $(git log --all --max-count=1 --format=%H -- $1)^:$1 | cat'" -
+  trim = "!git branch --merged | grep -v staging | grep -v master | grep -v '*' | xargs -n1 git branch -d"
 
 [diff]
 	algorithm = patience

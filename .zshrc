@@ -1,6 +1,8 @@
 ZSH="$HOME/.oh-my-zsh"
 
 setopt noautocd
+unsetopt AUTO_CD
+
 autoload -U colors && colors
 autoload -U compinit
 compinit
@@ -51,9 +53,31 @@ f() {
   find . -name "*$1*"
 }
 
-COMPLETION_WAITING_DOTS=true;
+typeset -F SECONDS=0;
 
-plugins=(git rails bundler ruby coffee osx gem heroku pow powder rvm python github brew cloudapp rspec);
+local timer=$SECONDS
+
+preexec() {
+  timer=$SECONDS
+}
+
+precmd() {
+  timer_difference=$(($SECONDS - $timer))
+  timer=$SECONDS
+}
+
+c() {
+  cd ~/code/$(ls ~/code | selecta)
+}
+
+elapsed() {
+  printf '%.2fs' $timer_difference
+}
+
+COMPLETION_WAITING_DOTS=true;
+REPORTTIME=10
+
+plugins=(git rails bundler ruby coffee osx gem heroku pow powder rvm python npm brew cloudapp rspec jsontools);
 
 [[ (-d "$ZSH") ]] && source "$ZSH/oh-my-zsh.sh";
 
@@ -65,6 +89,6 @@ export TZ=America/Los_Angeles
 export VIM_APP_DIR="$HOME/Applications"
 export VISUAL=vim
 
-PROMPT="%{$fg[magenta]%}> %{$reset_color%}"
-RPROMPT="%{$fg[green]%}\$(current_branch) %{$fg[red]%}%~ %{$fg[yellow]%}%n%{$reset_color%} %{$fg[blue]%}%m%{$reset_color%}"
-
+PROMPT="
+%{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(current_branch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
+%{$fg[magenta]%}>%{$reset_color%} "

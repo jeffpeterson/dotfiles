@@ -20,6 +20,8 @@
 '.vim-mode.insert-mode:not(.mini)':
   'j k': 'vim-mode:activate-command-mode'
 
+'.editor:not(.mini)':
+  '#': 'ruby-string-interpolation:insert'
 
 '.vim-mode.command-mode:not(.mini)':
   '" *': 'vim-mode:register-prefix'
@@ -31,8 +33,8 @@
   'ctrl-shift-J': 'editor:add-selection-below'
   'ctrl-shift-K': 'editor:add-selection-above'
 
-  'tab': 'inline-autocomplete:cycle'
-  'shift-tab': 'inline-autocomplete:cycle-back'
+  # 'tab': 'inline-autocomplete:cycle'
+  # 'shift-tab': 'inline-autocomplete:cycle-back'
 
 '.inline-autocomplete':
   'space': 'inline-autocomplete:stop'
