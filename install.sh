@@ -10,3 +10,5 @@ done
 # do
 #   ln "$PWD/Preferences/$f" "$HOME/Library/Preferences/$f"
 # done
+
+apm install --compatible --packages-file .atom/packages.txt

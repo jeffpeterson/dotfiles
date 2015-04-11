@@ -5,3 +5,4 @@
 !/.atom/init.coffee
 !/.atom/keymap.cson
 !/.atom/styles.less
+!/.atom/packages.txt
