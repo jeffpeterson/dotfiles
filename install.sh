@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-for f in `ls -A | grep -ve Brewfile.sh -e Preferences -e install.sh -e .git`
+for f in `ls -A home`
 do
-  ln -hs "$PWD/$f" "$HOME/$f"
+  ln -hs "$PWD/home/$f" "$HOME/$f"
 done
 
 # TODO: Figure out how to make something like this work:

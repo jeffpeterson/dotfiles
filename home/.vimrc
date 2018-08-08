@@ -9,58 +9,58 @@ set shell=bash
 filetype on
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set rtp+=~/.vim/bundle/vundle/
+" call vundle#rc()
 
-" Bundle 'bling/vim-airline'
-" Bundle 'FredKSchott/CoVim'
-" Bundle 'SirVer/ultisnips'
-" Bundle 'Valloric/YouCompleteMe'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'briancollins/vim-jst'
-Bundle 'chriskempson/vim-tomorrow-theme'
-Bundle 'derekwyatt/vim-scala'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'gmarik/vundle'
-Bundle 'rking/ag.vim'
-Bundle 'godlygeek/tabular'
-Bundle 'groenewege/vim-less'
-Bundle 'itspriddle/vim-marked'
-Bundle 'jonathanfilip/vim-lucius'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'kien/ctrlp.vim'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'mileszs/ack.vim'
-Bundle 'mintplant/vim-literate-coffeescript'
-Bundle 'msp.vim'
-Bundle 'mxw/vim-jsx'
-" Bundle 'jiangmiao/simple-javascript-indenter'
-Bundle 'pangloss/vim-javascript'
-Bundle 'Raimondi/delimitMate'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/syntastic'
-Bundle 'slim-template/vim-slim'
+" " Bundle 'bling/vim-airline'
+" " Bundle 'FredKSchott/CoVim'
+" " Bundle 'SirVer/ultisnips'
+" " Bundle 'Valloric/YouCompleteMe'
+" Bundle 'airblade/vim-gitgutter'
+" Bundle 'briancollins/vim-jst'
+" Bundle 'chriskempson/vim-tomorrow-theme'
+" Bundle 'derekwyatt/vim-scala'
+" Bundle 'flazz/vim-colorschemes'
+" Bundle 'gmarik/vundle'
+" Bundle 'rking/ag.vim'
+" Bundle 'godlygeek/tabular'
+" Bundle 'groenewege/vim-less'
+" Bundle 'itspriddle/vim-marked'
+" Bundle 'jonathanfilip/vim-lucius'
+" Bundle 'kchmck/vim-coffee-script'
+" Bundle 'kien/ctrlp.vim'
+" Bundle 'Lokaltog/vim-easymotion'
+" Bundle 'mileszs/ack.vim'
+" Bundle 'mintplant/vim-literate-coffeescript'
+" Bundle 'msp.vim'
+" Bundle 'mxw/vim-jsx'
+" " Bundle 'jiangmiao/simple-javascript-indenter'
+" Bundle 'pangloss/vim-javascript'
+" Bundle 'Raimondi/delimitMate'
+" Bundle 'scrooloose/nerdtree'
+" Bundle 'scrooloose/syntastic'
+" Bundle 'slim-template/vim-slim'
+" " Bundle 'tomtom/tlib_vim'
+" Bundle 'tpope/vim-commentary'
+" Bundle 'tpope/vim-cucumber'
+" Bundle 'tpope/vim-endwise'
+" Bundle 'tpope/vim-fireplace'
+" Bundle 'tpope/vim-fugitive'
+" Bundle 'tpope/vim-haml'
+" Bundle 'tpope/vim-markdown'
+" Bundle 'tpope/vim-rails'
+" Bundle 'tpope/vim-repeat'
+" Bundle 'tpope/vim-surround'
+" " Bundle 'uggedal/go-vim'
+" Bundle 'vim-ruby/vim-ruby'
+" Bundle 'wavded/vim-stylus'
+" Bundle 'xhr/vim-io'
+" Bundle 'zaiste/tmux.vim'
+" 
+" Bundle 'garbas/vim-snipmate'
+" Bundle 'honza/vim-snippets'
+" Bundle 'MarcWeber/vim-addon-mw-utils'
 " Bundle 'tomtom/tlib_vim'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-cucumber'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-fireplace'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-haml'
-Bundle 'tpope/vim-markdown'
-Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-surround'
-" Bundle 'uggedal/go-vim'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'wavded/vim-stylus'
-Bundle 'xhr/vim-io'
-Bundle 'zaiste/tmux.vim'
-
-Bundle 'garbas/vim-snipmate'
-Bundle 'honza/vim-snippets'
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'tomtom/tlib_vim'
 
 " let g:airline_section_a      (the mode indicator)
 " let g:airline_section_b      (the fugitive branch indicator)
@@ -244,7 +244,7 @@ set laststatus=2
 
 set cursorline
 
-runtime schemes/solarized-light.vim
+runtime schemes/3dglasses.vim
 
 " hi Al4
 " hi Al7
