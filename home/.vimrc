@@ -238,7 +238,7 @@ autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('
 set statusline=%7L
 set statusline+=\ %3v
 set statusline+=\ %{StatuslineCurrentHighlight()}
-set statusline+=%=%{fugitive#head()}
+" set statusline+=%=%{fugitive#head()}
 set statusline+=\ %<%r%F\ %h%m%y
 set laststatus=2
 
