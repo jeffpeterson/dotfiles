@@ -1,4 +1,5 @@
-/.vim/bundle
+/home/.vim/bundle
+.netrwhist
 /.atom/*
 !/.atom/snippets.cson
 !/.atom/config.cson
