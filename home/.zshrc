@@ -3,6 +3,7 @@ DISABLE_AUTO_UPDATE="true"
 ZSH="$HOME/.oh-my-zsh"
 
 setopt noautocd
+setopt PROMPT_SUBST
 unsetopt AUTO_CD
 
 autoload -U colors && colors
@@ -12,6 +13,11 @@ zstyle ':completion:*' menu select
 
 alias no=note;
 alias be='bundle exec';
+alias g=git;
+
+osname() {
+  uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
+}
 
 write_defaults() {
   defaults write    com.apple.Dock   autohide-delay               -float 0;
@@ -116,12 +122,12 @@ export VIM_APP_DIR="$HOME/Applications"
 export VISUAL=code
 export FUCHSIA_BUILD_DIR=$HOME/code/fuchsia/out/x64
 
-source $HOME/code/fuchsia/scripts/fx-env.sh
+# source $HOME/code/fuchsia/scripts/fx-env.sh
 
 if which rbenv > /dev/null; then eval "$(rbenv init - --no-rehash)"; fi
 
 PROMPT="
-%{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(current_branch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
+%{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(git showbranch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
 %{$fg[magenta]%}>%{$reset_color%} "
 
 # export NVM_DIR="/Users/jeffpeterson/.nvm"
