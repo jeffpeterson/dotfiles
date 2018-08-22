@@ -2,7 +2,7 @@
 
 for f in `ls -A home`
 do
-  ln -hs "$PWD/home/$f" "$HOME/$f"
+  ln -ns "$PWD/home/$f" "$HOME/$f"
 done
 
 # TODO: Figure out how to make something like this work:
