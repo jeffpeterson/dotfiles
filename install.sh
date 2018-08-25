@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-local install_all() {
+install_all() {
   install_home home
   # install_home `osname`
 }
 
-local install_home() {
+install_home() {
   for f in `ls -A $1`
   do
     ln -ns "$PWD/$1/$f" "$HOME/$f"
@@ -13,7 +13,7 @@ local install_home() {
 }
 
 
-local osname() {
+osname() {
   uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
 }
 
