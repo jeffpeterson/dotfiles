@@ -1,21 +1,25 @@
-PADD=$HOME/bin
-# PADD=$PADD:/usr/local/opt/node@4/bin
-PADD=$PADD:/usr/local/bin
-PADD=$PADD:/usr/local/sbin
-PADD=$PADD:/usr/local/heroku/bin
-PADD=$PADD:/usr/local/share/npm/bin
-PADD=$PADD:/usr/local/opt/ccache/libexec
-PADD=$PADD:/usr/local/opt/go/libexec/bin
-PADD=$PADD:$ANDROID_HOME/tools
-PADD=$PADD:$ANDROID_HOME/platform-tools
-PADD=$PADD:$HOME/code/go/projects/bin
-PADD=$PADD:$HOME/.cargo/bin
-PADD=$PADD:$HOME/code/arcanist/bin
-PADD=$PADD:$HOME/code/autobin
-PADD=$PADD:$HOME/code/fuchsia/.jiri_root/bin
-PADD=$PADD:$HOME/code/flutter/bin
-PADD=$PADD:$HOME/.npm-global/bin
-export PATH="$PADD:$PATH"
+export push() {
+  export PATH="$1:$PATH"
+}
+
+push $HOME/bin
+# push /usr/local/opt/node@4/bin
+push /usr/local/bin
+push /usr/local/sbin
+push /usr/local/heroku/bin
+push /usr/local/share/npm/bin
+push /usr/local/opt/ccache/libexec
+push /usr/local/opt/go/libexec/bin
+push $ANDROID_HOME/tools
+push $ANDROID_HOME/platform-tools
+push $HOME/code/go/projects/bin
+push $HOME/.cargo/bin
+push $HOME/code/arcanist/bin
+push $HOME/code/autobin
+push $HOME/code/fuchsia/.jiri_root/bin
+push $HOME/code/flutter/bin
+push $HOME/.npm-global/bin
+
 # export CDPATH="$CDPATH:$HOME/code:$HOME/work"
 export EDITOR=vim
 export TZ=America/Los_Angeles
