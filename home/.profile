@@ -1,4 +1,3 @@
-
 PADD=$HOME/bin
 # PADD=$PADD:/usr/local/opt/node@4/bin
 PADD=$PADD:/usr/local/bin
@@ -15,7 +14,7 @@ PADD=$PADD:$HOME/code/arcanist/bin
 PADD=$PADD:$HOME/code/autobin
 PADD=$PADD:$HOME/code/fuchsia/.jiri_root/bin
 PADD=$PADD:$HOME/code/flutter/bin
-
+PADD=$PADD:$HOME/.npm-global/bin
 export PATH="$PADD:$PATH"
 # export CDPATH="$CDPATH:$HOME/code:$HOME/work"
 export EDITOR=vim

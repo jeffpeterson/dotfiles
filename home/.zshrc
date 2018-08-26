@@ -94,7 +94,7 @@ plugins=(pm2 git rails bundler ruby coffee osx gem heroku pow powder rvm python 
 
 which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux set-option -g default-command "reattach-to-user-namespace -l zsh" > /dev/null;
 
-source ./.profile
+source ~/.profile
 
 # source $HOME/code/fuchsia/scripts/fx-env.sh
 
