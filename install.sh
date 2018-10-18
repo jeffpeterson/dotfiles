@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+FLAGS="$@"
+
 install_all() {
   install_home home
   # install_home `osname`
@@ -8,7 +10,7 @@ install_all() {
 install_home() {
   for f in `ls -A $1`
   do
-    ln -ns "$PWD/$1/$f" "$HOME/$f"
+    ln -ns $FLAGS "$PWD/$1/$f" "$HOME/$f"
   done
 }
 
