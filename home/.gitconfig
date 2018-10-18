@@ -9,30 +9,31 @@
 [color]
 	ui = auto
 [color "log"]
-  meta = yellow
+	meta = yellow
 [alias]
 	co = checkout
-	l  = log --graph --format='%C(yellow)%h %C(reset)- (%ar)%C(magenta)%d %C(reset)%s %C(green)%an'
-	; l  = log --graph --format='%h - (%ar) %d %s %cn'
-	b  = branch -vv
+	l = log --graph --format='%C(yellow)%h %C(reset)- (%ar)%C(magenta)%d %C(reset)%s %C(green)%an'
+	; l = log --graph --format='%h - (%ar) %d %s %cn'
+	b = branch -vv
 	bs = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(HEAD) %(objectname:short) %(committerdate:short) %(color:yellow)%(align:30)%(refname:short)%(end)%(color:reset) %(contents:subject)'
-	c  = commit
-	s  = status
-	f  = fetch
-  acd = log dev..origin/acceptance --merges --first-parent --graph --oneline
-	r  = remote update -p
+	c = commit
+	s = status
+	f = fetch
+	acd = log dev..origin/acceptance --merges --first-parent --graph --oneline
+	r = remote update -p
 	sync = !bash -c 'git fetch origin $1:${1#+}' -
-  crb = !bash -c 'git branch -f $1 origin/$1' -
-	d  = diff
-  dm  = !bash -c 'git diff $1 $1^1 $1^2' -
+	crb = !bash -c 'git branch -f $1 origin/$1' -
+	d = diff
+	dm = !bash -c 'git diff $1 $1^1 $1^2' -
 	pr = !hub pull-request
 	cat = "!sh -c 'git show $(git log --all --max-count=1 --format=%H -- $1)^:$1 | cat'" -
-  trim = "!git branch --merged | grep -v dynamo | grep -v dev | grep -v staging | grep -v master | grep -v '*' | xargs -n1 git branch -d"
-  wip = "!git add -A . && git c --no-verify -m wip "
-  pushf = push --force-with-lease
-  amend = commit --amend --no-edit
-  am = amend
-  showbranch = !git name-rev --name-only --always HEAD 2>/dev/null
+	trim = "!git branch --merged | grep -v dev | grep -v staging | grep -v master | grep -v '*' | xargs -n1 git branch -d"
+	wip = "!git add -A . && git c --no-verify -m wip "
+	unwip = reset HEAD^
+	pushf = push --force-with-lease
+	amend = commit --amend --no-edit
+	am = amend
+	showbranch = !git name-rev --name-only --always HEAD 2>/dev/null
 
 [diff]
 	algorithm = patience
