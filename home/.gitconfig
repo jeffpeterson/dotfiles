@@ -33,7 +33,8 @@
 	pushf = push --force-with-lease
 	amend = commit --amend --no-edit
 	am = amend
-	showbranch = !git name-rev --name-only --always HEAD 2>/dev/null
+	branchname = symbolic-ref --short HEAD
+	commitname = rev-parse --short HEAD
 
 [diff]
 	algorithm = patience
