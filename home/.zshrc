@@ -85,6 +85,10 @@ elapsed() {
   printf '%.2fs' $timer_difference
 }
 
+current_branch() {
+  git branchname 2>/dev/null || git commitname 2>/dev/null
+}
+
 COMPLETION_WAITING_DOTS=true;
 #REPORTTIME=10
 
@@ -101,7 +105,7 @@ source ~/.profile
 if which rbenv > /dev/null; then eval "$(rbenv init - --no-rehash)"; fi
 
 PROMPT="
-%{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(git showbranch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
+%{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(current_branch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
 %{$fg[magenta]%}>%{$reset_color%} "
 
 # export NVM_DIR="/Users/jeffpeterson/.nvm"
