@@ -41,7 +41,7 @@
 [pull]
 	rebase = true
 [help]
-	autocorrect = 1
+	autocorrect = 0
 [rerere]
 	enabled = true
 [remote "origin"]
