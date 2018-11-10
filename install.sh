@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./home/bin/dot bootstrap
+./home/bin/dot link

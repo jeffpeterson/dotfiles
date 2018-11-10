@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
+stdin() {
+	if read -t 0; then
+        cat
+    fi
+}
+
 show() {
-	printf "\n$@\n\n"
+	printf "\n$@\n"
 }
 
 error() {
@@ -14,9 +20,18 @@ error() {
 	exit 1
 }
 
-require() {
+required() {
 	[[ -z "${@:2}" ]] && error "Argument <$1> is required."
 	eval "$1=\"${@:2}\""
+}
+
+optional() {
+	required name "$1"
+	val="${@:2}"
+
+	if [[ ! -z "$name" ]]; then
+		eval "$name=${val@Q}"
+	fi
 }
 
 run() {
@@ -24,11 +39,14 @@ run() {
 	$@
 }
 
+trash() {
+  mv $@ "$HOME/.Trash/"
+}
 
 wrapped() {
-	require "start_code" $1
-	require "str" $2
-	require "end_code" $3
+	required "start_code" $1
+	required "str" $2
+	required "end_code" $3
 
 	printf "\e[${start_code}m${str}\e[${end_code}m"
 }
@@ -71,23 +89,33 @@ NAME=""
 n=$'\n'
 
 usage_name() {
-	require name $1
+	required name $1
 	NAME="$name"
 }
 
 usage_cmd() {
-	require cmd $1
-	require desc $(cat)
+	required cmd $1
+	optional params "${@:2}"
+	optional desc "$(stdin)"
 
-	USAGE+="      $NAME $(h1 "$cmd")$n"
-	USAGE+="        $desc$n$n"
+	args=""
+
+	for p in $params; do
+		if [[ $p == \<* ]]; then
+			p="$(yellow "$p")"
+		fi
+		args+=" $p"
+	done
+
+	USAGE+="      $NAME $(h1 "$cmd")$args$n"
+
+	if [ ! -z "$desc" ]; then
+		USAGE+="        $desc"
+	fi
+
+	USAGE+="$n$n"
 }
 
 usage() {
-	cat <<-END
-
-	  Usage: $NAME <cmd> [flags]
-
-	${USAGE}
-	END
+	printf "\n  Usage:\n\n      wifi $(yellow "<cmd>") [flags]\n\n${USAGE}"
 }

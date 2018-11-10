@@ -7,56 +7,57 @@ ROOT=`realpath ${BASH_SOURCE%/*}/../..`
 
 usage_name "dot"
 
-usage_cmd "bootstrap" <<-DESC
+usage_cmd link <<-DESC
 	Links everything
 DESC
 
-usage_cmd "link <src> <dst>" <<-DESC
+usage_cmd link-file "<src>" "<dst>" <<-DESC
 	Links <src> to <dst> safely
 DESC
 
 
-usage_cmd "osname" <<-DESC
+usage_cmd osname <<-DESC
 	Prints the name for the current os
 DESC
 
-usage_cmd "help" <<-DESC
+usage_cmd help <<-DESC
 	Prints this doc.
 DESC
 
 
 dot() {
-	require "cmd" $1
+	required "cmd" $1
 
 	case $cmd in
-		link)
-			require src $2
-			require dst $3
+		link-file)
+			required src $2
+			required dst $3
 
 			cur=`readlink -n "$dst"`
+			pretty="~/$(realpath -s --relative-to="$HOME" "$dst")"
 
 			if [ ! -z "$cur" ]; then
 				if [ "$cur" == "$src" ]; then
-					echo "$(dim "Found $dst")"
+					echo "$(dim "Found $pretty")"
 				else
-					echo $(yellow "$dst -> $cur already linked")
+					echo $(yellow "$pretty -> $cur already linked")
 				fi
 			elif [ -e "$dst" ]; then
-				echo "$(red "$dst exists!")"
+				echo "$(red "$pretty exists!")"
 			else
-				ln -ns $FLAGS "$src" "$dst" && show "$(green Linked) $dst"
+				ln -ns $FLAGS "$src" "$dst" && echo "$(green Linked) $pretty"
 			fi
 			;;
 
-		bootstrap | install)
-			dot link-home home
+		link)
+			dot link-home home && show $(green "Done!")
 			;;
 
 		link-home)
-			require folder "$2"
+			required folder "$2"
 
 			for f in `ls -A $folder`; do
-				dot link "$ROOT/$folder/$f" "$HOME/$f"
+				dot link-file "$ROOT/$folder/$f" "$HOME/$f"
 			done
 			;;
 
@@ -72,12 +73,6 @@ dot() {
 			error "'$1' is not a valid command."
 			;;
 	esac
-}
-
-link_home() {
-	for f in `ls -A $1`; do
-		dot link "$ROOT/$1/$f" "$HOME/$f"
-	done
 }
 
 dot "$@"

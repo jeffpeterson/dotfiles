@@ -1,59 +1,82 @@
 #!/usr/bin/env bash
 
+source "${BASH_SOURCE%/*}/_includes.sh"
+
 en=en0
 
-usage() {
-cat <<END
+usage_name wifi
 
-USAGE
+usage_cmd info <<-DESC
+	Prints the current wifi status.
+DESC
 
-  wifi on
-  wifi off
-  wifi scan
-  wifi join <ssid> <password>
-  wifi list
-  wifi forget <ssid>
-  wifi info
+usage_cmd on <<-DESC
+	Power on the wifi adapter.
+DESC
 
-END
-}
+usage_cmd off <<-DESC
+	Power off the wifi adapter.
+DESC
+
+usage_cmd scan <<-DESC
+	Scan for nearby networks.
+DESC
+
+usage_cmd join "<ssid>" "[password]" <<-DESC
+	Join a network.
+DESC
+
+usage_cmd list <<-DESC
+	List known SSIDs.
+DESC
+
+usage_cmd forget "<ssid>" <<-DESC
+	Forget the given <ssid>.
+DESC
+
 
 wifi() {
-  case $1 in
-    on)
-      networksetup -setairportpower $en on
-      ;;
+	required cmd "$1"
 
-    off)
-      networksetup -setairportpower $en off
-      ;;
+	case $cmd in
+		on)
+			networksetup -setairportpower $en on
+			;;
 
-    re*)
-      wifi off
-      wifi on
-      ;;
+		off)
+			networksetup -setairportpower $en off
+			;;
 
-    scan)
-      /System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan
-      ;;
+		re*)
+			wifi off
+			wifi on
+			;;
 
-    join)
-      networksetup -setairportnetwork $en "$2" "$3"
-      ;;
+		scan)
+			/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport scan
+			;;
 
-    list)
-      networksetup -listpreferredwirelessnetworks $en
-      ;;
+		join)
+			required ssid $2
+			optional password $3
 
-    forget)
-      networksetup -removepreferredwirelessnetwork $en "$2"
-      ;;
+			networksetup -setairportnetwork $en "$ssid" "$password"
+			;;
 
-    info | *)
-      networksetup -getinfo 'Wi-Fi'
-      usage
-      ;;
-  esac
+		list)
+			networksetup -listpreferredwirelessnetworks $en
+			;;
+
+		forget)
+			required ssid $2
+
+			networksetup -removepreferredwirelessnetwork $en "$ssid"
+			;;
+
+		info)
+			networksetup -getinfo 'Wi-Fi'
+			;;
+	esac
 }
 
 wifi "$@"
