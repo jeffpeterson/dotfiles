@@ -9,6 +9,7 @@ push /usr/local/heroku/bin
 push /usr/local/share/npm/bin
 push /usr/local/opt/ccache/libexec
 push /usr/local/opt/go/libexec/bin
+push /usr/local/opt/ghc@8.2/bin
 push $ANDROID_HOME/tools
 push $ANDROID_HOME/platform-tools
 push $HOME/code/go/projects/bin
@@ -28,3 +29,4 @@ export VISUAL=code
 export FUCHSIA_BUILD_DIR=$HOME/code/fuchsia/out/x64
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home
+export LDFLAGS="-L/usr/local/opt/ghc@8.2/lib"
