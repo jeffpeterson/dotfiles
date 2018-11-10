@@ -2,7 +2,6 @@ export push() {
   export PATH="$1:$PATH"
 }
 
-push $HOME/bin
 # push /usr/local/opt/node@4/bin
 push /usr/local/bin
 push /usr/local/sbin
@@ -19,6 +18,7 @@ push $HOME/code/autobin
 push $HOME/code/fuchsia/.jiri_root/bin
 push $HOME/code/flutter/bin
 push $HOME/.npm-global/bin
+push $HOME/bin
 
 # export CDPATH="$CDPATH:$HOME/code:$HOME/work"
 export EDITOR=vim
