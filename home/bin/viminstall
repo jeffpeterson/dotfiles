@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cd $HOME/.vim/bundle
+
+echo "Installing bundle from $1"
+git clone --depth=1 $1

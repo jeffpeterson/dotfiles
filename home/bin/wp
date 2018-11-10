@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+read -r -d '' CONFIG <<END
+var webpack = require('webpack')
+
+module.exports = {
+  devtool: "source-map",
+  entry: [
+  'webpack-dev-server/client?http://0.0.0.0:4321',
+  'webpack/hot/only-dev-server',
+  './index.js'
+  ],
+  plugins: [
+    new webpack.NoErrorsPlugin(),
+  ],
+  resolve: {
+    root: __dirname,
+  },
+  output: {
+    path: __dirname,
+    filename: 'bundle.js'
+  },
+  module: {
+    loaders: [
+      { test: /\.js$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader?experimental']}
+    ]
+  }
+}
+END
+
+wp() {
+  case $1 in
+    open)
+      open http://localhost:4322
+    ;;
+
+    watch)
+      echo "$CONFIG" | webpack-dev-server --config=/dev/stdin --port 4322 --hot --no-info --colors
+    ;;
+
+    *)
+      wp open
+      wp watch
+    ;;
+  esac
+}
+
+wp "${@}"

@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+require 'mp4info'
+
+base_dir = ARGV[0] || "."
+
+if base
+
+Dir.glob("") do |file|
+
+  file_path = File.join path, file
+
+  if File.file? file_path and File.extname(file_path) == ".m4a"
+
+    puts file_path
+
+    file_name = file_path.match(/([^\/]+)$/)[0]
+    mp3_path  = "#{file_path}.mp3"
+    wav_path  = "/tmp/#{file_name}.wav"
+
+    info = MP4Info.open file_path
+    info = info.instance_eval("@data_atoms")
+
+    album          = info["ALB"]
+    apple_store_id = info["APID"]
+    artist         = info["ART"]
+    comment        = info["CMT"]
+    album_art      = info["COVR"]
+    compilation    = info["CPIL"]
+    copyright      = info["CPRT"]
+    year           = info["DAY"]
+    disk           = info["DISK"]
+    genre          = info["GNRE"]
+    grouping       = info["GRP"]
+    title          = info["NAM"]
+    rating         = info["RTNG"]
+    tempo          = info["TMPO"]
+    encoder        = info["TOO"]
+    track_no       = info["TRKN"]
+    author         = info["WRT"]
+
+    system "faad -o '#{wav_path}' '#{file_path}'"
+    system "lame -b 320 -h --tt '#{title}' --ta '#{artist}' --tl '#{album}' --ty '#{year}' --tc '#{comment}' --tn '#{track_no}' --tg '#{genre}' '#{wav_path}' '#{mp3_path}'"
+
+  end
+end

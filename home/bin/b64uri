@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+initial_size=$[`du $1 | awk '{ print $1 }'` * 512]
+mime_type=`file --brief --mime-type "$1"`
+b64=`base64 "$1"`
+final_size=`echo -n "${#b64}"`
+b64="url(data:$mime_type;base64,$b64)"
+echo -n "$b64" | pbcopy
+
+printf "Initial Size: %s bytes\nFinal size:   %s bytes\n\n%s\nCopied to clipboard\n" $initial_size $final_size

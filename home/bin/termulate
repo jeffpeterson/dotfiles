@@ -1,0 +1,135 @@
+#!/usr/bin/env ruby
+
+require 'pty'
+require 'io/console'
+require 'io/wait'
+require 'thread'
+require 'timeout'
+
+
+SPAWN          = "bash"
+DEFAULT_PROMPT = "$"
+
+
+@in, @out, _ = PTY.spawn(SPAWN)
+@out.winsize = STDOUT.winsize
+
+STDIN.echo = false
+@threads  = []
+@write_queue_read, @write_queue_write = IO.pipe
+@read_queue_read,  @read_queue_write  = IO.pipe
+
+def escape k, v = nil
+  @escapes ||= {}
+  if k.is_a? Hash
+    @escapes.merge! k
+  else
+    @escapes[k] = v
+  end
+end
+
+def keystroke_sound
+  sound_job = fork do
+    exec "afplay sounds/keystroke-#{rand(10)}.wav"
+  end
+  Process.detach(sound_job)
+end
+
+def fudge character
+  keystroke_sound
+  case character
+  when @previous_character
+  when " " then sleep 0.05
+  when "\n" then sleep 0.10
+  else sleep 0.05
+  end
+  sleep Random.rand(0.1)
+  @previous_character = character
+  @out.putc character
+end
+
+def on sym, &block
+  (@callbacks ||= {})[sym] = block
+end
+
+def run_callback sym, argument
+  @callbacks[sym].call(argument)
+end
+
+def process_line line
+  @escapes.each do |k, v|
+    line.gsub!(/(?<!\\)#{k}/i, v)
+  end
+
+  case line
+  when %r(^//.*$) then nil # comment
+  when /^%(?<dir>\w+)( +(?<arguments>.*))?$/i
+    dir, arguments = $~[:dir], $~[:arguments]
+    run_callback dir.downcase.intern, arguments
+  when /^((?<prompt>[^ ]*|"[^"]+")? *> *)?(?<command>.*\n)/i
+    prompt, command = $~[:prompt], $~[:command]
+    if prompt
+      prompt = DEFAULT_PROMPT if prompt == ""
+
+      @read_queue_read.gets(prompt)
+      sleep 0.4
+    end
+    @write_queue_write.write command.sub('\>', '>') if command
+  end
+end
+
+def parse_file file = ARGF
+  file.each_line do |line|
+    process_line line
+  end
+end
+
+def start!
+  @threads << Thread.new do
+    @write_queue_read.each_char {|c| fudge(c)}
+  end
+
+  @threads << Thread.new do
+    @in.each_char do |c|
+      putc c
+      @read_queue_write.putc c
+    end
+  end
+
+  parse_file
+
+  @threads.each(&:join)
+end
+
+escape "<esc>" => "\x1b",
+    "<return>" => "\n",
+       "<c-l>" => "\xc",
+ "<termwidth>" => "#{STDIN.winsize.last}"
+
+on :delay do |i|
+  sleep i.to_f
+end
+
+on :pause do
+  run_callback :control
+end
+
+on :import do |filename|
+  File.open(filename, "r") {|f| @write_queue_write.write f.read }
+end
+
+on :now do |text|
+  @out.write text
+  sleep 0.4
+end
+
+on :control do
+  while (char = STDIN.getch) != "\3"
+    keystroke_sound
+    @out.putc char
+  end
+end
+
+at_exit { STDIN.read(STDIN.nread) }
+
+start! rescue Interrupt

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# brew install minidlna
+
+# find processes using the required ports:
+# lsof -i udp:1900 -i tcp:8200
+
+cat <<END | minidlnad -t 30 -R -d -f /dev/stdin -P ~/.dlna/dlna.pid
+
+
+
+friendly_name=macbook-pro minidlna
+
+# A: audio
+# P: pictures
+# V: video
+# You can have more than one `media_dir` assignment
+
+media_dir=$HOME/Downloads
+# media_dir=V,$HOME/Movies
+# media_dir=A,$HOME/Music
+
+
+# set to 'yes' if you want to watch for new files
+# it's slower
+inotify=no
+
+db_dir=$HOME/.dlna/cache
+log_dir=$HOME/.dlna
+END
+
+
+# Defaults:
+
+# strict_dlna=no
+# port=8200
+# notify_interval=895
+# inotify=yes
+# album_art_names=Cover.jpg/cover.jpg/AlbumArtSmall.jpg/albumartsmall.jpg/AlbumArt.jpg/albumart.jpg/Album.jpg/album.jpg/Folder.jpg/folder.jpg
+# enable_tivo=no
+# log_dir=/var/log
+# db_dir=/var/run/minidlna
+# friendly_name=(none)
+# media_dir=/mnt
+# presentation_url=
+# minisdpdsocket=
+# serial=12345678
+# model_number=1
+# root_container=.

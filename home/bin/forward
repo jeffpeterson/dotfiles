@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ssh a.yak.sh -NTR :80:localhost:3333 -R :9485:localhost:9485

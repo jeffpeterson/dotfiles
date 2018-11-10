@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+java -d64 -Xms4096M -Xmx5130M -jar ~/Applications/Minecraft.app/Contents/Resources/Java/Bootstrap.jar > /dev/null &

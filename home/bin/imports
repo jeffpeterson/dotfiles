@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+if !ARGV[0]
+  puts "USAGE: #{$0} <file>"
+  exit 1
+end
+
+at_exit { run! }
+
+def run!
+  needle = norm_path(ARGV[0])
+  results = `ag -G 'jsx?|less' "^import .+from +['\\"][./]|require\\(['\\"][./]|@import +['\\"]"`.split("\n")
+
+  for result in results
+    source_file, linenum, line = result.split(':', 3)
+    source_dir = File.dirname(source_file)
+
+    imported_file = line.match(/(['"])([^\1]+)\1/)[2]
+    imported_abs = norm_path(imported_file, source_dir)
+
+    if needle == imported_abs
+      puts "\n#{source_file}:#{linenum}\n  #{line}"
+    end
+  end
+end
+
+def norm_path p, dir = nil
+  File.absolute_path(p, dir).sub(/\.[a-z]+$/, '')
+end

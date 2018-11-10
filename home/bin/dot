@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+source "${BASH_SOURCE%/*}/_includes.sh"
+
+ROOT=`realpath ${BASH_SOURCE%/*}/../..`
+
+
+usage_name "dot"
+
+usage_cmd "bootstrap" <<-DESC
+	Links everything
+DESC
+
+usage_cmd "link <src> <dst>" <<-DESC
+	Links <src> to <dst> safely
+DESC
+
+
+usage_cmd "osname" <<-DESC
+	Prints the name for the current os
+DESC
+
+usage_cmd "help" <<-DESC
+	Prints this doc.
+DESC
+
+
+dot() {
+	require "cmd" $1
+
+	case $cmd in
+		link)
+			require src $2
+			require dst $3
+
+			cur=`readlink -n "$dst"`
+
+			if [ ! -z "$cur" ]; then
+				if [ "$cur" == "$src" ]; then
+					echo "$(dim "Found $dst")"
+				else
+					echo $(yellow "$dst -> $cur already linked")
+				fi
+			elif [ -e "$dst" ]; then
+				echo "$(red "$dst exists!")"
+			else
+				ln -ns $FLAGS "$src" "$dst" && show "$(green Linked) $dst"
+			fi
+			;;
+
+		bootstrap | install)
+			dot link-home home
+			;;
+
+		link-home)
+			require folder "$2"
+
+			for f in `ls -A $folder`; do
+				dot link "$ROOT/$folder/$f" "$HOME/$f"
+			done
+			;;
+
+		osname)
+			uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
+			;;
+
+		help | usage)
+			usage
+			;;
+
+		*)
+			error "'$1' is not a valid command."
+			;;
+	esac
+}
+
+link_home() {
+	for f in `ls -A $1`; do
+		dot link "$ROOT/$1/$f" "$HOME/$f"
+	done
+}
+
+dot "$@"
+
+# list() {
+#    find `pwd -P`/$1 -maxdepth 1 -mindepth 1
+# }
+
+
+# TODO: Figure out how to make something like this work:
+# for f in `ls Preferences`
+# do
+#   ln "$PWD/Preferences/$f" "$HOME/Library/Preferences/$f"
+# done

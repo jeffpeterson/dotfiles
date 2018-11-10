@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+
+HUE_USERNAME=arsinh1234
+
+HUE_ADDRESS=192.168.1.5
+# HUE_ADDRESS=home.arsinh.com:5080
+
+rest() {
+  if [[ "${@}" == *{}* ]]; then
+    rest "${@//'{}'/1}"
+    rest "${@//'{}'/2}"
+    rest "${@//'{}'/3}"
+  else
+    curl -H "Content-Type: application/json" -X $1 --data "${@:3}"  "http://$HUE_ADDRESS/api/$HUE_USERNAME/${2#'/'}"
+  fi
+}
+
+
+put() {
+  rest PUT "$@"
+}
+
+post() {
+  rest POST "$@"
+}
+
+get() {
+  rest GET "$@"
+}
+
+all() {
+  put /groups/0/action "${@}"
+}
+
+hue() {
+  case $1 in
+    auth)
+      curl -H "Content-Type: application/json" -X POST --data "{ \"devicetype\": \"CLI\", \"username\": \"$HUE_USERNAME\" }"  "http://$HUE_ADDRESS/api"
+      ;;
+
+    on | all)
+      all '{"on": true}'
+      ;;
+
+    off)
+      all '{"on": false}'
+      ;;
+
+    bed)
+      put /lights/3/state '{"on": true}'
+      ;;
+
+    win)
+      put /lights/1/state '{"on": true}'
+      ;;
+
+    liv)
+      put /lights/2/state '{"on": true}'
+      ;;
+
+    hi | high)
+      all '{"bri": 255}'
+      ;;
+
+    med)
+      all '{"bri": 100}'
+      ;;
+
+    low)
+      all '{"bri": 0}'
+      ;;
+
+    hard | cool)
+      all '{"ct": 200}'
+      ;;
+
+    soft | warm)
+      all '{"ct": 400}'
+      ;;
+
+    day)
+      hue hi
+      hue hard
+      ;;
+
+    night | evening | eve)
+      hue med
+      hue soft
+      ;;
+
+    red)
+      all '{"sat": 255, "hue": 0}'
+      ;;
+
+    purp | purple)
+      all '{"sat": 255, "hue": 48000}'
+      ;;
+
+    pink)
+      all '{"sat": 255, "hue": 58000}'
+      ;;
+
+    blu | blue)
+      all '{"sat": 255, "hue": 46920}'
+      ;;
+
+    gre | green)
+      all '{"sat": 255, "hue": 24000}'
+      ;;
+
+    loop)
+      all '{"sat": 255, "effect": "colorloop"}'
+      ;;
+
+    breathe | blink)
+      all '{"alert": "select"}'
+      ;;
+
+    state)
+      get /newdeveloper/config ""
+      ;;
+
+    help | *)
+      cat <<END
+Commands:
+  hue
+      help   # show this help
+      auth   # auth with bridge after pressing link button
+      on     # turn all lights on
+      off    # turn all lights of
+      hi     # max brightness
+      med    # 100/255 brightness
+      low    # 0 brightness
+      hard   # cool light
+      soft   # warm color
+      day    # bright and cool
+      night  # med and warm
+      red    # turn red
+      green  # turn green
+      blue   # turn blue
+      purple # turn purple
+END
+      ;;
+  esac
+}
+
+for arg in ${@} ; do
+  hue $arg
+done

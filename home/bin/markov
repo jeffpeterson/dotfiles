@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+markov=$HOME/code/markov-rb
+
+cat $1 | ruby $markov/parse.rb | ruby $markov/pontificate.rb

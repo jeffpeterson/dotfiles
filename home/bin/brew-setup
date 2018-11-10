@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+
+exists() { command -v $1 >&- 2>&-; };
+
+sudo -v
+
+exists brew || ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+
+brew update
+brew install tmux vim reattach-to-user-namespace wget git zsh rbenv ruby-build go ag imagemagick
+
+[[ -d ~/.oh-my-zsh ]] || git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+chsh -s /bin/zsh

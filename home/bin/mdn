@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+
+
+Array.prototype.find = function(fn) {
+  for (var i in this) {
+    if (fn(this[i])) return this[i];
+  }
+};
+
+var https = require('https');
+
+
+var isTTY = process.stdout.isTTY;
+
+var query = process.argv.slice(2).join('+');
+
+isTTY && console.log("Searching Mozilla Developer Network for " + query);
+
+
+https.get("https://developer.mozilla.org/en-US/search.json?topic=api&topic=js&topic=css&topic=html&q=" + query, function(res) {
+  var body = '';
+
+  res.on('data', function(chunk) {
+    body += chunk;
+  });
+
+  res.on('end', function() {
+    var result = JSON.parse(body);
+    var docs = result.documents.filter(function(doc) {
+      return doc.tags.indexOf('Disambiguation') < 0;
+    });
+
+    if (isTTY) {
+      openURL(docs[0].url);
+
+      console.log(docs.map(function(doc) {
+        return doc.url;
+      }).join("\n"));
+    } else {
+      printAlfredXML(docs);
+    }
+  });
+});
+
+function openURL(url) {
+  require('child_process').spawn('open', url);
+}
+
+function printAlfredXML(docs) {
+  var p = console.log.bind(console);
+
+  p('<?xml version="1.0"?>');
+  p('<items>');
+
+  docs.forEach(function(doc) {
+    p('<item uid="' + doc.id + '" arg="' + doc.url + '">');
+      p('<title>' + doc.slug + '</title>');
+      p('<subtitle>' + doc.excerpt + '</subtitle>');
+    p('</item>');
+  });
+
+  p('</items>');
+}

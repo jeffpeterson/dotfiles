@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# ls -1 | rep rm %
+command="$@"
+
+if [[ $command =~ (?!\\)% ]]; then
+  while read line; do
+    echo "${command//(?!\\)%/$line}"
+  done
+else
+  while read line; do
+    echo "$command $line"
+  done
+fi

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo -e "$(date +'%Y-%m-%d %I:%M:%S'):\n\t\t" >> ~/.journal
+
+subl --new-window  ~/.journal:`wc -l ~/.journal | awk '{ print $1 }'`:3

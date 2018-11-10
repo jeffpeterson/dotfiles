@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+i = 0
+bytes_to_match = [ARGV[1..-1].join].pack("H*")
+while i = IO.binread(ARGV[0]).index(bytes_to_match, i + 1) do
+  print i, " "
+end
+
+puts

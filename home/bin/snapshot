@@ -1,0 +1,12 @@
+#!/usr/bin/ruby
+
+require 'json'
+
+subdomain = $*.first.match(%r{([\w-]+)(?:\.dev)?\.webflow(?:test)?\.io})[1]
+puts 'subdomain: ' + subdomain
+puts `curl https://webflow.com/api/snapshot?s=#{subdomain}`
+key = JSON.parse(`curl https://webflow.com/api/snapshot?s=#{subdomain}`)[:name]
+
+puts key
+
+# puts `curl -XPOST http://localhost:3000/api/restore --data 'path=#{key}'`
