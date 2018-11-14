@@ -1,4 +1,4 @@
-export push() {
+push() {
   export PATH="$1:$PATH"
 }
 
