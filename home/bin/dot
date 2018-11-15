@@ -56,7 +56,7 @@ dot() {
 		link-home)
 			required folder "$2"
 
-			for f in `ls -A $folder`; do
+			for f in `ls -A "$ROOT/$folder"`; do
 				dot link-file "$ROOT/$folder/$f" "$HOME/$f"
 			done
 			;;
