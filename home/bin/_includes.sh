@@ -117,5 +117,5 @@ usage_cmd() {
 }
 
 usage() {
-	printf "\n  Usage:\n\n      wifi $(yellow "<cmd>") [flags]\n\n${USAGE}"
+	printf "\n  Usage:\n\n      $NAME $(yellow "<cmd>") [flags]\n\n${USAGE}"
 }
