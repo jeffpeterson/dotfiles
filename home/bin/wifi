@@ -4,7 +4,9 @@ source "${BASH_SOURCE%/*}/_includes.sh"
 
 en=en0
 
-usage_name wifi
+usage_name wifi <<-DESC
+	A tool for managing WiFi on macOS.
+DESC
 
 usage_cmd info <<-DESC
 	Prints the current wifi status.

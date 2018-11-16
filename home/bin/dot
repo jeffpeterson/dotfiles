@@ -5,19 +5,26 @@ source "${BASH_SOURCE%/*}/_includes.sh"
 ROOT=`realpath ${BASH_SOURCE%/*}/../..`
 
 
-usage_name "dot"
+usage_name "dot" <<-DESC
+	A tool for linking dotfiles.
+DESC
 
 usage_cmd link <<-DESC
-	Links everything
+	Links everything.
 DESC
+
+usage_cmd link-all "<srcdir>" "<dstdir>" <<-DESC
+	Safely links all files in <srcdir> to <dstdir>.
+DESC
+
 
 usage_cmd link-file "<src>" "<dst>" <<-DESC
-	Links <src> to <dst> safely
+	Safely links <src> to <dst>.
 DESC
 
 
-usage_cmd osname <<-DESC
-	Prints the name for the current os
+usage_cmd os <<-DESC
+	Prints the name of the current OS.
 DESC
 
 usage_cmd help <<-DESC
@@ -29,6 +36,21 @@ dot() {
 	required "cmd" $1
 
 	case $cmd in
+		link)
+			dot link-all "$ROOT/home" "$HOME"
+			show $(green "Done!")
+			;;
+
+		link-all)
+			required srcdir "$2"
+			required dstdir "$3"
+
+			for f in `ls -A "$srcdir"`; do
+				dot link-file "$srcdir/$f" "$dstdir/$f"
+			done
+			;;
+
+
 		link-file)
 			required src $2
 			required dst $3
@@ -49,19 +71,7 @@ dot() {
 			fi
 			;;
 
-		link)
-			dot link-home home && show $(green "Done!")
-			;;
-
-		link-home)
-			required folder "$2"
-
-			for f in `ls -A "$ROOT/$folder"`; do
-				dot link-file "$ROOT/$folder/$f" "$HOME/$f"
-			done
-			;;
-
-		osname)
+		os)
 			uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
 			;;
 
@@ -76,14 +86,3 @@ dot() {
 }
 
 dot "$@"
-
-# list() {
-#    find `pwd -P`/$1 -maxdepth 1 -mindepth 1
-# }
-
-
-# TODO: Figure out how to make something like this work:
-# for f in `ls Preferences`
-# do
-#   ln "$PWD/Preferences/$f" "$HOME/Library/Preferences/$f"
-# done

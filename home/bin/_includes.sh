@@ -26,11 +26,10 @@ required() {
 }
 
 optional() {
-	required name "$1"
-	val="${@:2}"
+	local val="${@:2}"
 
-	if [[ ! -z "$name" ]]; then
-		eval "$name=${val@Q}"
+	if [[ ! -z "$val" ]]; then
+		eval "$1=${val@Q}"
 	fi
 }
 
@@ -90,7 +89,13 @@ n=$'\n'
 
 usage_name() {
 	required name $1
+	optional desc "$(stdin)"
+
 	NAME="$name"
+
+	if [ ! -z "$desc" ]; then
+		DESC="\n  $name – $desc\n"
+	fi
 }
 
 usage_cmd() {
@@ -117,5 +122,5 @@ usage_cmd() {
 }
 
 usage() {
-	printf "\n  Usage:\n\n      $NAME $(yellow "<cmd>") [flags]\n\n${USAGE}"
+	printf "$DESC\n  Usage:\n\n      $NAME $(yellow "<cmd>") [flags]\n\n${USAGE}"
 }
