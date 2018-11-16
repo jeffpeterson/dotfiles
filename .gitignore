@@ -1,5 +1,6 @@
 .netrwhist
 .DS_Store
+node_modules
 
 /home/.vim/bundle
 
@@ -10,3 +11,7 @@
 !/home/.atom/keymap.cson
 !/home/.atom/styles.less
 !/home/.atom/packages.txt
+
+/home/.config/*
+!/home/.config/yarn
+/home/.config/yarn/link
