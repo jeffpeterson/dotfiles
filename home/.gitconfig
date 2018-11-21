@@ -35,6 +35,7 @@
 	am = amend
 	branchname = symbolic-ref --short HEAD
 	commitname = rev-parse --short HEAD
+	cam = commit -am
 
 [diff]
 	algorithm = patience
