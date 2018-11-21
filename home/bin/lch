@@ -1,0 +1,336 @@
+#!/usr/bin/env bash
+
+source "${BASH_SOURCE%/*}/_includes.sh"
+
+prefix=lch.
+
+usage_name lch <<-DESC
+	Manage macOS LaunchAgents with ease.
+			Examples:
+			brew install postgresql
+			lch brew postgresql
+			lch start postgresql
+DESC
+
+usage_cmd load "<name>" <<-DESC
+	Load an agent installed by lch.
+DESC
+
+usage_cmd unload "<name>" <<-DESC
+	Unload an agent installed by lch.
+DESC
+
+usage_cmd reload "<name>" <<-DESC
+	Reload an agent installed by lch.
+DESC
+
+usage_cmd start "<name>" <<-DESC
+	Start a loaded agent.
+DESC
+
+usage_cmd stop "<name>" <<-DESC
+	Stop a loaded agent.
+DESC
+
+usage_cmd brew "<name>" <<-DESC
+	Load an agent from an homebrew formula and configure it
+	not to start at boot.
+DESC
+
+usage_cmd unbrew "<name>" <<-DESC
+	Unload an agent from an homebrew formula.
+DESC
+
+usage_cmd cat "<name>" <<-DESC
+	Show the plist of an agent.
+DESC
+
+usage_cmd edit "<name>" <<-DESC
+	Edit the plist of an agent.
+DESC
+
+usage_cmd list <<-DESC
+	List agents installed by lch.
+DESC
+
+usage_cmd new "<name>" <<-DESC
+	Create an empty agent.
+DESC
+
+usage_cmd rm "<name>" <<-DESC
+	Remove an agent installed by lch.
+DESC
+
+usage_cmd add "<name>" "<key>" "<type>" "<value>" <<-DESC
+	Add a key to an agent's plist.
+DESC
+
+usage_cmd set "<name>" "<key>" "<value>" <<-DESC
+	Set a key in an agent's plist.
+DESC
+
+usage_cmd read "<name>" "<key>" <<-DESC
+	Read a key from an agent's plist.
+DESC
+
+
+lch() {
+	case $1 in
+		new)
+			required name "$2"
+
+			cat > `agentname $name` <<-END
+				<?xml version="1.0" encoding="UTF-8"?>
+				<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+				<plist version="1.0">
+				<dict>
+					<key>Label</key>
+					<string>$prefix$2</string>
+					<key>ProgramArguments</key>
+					<array>
+						<string>/path/to/command</string>
+						<string>--help</string>
+					</array>
+					<key>WorkingDirectory</key>
+					<string>/usr/local/var</string>
+					<key>StandardErrorPath</key>
+					<string>$HOME/.log/$prefix$2.stderr.log</string>
+					<key>StandardOutPath</key>
+					<string>$HOME/.log/$prefix$2.stdout.log</string>
+					<key>EnvironmentVariables</key>
+					<dict>
+						<key>PATH</key>
+						<string>$PATH</string>
+					</dict>
+				</dict>
+				</plist>
+			END
+			mkdir -p $HOME/.log
+		;;
+
+	brew)
+		required name "$2"
+
+		filename="/usr/local/opt/$name/homebrew.mxcl.$name.plist"
+
+		cat "$filename" >/dev/null || exit 1;
+
+		cat "$filename" | replace $name > `agentname $name`
+		lch load $name
+	;;
+
+	unbrew)
+		required name "$2"
+
+		lch unload $name
+		lch rm $name
+	;;
+
+	read)
+		required name "$2"
+		required key "${@:3}"
+
+		filename=`agentname $name`
+
+		cat $filename | read "$key"
+	;;
+
+	set)
+		require $2 # name
+		require $3 # key
+		require $4 # value
+
+		filename=`agentname $2`
+
+		cat $filename | set $3 "${@:4}" > $filename
+	;;
+
+	add)
+		require $2 # name
+		require $3 # key
+		require $4 # type
+		require $5 # value
+
+		filename=`agentname $2`
+
+		cat $filename | add $3 $4 "${@:5}" > $filename
+	;;
+
+
+	restart | kickstart)
+		name=$2
+		require $name
+
+		run launchctl kickstart -k -p `target $name`
+	;;
+
+	blame)
+		name=$2
+		require $name
+
+		run launchctl blame `target $name`
+	;;
+
+	print)
+		name=$2
+		require $name
+
+		run launchctl print `target $name`
+	;;
+
+	uncache)
+		name=$2
+		require $name
+
+		run launchctl uncache `target $name`
+	;;
+
+	enable)
+		name=$2
+		require $name
+
+		run launchctl enable `target $name`
+	;;
+
+	disable)
+		name=$2
+		require $name
+
+		run launchctl disable `target $name`
+	;;
+
+	start)
+		name=$2
+		require $name
+
+		launchctl start $prefix$name
+	;;
+
+	stop)
+		name=$2
+		require $name
+
+		launchctl stop $prefix$name
+	;;
+
+
+
+
+	load)
+		name=$2
+		require $name
+
+		launchctl load `agentname $name`
+	;;
+
+	reload)
+		lch unload $2
+		lch load $2
+	;;
+
+	unload)
+		name=$2
+		require $name
+
+		launchctl unload `agentname $name`
+	;;
+
+	list | ls)
+		launchctl list | head -n1
+		launchctl list | grep -E "$prefix.+"
+	;;
+
+	cat)
+		name=$2
+		require $name
+
+		cat `agentname $name`
+	;;
+
+	tail | log)
+		name=$2
+		require $name
+		filename=`agentname $2`
+		logs=`cat $filename | read StandardErrorPath StandardOutPath`
+
+		tail -n100 -f $logs
+	;;
+
+	edit)
+		name=$2
+		require $name
+
+		$EDITOR `agentname $name`
+	;;
+
+	rm)
+		name=$2
+		require $name
+
+		rm `agentname $name`
+	;;
+	*)
+		usage
+	esac
+}
+
+run() {
+	echo "$@"
+	$@
+}
+
+agentname() {
+	echo -n "$HOME/Library/LaunchAgents/$prefix$1.plist"
+}
+
+target() {
+	echo -n "gui/$UID/$prefix$1"
+}
+
+plist() {
+	/usr/libexec/PlistBuddy "$@"
+}
+
+replace() {
+	cat \
+	| set RunAtLoad false \
+	| set KeepAlive false \
+	| set Label "$prefix$name"
+}
+
+read() {
+	keys="${@}"
+	tmpfile=/tmp/lch-$RANDOM.plist
+
+	cat > $tmpfile
+	for k in $keys; do
+		plist -c "Print :$k" $tmpfile 2> /dev/null
+	done;
+}
+
+set() {
+	key="$1"
+	value="${@:2}"
+	tmpfile=/tmp/lch-$RANDOM.plist
+
+	cat > $tmpfile
+	plist -c "Set :$key $value" $tmpfile
+	cat $tmpfile
+}
+
+add() {
+	key="$1"
+	type="$2"
+	value="${@:3}"
+	tmpfile=/tmp/lch-$RANDOM.plist
+
+	cat > $tmpfile
+	plist -c "Add :$key $type $value" $tmpfile
+	cat $tmpfile
+}
+
+require() {
+	[[ -z "$1" ]] && usage && exit 1
+}
+
+lch "$@"
