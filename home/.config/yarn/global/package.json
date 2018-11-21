@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "elm-format": "^0.8.1",
     "node-gyp": "^3.6.2"
   },
   "devDependencies": {
