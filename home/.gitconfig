@@ -49,3 +49,5 @@
 [remote "origin"]
 	push = HEAD
 
+[init]
+	templatedir = ~/.git-templates

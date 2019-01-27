@@ -1,0 +1,3 @@
+#!/bin/sh
+
+! git log @{upstream}..@ --pretty=%B | grep "^wip$"
