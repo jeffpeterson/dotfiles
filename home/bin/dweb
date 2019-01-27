@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
   # --html-extension \
+  # --adjust-extension \
 wget \
   --no-verbose \
   --recursive \
-  --no-clobber \
   --page-requisites \
-  --adjust-extension \
   --convert-links \
   --restrict-file-names=unix \
   --no-parent \
