@@ -31,3 +31,6 @@ export FUCHSIA_BUILD_DIR=$HOME/code/fuchsia/out/x64
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home
 export LDFLAGS="-L/usr/local/opt/ghc@8.2/lib"
+
+alias codei=code-insiders
+alias code=code-insiders

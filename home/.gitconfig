@@ -31,7 +31,8 @@
 	wip = "!git add -A . && git c --no-verify -m wip "
 	unwip = reset HEAD^
 	pushf = push --force-with-lease
-	amend = commit --amend --no-edit
+	amend = "!git diff @ @{upstream} --quiet --exit-code && echo 'Commit already pushed.' || git commit --amend --no-edit"
+	fixup = rebase -i --onto @{upstream}
 	am = amend
 	branchname = symbolic-ref --short HEAD
 	commitname = rev-parse --short HEAD
