@@ -3,36 +3,38 @@
 source "${BASH_SOURCE%/*}/_includes.sh"
 
 ROOT=`realpath ${BASH_SOURCE%/*}/../..`
-
+REPO_ROOT="https://github.com/jeffpeterson/dotfiles"
 
 usage_name "dot" <<-DESC
-	A tool for linking dotfiles.
+	A tool for managing dotfiles.
 DESC
 
 usage_cmd link <<-DESC
-	Links everything.
-DESC
-
-usage_cmd link-all "<srcdir>" "<dstdir>" <<-DESC
-	Safely links all files in <srcdir> to <dstdir>.
-DESC
-
-
-usage_cmd link-file "<src>" "<dst>" <<-DESC
-	Safely links <src> to <dst>.
-DESC
-
-
-usage_cmd os <<-DESC
-	Prints the name of the current OS.
-DESC
-
-usage_cmd help <<-DESC
-	Prints this doc.
+	Link everything.
 DESC
 
 usage_cmd edit "[dotfile]" <<-DESC
 	Edit a dotfile in the default VISUAL editor.
+DESC
+
+usage_cmd repo "[dotfile]" <<-DESC
+	Show a dotfile on github.
+DESC
+
+usage_cmd os <<-DESC
+	Print the name of the current OS.
+DESC
+
+usage_cmd link-all "<srcdir>" "<dstdir>" <<-DESC
+	Safely link all files in <srcdir> to <dstdir>.
+DESC
+
+usage_cmd link-file "<src>" "<dst>" <<-DESC
+	Safely link <src> to <dst>.
+DESC
+
+usage_cmd help <<-DESC
+	Print this doc.
 DESC
 
 
@@ -85,7 +87,17 @@ dot() {
 			if [[ ! -z $file ]]; then
 				$VISUAL "$ROOT/home/$file"
 			else
-				$VISUAL $ROOT
+				$VISUAL "$ROOT"
+			fi
+			;;
+
+		repo)
+			optional file "$2"
+
+			if [[ ! -z $file ]]; then
+				open "$REPO_ROOT/tree/master/home/$file"
+			else
+				open "$REPO_ROOT"
 			fi
 			;;
 
