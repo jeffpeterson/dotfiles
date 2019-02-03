@@ -33,4 +33,4 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Hom
 export LDFLAGS="-L/usr/local/opt/ghc@8.2/lib"
 
 alias codei=code-insiders
-alias code=code-insiders
+# alias code=code-insiders
