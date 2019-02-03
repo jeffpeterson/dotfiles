@@ -31,6 +31,10 @@ usage_cmd help <<-DESC
 	Prints this doc.
 DESC
 
+usage_cmd edit "[dotfile]" <<-DESC
+	Edit a dotfile in the default VISUAL editor.
+DESC
+
 
 dot() {
 	required "cmd" $1
@@ -73,6 +77,16 @@ dot() {
 
 		os)
 			uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
+			;;
+
+		edit)
+			optional file "$2"
+
+			if [[ ! -z $file ]]; then
+				$VISUAL "$ROOT/home/$file"
+			else
+				$VISUAL $ROOT
+			fi
 			;;
 
 		help | usage)
