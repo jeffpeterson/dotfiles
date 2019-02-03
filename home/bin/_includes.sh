@@ -30,6 +30,8 @@ optional() {
 
 	if [[ ! -z "$val" ]]; then
 		eval "$1=${val@Q}"
+	else
+		eval "unset $1"
 	fi
 }
 
