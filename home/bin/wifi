@@ -9,7 +9,15 @@ usage_name wifi <<-DESC
 DESC
 
 usage_cmd info <<-DESC
-	Prints the current wifi status.
+	Print the current wifi status.
+DESC
+
+usage_cmd local <<-DESC
+	Print the wifi local ip and copy it to the clipboard.
+DESC
+
+usage_cmd global <<-DESC
+	Print the global ip and copy it to the clipboard.
 DESC
 
 usage_cmd on <<-DESC
@@ -77,6 +85,18 @@ wifi() {
 
 		info)
 			networksetup -getinfo 'Wi-Fi'
+			;;
+
+		local)
+			ip=`ipconfig getifaddr en0`
+			echo -n $ip | pbcopy
+			echo $ip
+			;;
+
+		global)
+			ip=`curl -s ipv4.icanhazip.com`
+			echo -n $ip | pbcopy
+			echo $ip
 			;;
 	esac
 }
