@@ -108,8 +108,12 @@ usage_cmd() {
 	args=""
 
 	for p in $params; do
-		if [[ $p == \<* ]]; then
+		if [[ $p == \<*\> ]]; then
 			p="$(yellow "$p")"
+		elif [[ $p == \[*\] ]]; then
+			p="$p"
+		else
+			p="$(h1 "$p")"
 		fi
 		args+=" $p"
 	done
