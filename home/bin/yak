@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+source "${BASH_SOURCE%/*}/_includes.sh"
+
+usage_name yak <<-DESC
+	A tool for managing projects.
+DESC
+
+usage_cmd new "<kind>" "<name>" <<-DESC
+	Create a new project.
+DESC
+
+usage_cmd new ts "<name>" <<-DESC
+	Create a new TypeScript project.
+DESC
+
+usage_cmd new bin "<name>" <<-DESC
+	Create a new shell script in bin.
+DESC
+
+t=""
+
+yak() {
+	required cmd "$1"
+
+	case $cmd in
+		new)
+			required kind "$2"
+			required name "$3"
+
+
+			case $kind in
+				ts)
+					mkdir "$name"
+					cd "$name"
+				;;
+
+				bin)
+					file="$(dot bin)/$name"
+
+					cd `dot root`
+
+					cat <<-TEMPLATE > "$file"
+						#!/usr/bin/env bash
+
+						source "\${BASH_SOURCE%/*}/_includes.sh"
+
+						usage_name $name <<-DESC
+						$t	Describe the tool.
+						DESC
+
+						usage_cmd thing "<required>" "[optional]" <<-DESC
+						$t	Describe a command.
+						DESC
+
+
+						$name() {
+						$t	required cmd "\$1"
+
+						$t	case \$cmd in
+						$t		thing)
+						$t			echo "a thing appeared!"
+						$t		;;
+						$t	esac
+						}
+
+						$name "$@"
+
+					TEMPLATE
+
+					chmod +x "$file"
+					code . "$file"
+
+				;;
+			esac
+			;;
+
+	esac
+}
+
+yak "$@"
