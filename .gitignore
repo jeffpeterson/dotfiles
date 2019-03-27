@@ -15,3 +15,12 @@ node_modules
 /home/.config/*
 !/home/.config/yarn
 /home/.config/yarn/link
+
+/support/Code/*
+!/support/Code/User
+/support/Code/User/*
+!/support/Code/User/snippets
+!/support/Code/User/keybindings.json
+!/support/Code/User/launch.json
+!/support/Code/User/locale.json
+!/support/Code/User/settings.json

@@ -1,0 +1,164 @@
+{
+  // Place your settings in this file to overwrite the default settings
+  "editor.roundedSelection": true,
+  "diffEditor.renderSideBySide": false,
+  "javascript.validate.enable": false,
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.fontFamily": "'Fira Code', Menlo, Monaco",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 15,
+  "editor.lineHeight": 29,
+  "files.trimTrailingWhitespace": true,
+  "editor.renderIndentGuides": true,
+  "editor.scrollBeyondLastLine": true,
+  "runner.languageMap": {
+    "js": "node"
+  },
+  "runner.extensionMap": {
+    "js": "node"
+  },
+  "window.openFilesInNewWindow": false,
+  "explorer.autoReveal": true,
+  "codesift.replacements": {
+    "var $foo = require($bar);": "import $foo from $bar;",
+    "Math.pow($x, $y)": "$x ** $y",
+    "Math.pow($x, 2)": "$x * $x"
+  },
+  "window.zoomLevel": -1,
+  "sync.gist": "ff3cc8a2c1a598612c453f3f0fc92d6d",
+  "sync.lastUpload": "2018-08-02T08:21:59.496Z",
+  "sync.autoDownload": false,
+  "sync.autoUpload": false,
+  "sync.lastDownload": "2018-08-09T19:04:58.374Z",
+  "sync.forceDownload": false,
+  "sync.anonymousGist": false,
+  "editor.wordWrap": "on",
+  "workbench.colorTheme": "Ayu Light",
+  "workbench.iconTheme": "vs-seti",
+  "files.insertFinalNewline": true,
+  "sync.host": "",
+  "sync.pathPrefix": "",
+  "editor.formatOnSave": true,
+  "typescript.useCodeSnippetsOnMethodSuggest": true,
+  "gist.oauth_token": "",
+  "workbench.startupEditor": "newUntitledFile",
+  "prettier.semi": false,
+  "prettier.trailingComma": "all",
+  "prettier.jsxBracketSameLine": true,
+  "editor.autoIndent": true,
+  "explorer.confirmDragAndDrop": false,
+  "editor.renderWhitespace": "boundary",
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true,
+    "suppressUpdateNotice": false,
+    "suppressWelcomeNotice": true
+  },
+  "standard.enable": false,
+  "gitlens.keymap": "chorded",
+  "elm.includeUserFunctionDocumentation": true,
+  "elm.userProjectImportStrategy": "dotIsFolder",
+  "[elm]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4
+  },
+  "[shellscript]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
+  },
+  "gitlens.historyExplorer.enabled": true,
+  "arduino.additionalUrls": [
+    "http://arduino.esp8266.com/stable/package_esp8266com_index.json",
+    "https://raw.githubusercontent.com/VSChina/azureiotdevkit_tools/master/package_azureboard_index.json"
+  ],
+  "arduino.ignoreBoards": [
+    "Adafruit HUZZAH ESP8266",
+    "MXCHIP AZ3166"
+  ],
+  "workbench.statusBar.feedback.visible": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "sync.quietSync": false,
+  "sync.askGistName": false,
+  "sync.removeExtensions": true,
+  "sync.syncExtensions": true,
+  "gitlens.codeLens.enabled": false,
+  "editor.rulers": [
+    80
+  ],
+  "files.hotExit": "onExitAndWindowClose",
+  "emmet.excludeLanguages": [
+    "markdown",
+    "typescript",
+    "typescriptreact"
+  ],
+  "breadcrumbs.enabled": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.completeFunctionCalls": true,
+  "elm.includeParamsInUserAutocomplete": true,
+  "editor.tabCompletion": "on",
+  "editor.suggest.localityBonus": true,
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "zenMode.fullScreen": false,
+  "zenMode.centerLayout": false,
+  "gitlens.views.fileHistory.enabled": true,
+  "gitlens.views.lineHistory.enabled": true,
+  "hypermerge.debug": "*",
+  "hypermerge.roots": [
+    "hypermerge:/92GyYfQs2Cseop4Znfnq2WyhCHkztBfZVTg2i2M1fabK",
+    "hypermerge:/Gdc2MkywHfVAKcRuvP1M5dfR22S1ARv4o1KneiQ2X5wP",
+    "hypermerge:/Df9vZYtdBepd491p9Dk9fb2NsDzoqRcfMwtBugdp3LV9",
+    "hypermerge:/Hqzvv47hsjFEsfJGSXnEGwcaFohYwU9EEBMhnWhFmzqq",
+    "hypermerge:/6HFN5dMgrTxufq7MKsbj1diMPc5mZU79ZyD5o9FNzhCo",
+    "hypermerge:/38aqjdM5UpDCUApBf48XXdRYKaGEYQXGEh3JinfmhxxS",
+    "hypermerge:/8xQJ8wFsQ9ct2EVzUfgzRa6zskHQwGv8SERwTgMcFdvF",
+    "hypermerge:/uhPxrnpxVAfY5kCpcrJ7BXEweaH9UH1HYxvq3egazBi",
+    "hypermerge:/G1MTuhwWU2LkKmndVRHvZ9QGhvYkDK6fden1zAzGutUd",
+    "hypermerge:/BkjLaAeFXmw1FqaCBEsLn67UujeJaiMvi71Xo615WJvp",
+    "hypermerge:/FLJpv5CXX37YC5zu6JZwMGWHsFWChuBkGrb46VRXayyW",
+    "hypermerge:/2afgkgF1ET5Dei7XJ2km5Ndtd2cGY8Guja1cKDgxuBzm",
+    "hypermerge:/7T4uB4wMiQgsi6WNbaHvMJB5x5rN7HcFSno5AKVmVoy4",
+    "hypermerge:/G1e73eGqrsEsHeChm2ZXKAMKoQSD5MJNrFbHigeRgxLa",
+    "hypermerge:/GKyWxTYKY6hV6uTwmTz5XxpN81z3aR4coWqz43nxUP1C",
+    "hypermerge:/4QtqpcYMd5uPmLXafiRhzYDyxJvFkaH7BcqfhLWUd5Sh",
+    "hypermerge:/HotW8BNS8AAC1MkBhprfSUFPGAZYz8oNoD5R8Yz43DQi"
+  ],
+  "tslint.configFile": "/Users/jeffpeterson/.tslint.json",
+  "tslint.autoFixOnSave": true,
+  "tslint.packageManager": "yarn",
+  "tslint.alwaysShowStatus": true,
+  "tslint.enable": true,
+  "editor.tokenColorCustomizations": {
+    "[Ayu Light]": {
+      "textMateRules": [
+        {
+          "scope": "meta.module",
+          "settings": {
+            "foreground": "#4cbf99"
+          }
+        },
+        {
+          "scope": "constant",
+          "settings": {
+            "foreground": "#399ee6"
+          }
+        },
+        {
+          "scope": "entity.name.record.field.accessor.elm",
+          "settings": {
+            "foreground": "#6c7680ff"
+          }
+        }
+      ]
+    }
+  }
+}

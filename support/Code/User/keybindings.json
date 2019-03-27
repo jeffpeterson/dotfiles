@@ -1,0 +1,121 @@
+// Place your key bindings in this file to overwrite the defaults
+[
+  {
+    "key": "shift+cmd+r",
+    "command": "workbench.action.showAllSymbols"
+  },
+  {
+    "key": "cmd+t",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "cmd+shift+d",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+;",
+    "command": "extension.toggleSemicolon",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+,",
+    "command": "extension.toggleComma",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+n",
+    "command": "explorer.newFile"
+  },
+  {
+    "key": "alt+j",
+    "command": "cursorDown"
+  },
+  {
+    "key": "alt+k",
+    "command": "cursorUp"
+  },
+  {
+    "key": "alt+h",
+    "command": "cursorLeft"
+  },
+  {
+    "key": "alt+l",
+    "command": "cursorRight"
+  },
+  {
+    "key": "alt+shift+j",
+    "command": "cursorBottom"
+  },
+  {
+    "key": "alt+shift+k",
+    "command": "cursorTop"
+  },
+  {
+    "key": "alt+shift+h",
+    "command": "cursorHome"
+  },
+  {
+    "key": "alt+shift+l",
+    "command": "cursorEnd"
+  },
+  {
+    "key": "shift+cmd+n",
+    "command": "explorer.newFolder"
+  },
+  {
+    "key": "shift+cmd+j",
+    "command": "workbench.action.toggleMaximizedPanel"
+  },
+  {
+    "key": "shift+cmd+r",
+    "command": "extension.runFileSpecs",
+    "when": "editorLangId == ruby"
+  },
+  {
+    "key": "shift+cmd+t",
+    "command": "-extension.runFileSpecs"
+  },
+  {
+    "key": "ctrl+shift+.",
+    "command": "extension.openScratchpad",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "editor.action.triggerSuggest",
+    "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+space",
+    "command": "-editor.action.triggerSuggest",
+    "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "key": "alt+cmd+i",
+    "command": "workbench.action.toggleDevTools"
+  },
+  {
+    "key": "cmd+r",
+    "command": "editor.action.rename",
+    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "f2",
+    "command": "-editor.action.rename",
+    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "shift+alt+s",
+    "command": "-save-without-format.save",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+k d",
+    "command": "-workbench.files.action.compareWithSaved"
+  },
+  {
+    "key": "cmd+k d",
+    "command": "editor.action.moveSelectionToPreviousFindMatch"
+  }
+]
