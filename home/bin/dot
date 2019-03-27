@@ -21,6 +21,14 @@ usage_cmd repo "[dotfile]" <<-DESC
 	Show a dotfile on github.
 DESC
 
+usage_cmd root <<-DESC
+	Print the path to the dotfiles repo.
+DESC
+
+usage_cmd bin <<-DESC
+	Print the path to the dotfiles bin directory.
+DESC
+
 usage_cmd os <<-DESC
 	Print the name of the current OS.
 DESC
@@ -75,6 +83,14 @@ dot() {
 			else
 				ln -ns $FLAGS "$src" "$dst" && echo "$(green Linked) $pretty"
 			fi
+			;;
+
+		root)
+			echo "$ROOT"
+			;;
+
+		bin)
+			echo "$(realpath ${BASH_SOURCE%/*})"
 			;;
 
 		os)
