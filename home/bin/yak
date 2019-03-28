@@ -10,6 +10,10 @@ usage_cmd new "<kind>" "<name>" <<-DESC
 	Create a new project.
 DESC
 
+usage_cmd new elm "<name>" <<-DESC
+	Create a new Elm project.
+DESC
+
 usage_cmd new ts "<name>" <<-DESC
 	Create a new TypeScript project.
 DESC
@@ -30,6 +34,11 @@ yak() {
 
 
 			case $kind in
+				elm)
+					mkdir "elm-$name"
+					cd "elm-$name"
+
+					;;
 				ts)
 					mkdir "$name"
 					cd "$name"
