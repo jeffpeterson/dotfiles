@@ -9,7 +9,7 @@ usage_name "dot" <<-DESC
 	A tool for managing dotfiles.
 DESC
 
-usage_cmd link <<-DESC
+usage_cmd link "[-f]" <<-DESC
 	Link everything.
 DESC
 
@@ -45,6 +45,7 @@ usage_cmd help <<-DESC
 	Print this doc.
 DESC
 
+declare -A FLAGS
 
 dot() {
 	required "cmd" $1
@@ -72,17 +73,22 @@ dot() {
 			cur=`readlink -n "$dst"`
 			pretty="~/$(realpath -s --relative-to="$HOME" "$dst")"
 
-			if [ ! -z "$cur" ]; then
-				if [ "$cur" == "$src" ]; then
-					echo "$(dim "Found $pretty")"
-				else
-					echo $(yellow "$pretty -> $cur already linked")
+			if [ -z "${FLAGS[force]}" ]; then
+				if [ ! -z "$cur" ]; then
+					if [ "$cur" == "$src" ]; then
+						echo "$(dim "Found $pretty")"
+						return
+					else
+						echo $(yellow "$pretty -> $cur already linked")
+						return
+					fi
+				elif [ -e "$dst" ]; then
+					echo "$(red "$pretty exists!")"
+					return
 				fi
-			elif [ -e "$dst" ]; then
-				echo "$(red "$pretty exists!")"
-			else
-				ln -ns $FLAGS "$src" "$dst" && echo "$(green Linked) $pretty"
 			fi
+
+			ln -nsf "$src" "$dst" && echo "$(green Linked) $pretty"
 			;;
 
 		root)
@@ -127,4 +133,19 @@ dot() {
 	esac
 }
 
-dot "$@"
+PARAMS=()
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		-f|--force)
+			FLAGS[force]="1"
+			shift
+			;;
+
+		*)
+			PARAMS+=("$1")
+			shift
+	esac
+done
+
+dot "$PARAMS"
