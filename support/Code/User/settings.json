@@ -132,11 +132,6 @@
     "hypermerge:/4QtqpcYMd5uPmLXafiRhzYDyxJvFkaH7BcqfhLWUd5Sh",
     "hypermerge:/HotW8BNS8AAC1MkBhprfSUFPGAZYz8oNoD5R8Yz43DQi"
   ],
-  "tslint.configFile": "/Users/jeffpeterson/.tslint.json",
-  "tslint.autoFixOnSave": true,
-  "tslint.packageManager": "yarn",
-  "tslint.alwaysShowStatus": true,
-  "tslint.enable": true,
   "editor.tokenColorCustomizations": {
     "[Ayu Light]": {
       "textMateRules": [
@@ -160,5 +155,13 @@
         }
       ]
     }
+  },
+  "eslint.autoFixOnSave": true,
+  "eslint.packageManager": "yarn",
+  "eslint.trace.server": "messages",
+  "files.autoSave": "off",
+  "eslint.run": "onSave",
+  "files.exclude": {
+    "**/node_modules": true
   }
 }
