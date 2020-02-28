@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "asar": "^2.0.1",
+    "create-pastel-app": "^1.0.3",
     "elm-format": "^0.8.1",
     "node-gyp": "^3.6.2",
     "vsce": "^1.53.2"
