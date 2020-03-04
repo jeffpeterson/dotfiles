@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+source "${BASH_SOURCE%/*}/_includes.sh"
+
+usage_name dev <<-DESC
+	A tool for dev-related tasks.
+DESC
+
+usage_cmd root <<-DESC
+	Print path to code directory.
+DESC
+
+usage_cmd split "<name>" "[cmds]" <<-DESC
+	Run many commands in tmux.
+DESC
+
+usage_cmd split-example <<-DESC
+	Show example of using tmux split.
+DESC
+
+usage_cmd tunnel "<port>" <<-DESC
+	Open a tunnel to dev.yak.sh:80
+DESC
+
+usage_cmd fwd "<scheme>" <<-DESC
+	Open ports to dev.yak.sh.
+	e.g. dev fwd -R :80:localhost:3000
+DESC
+
+dev() {
+	required cmd "$1"
+
+	case $cmd in
+		root)
+			echo "$HOME/code"
+			;;
+
+		tu*)
+			required port $2
+
+			dev fwd -R :80:localhost:$2
+			;;
+
+		fwd | forward)
+			echo "Forwarding: ${@:2}"
+			ssh a.yak.sh -NT "${@:2}"
+			;;
+
+		split)
+			required name "$2"
+			args=()
+
+			for cmd in "${@:2}"; do
+				args+=(splitw)
+				args+=("$cmd; bash -i")
+				args+=(";")
+			done
+
+			echo "${args[@]}"
+
+			# tmux new -A -s dev-split "$args" \
+			# 	select-layout tiled
+			;;
+
+		split-example)
+			dev split dev-split \
+				"ls" \
+				"ls .."
+			;;
+	esac
+}
+
+dev "$@"

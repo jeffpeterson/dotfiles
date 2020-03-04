@@ -20,7 +20,7 @@
   "runner.extensionMap": {
     "js": "node"
   },
-  "window.openFilesInNewWindow": false,
+  "window.openFilesInNewWindow": "off",
   "explorer.autoReveal": true,
   "codesift.replacements": {
     "var $foo = require($bar);": "import $foo from $bar;",
@@ -29,25 +29,16 @@
   },
   "window.zoomLevel": -1,
   "sync.gist": "ff3cc8a2c1a598612c453f3f0fc92d6d",
-  "sync.lastUpload": "2018-08-02T08:21:59.496Z",
   "sync.autoDownload": false,
   "sync.autoUpload": false,
-  "sync.lastDownload": "2018-08-09T19:04:58.374Z",
   "sync.forceDownload": false,
-  "sync.anonymousGist": false,
   "editor.wordWrap": "on",
-  "workbench.colorTheme": "Ayu Light",
+  "workbench.colorTheme": "Tokyo Hack",
   "workbench.iconTheme": "vs-seti",
   "files.insertFinalNewline": true,
-  "sync.host": "",
-  "sync.pathPrefix": "",
   "editor.formatOnSave": true,
-  "typescript.useCodeSnippetsOnMethodSuggest": true,
   "gist.oauth_token": "",
   "workbench.startupEditor": "newUntitledFile",
-  "prettier.semi": false,
-  "prettier.trailingComma": "all",
-  "prettier.jsxBracketSameLine": true,
   "editor.autoIndent": true,
   "explorer.confirmDragAndDrop": false,
   "editor.renderWhitespace": "boundary",
@@ -63,31 +54,11 @@
     "suppressUpdateNotice": false,
     "suppressWelcomeNotice": true
   },
-  "standard.enable": false,
   "gitlens.keymap": "chorded",
   "elm.includeUserFunctionDocumentation": true,
   "elm.userProjectImportStrategy": "dotIsFolder",
-  "[elm]": {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 4
-  },
-  "[shellscript]": {
-    "editor.tabSize": 4,
-    "editor.insertSpaces": false
-  },
-  "gitlens.historyExplorer.enabled": true,
-  "arduino.additionalUrls": [
-    "http://arduino.esp8266.com/stable/package_esp8266com_index.json",
-    "https://raw.githubusercontent.com/VSChina/azureiotdevkit_tools/master/package_azureboard_index.json"
-  ],
-  "arduino.ignoreBoards": [
-    "Adafruit HUZZAH ESP8266",
-    "MXCHIP AZ3166"
-  ],
-  "workbench.statusBar.feedback.visible": false,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "sync.quietSync": false,
-  "sync.askGistName": false,
   "sync.removeExtensions": true,
   "sync.syncExtensions": true,
   "gitlens.codeLens.enabled": false,
@@ -162,6 +133,42 @@
   "files.autoSave": "off",
   "eslint.run": "onSave",
   "files.exclude": {
-    "**/node_modules": true
-  }
+    "dist": true,
+    "docs": true,
+    "node_modules": true
+  },
+  "liveshare.featureSet": "insiders",
+  "editor.minimap.showSlider": "always",
+  "todo-tree.highlights.enabled": true,
+  "search.exclude": {
+    "**/node_modules": false,
+    "node_modules": true
+  },
+  "typescript.format.semicolons": "remove",
+  "[elm]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4
+  },
+  "[shellscript]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[rust]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.rulers": [
+      100
+    ],
+  },
+  "terminal.integrated.fontSize": 14,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "todo-tree.tree.showScanModeButton": false,
 }

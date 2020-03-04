@@ -1,10 +1,6 @@
 // Place your key bindings in this file to overwrite the defaults
 [
   {
-    "key": "shift+cmd+r",
-    "command": "workbench.action.showAllSymbols"
-  },
-  {
     "key": "cmd+t",
     "command": "workbench.action.quickOpen"
   },
@@ -99,6 +95,23 @@
     "key": "cmd+r",
     "command": "editor.action.rename",
     "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+e",
+    "command": "editor.action.codeAction",
+    "args": {
+      "kind": "refactor.extract.constant",
+      "preferred": true,
+      "apply": "ifSingle"
+    }
+  },
+  {
+    "key": "cmd+shift+e",
+    "command": "editor.action.codeAction",
+    "args": {
+      "kind": "refactor.extract.function",
+      "apply": "ifSingle"
+    }
   },
   {
     "key": "f2",

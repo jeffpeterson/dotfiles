@@ -3,7 +3,8 @@
 node_modules
 
 /home/.vim/bundle
-
+/home/sbin
+/home/.profiles/secure*
 /home/.atom/*
 !/home/.atom/snippets.cson
 !/home/.atom/config.cson

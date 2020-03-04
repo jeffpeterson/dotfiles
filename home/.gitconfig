@@ -1,42 +1,87 @@
 [user]
 	name = Jeff Peterson
 	email = jeff@yak.sh
+
 [core]
 	editor = vim
 	autocrlf = input
+
+[branch]
+	autoSetupRebase = remote
+
 [push]
 	default = current
+
 [color]
 	ui = auto
+
 [color "log"]
 	meta = yellow
+
 [alias]
-	co = checkout
-	l = log --graph --format='%C(yellow)%h %C(reset)- (%ar)%C(magenta)%d %C(reset)%s %C(green)%an'
-	; l = log --graph --format='%h - (%ar) %d %s %cn'
+	; Better git branch
 	b = branch -vv
+
+	; Lists recently used branches.
 	bs = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(HEAD) %(objectname:short) %(committerdate:short) %(color:yellow)%(align:30)%(refname:short)%(end)%(color:reset) %(contents:subject)'
 	c = commit
-	s = status
+	co = checkout
+
+	; Skip pre-commit hooks
+	cv = commit --no-verify
+	d = diff
 	f = fetch
+	; A pretty railroad log format.
+	l = log --graph --format='%C(yellow)%h %C(reset)- (%ar)%C(magenta)%d %C(reset)%s %C(green)%an'
+	; l = log --graph --format='%h - (%ar) %d %s %cn'
+	s = status
+
 	acd = log dev..origin/acceptance --merges --first-parent --graph --oneline
 	r = remote update -p
 	sync = !bash -c 'git fetch origin $1:${1#+}' -
 	crb = !bash -c 'git branch -f $1 origin/$1' -
-	d = diff
 	dm = !bash -c 'git diff $1 $1^1 $1^2' -
 	pr = !hub pull-request
+
+	; Cat a deleted file from the commit that removed it.
 	cat = "!sh -c 'git show $(git log --all --max-count=1 --format=%H -- $1)^:$1 | cat'" -
+
+	; Deletes merged branches.
 	trim = "!git branch --merged | grep -v dev | grep -v staging | grep -v master | grep -v '*' | xargs -n1 git branch -d"
+
+	; Store all working changes as a 'wip' commit.
 	wip = "!git add -A . && git c --no-verify -m wip "
+
+	; Un-commits the latest commit. Careful!
 	unwip = reset HEAD^
+
+	; Like `push --force` but fails if others have added commits.
 	pushf = push --force-with-lease
-	amend = "!git diff @ @{upstream} --quiet --exit-code && echo 'Commit already pushed.' || git commit --amend --no-edit"
+
+	; Interactively rebase changes onto the origin branch.
+	; Usually used before pushing.
 	fixup = rebase -i --onto @{upstream}
+
+	; TODO(jeff): add alias to rebase all branches onto base branch
+
+	; Shortcut for amending staged changes to the previous commit.
+	; Prevents amending pushed commits.
+	amend = "!git diff @ @{upstream} --quiet --exit-code && echo 'Commit already pushed.' || git commit --amend --no-edit --no-verify"
 	am = amend
+
+	; Used for PROMPT
 	branchname = symbolic-ref --short HEAD
 	commitname = rev-parse --short HEAD
+
 	cam = commit -am
+
+	; Show only my commits
+	me = "log --graph --format='%C(yellow)%h %C(reset)- (%ar)%C(magenta)%d %C(reset)%s %C(green)%an' --author='Jeff Peterson'"
+
+	; Allows the hiding of changes from git diff/status/push/etc.
+	skip = update-index --skip-worktree
+	unskip = update-index --no-skip-worktree
+	skipped = !git ls-files -v | grep '^S' | cut -f2 -d' '
 
 [diff]
 	algorithm = patience

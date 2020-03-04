@@ -17,12 +17,20 @@ usage_cmd edit "[dotfile]" <<-DESC
 	Edit a dotfile in the default VISUAL editor.
 DESC
 
+usage_cmd commit "<message>" <<-DESC
+	Commit all changes to the dotfile repo.
+DESC
+
 usage_cmd repo "[dotfile]" <<-DESC
 	Show a dotfile on github.
 DESC
 
 usage_cmd root <<-DESC
 	Print the path to the dotfiles repo.
+DESC
+
+usage_cmd home <<-DESC
+	Print the path to the dotfile 'home' directory.
 DESC
 
 usage_cmd bin <<-DESC
@@ -33,12 +41,20 @@ usage_cmd os <<-DESC
 	Print the name of the current OS.
 DESC
 
+usage_cmd os-version <<-DESC
+	Print the version number of the current OS.
+DESC
+
 usage_cmd link-all "<srcdir>" "<dstdir>" <<-DESC
 	Safely link all files in <srcdir> to <dstdir>.
 DESC
 
 usage_cmd link-file "<src>" "<dst>" <<-DESC
 	Safely link <src> to <dst>.
+DESC
+
+usage_cmd links-to "<path>" <<-DESC
+	Returns the destination that <path> will link to.
 DESC
 
 usage_cmd help <<-DESC
@@ -91,8 +107,23 @@ dot() {
 			ln -nsf "$src" "$dst" && echo "$(green Linked) $pretty"
 			;;
 
+		links-to)
+			required path $2
+			newpath="$(realpath -s --relative-to="$ROOT" "$path")"
+
+			case "$newpath" in
+				home/*)
+					echo "$HOME"
+					;;
+			esac
+			;;
+
 		root)
 			echo "$ROOT"
+			;;
+
+		home)
+			echo "$ROOT/home"
 			;;
 
 		bin)
@@ -103,6 +134,17 @@ dot() {
 			uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
 			;;
 
+		os-version)
+			case "$(dot os)" in
+				darwin)
+					sw_vers -productVersion
+					;;
+				*)
+					echo "unknown";;
+
+			esac
+			;;
+
 		edit)
 			optional file "$2"
 
@@ -111,6 +153,15 @@ dot() {
 			else
 				$VISUAL "$ROOT"
 			fi
+			;;
+
+		commit)
+			echo "$2"
+			required message "$2"
+
+			cd "$ROOT"
+			git add .
+			git commit -m "$message"
 			;;
 
 		repo)
@@ -145,6 +196,7 @@ while [[ $# -gt 0 ]]; do
 		*)
 			PARAMS+=("$1")
 			shift
+			;;
 	esac
 done
 

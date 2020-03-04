@@ -2,6 +2,14 @@ push() {
   export PATH="$1:$PATH"
 }
 
+profile() {
+  source "$HOME/.profiles/$1.sh"
+}
+
+sprofile() {
+  source "$HOME/.profiles/secure/$1.sh"
+}
+
 # push /usr/local/opt/node@4/bin
 push /usr/local/bin
 push /usr/local/sbin
@@ -33,3 +41,7 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Hom
 export LDFLAGS="-L/usr/local/opt/ghc@8.2/lib"
 
 alias codei=code-insiders
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+profile secure
