@@ -20,7 +20,10 @@ node_modules
 /support/Code/*
 !/support/Code/User
 /support/Code/User/*
+
 !/support/Code/User/snippets
+/support/Code/User/snippets/secure.*
+
 !/support/Code/User/keybindings.json
 !/support/Code/User/launch.json
 !/support/Code/User/locale.json
