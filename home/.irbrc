@@ -18,7 +18,8 @@ class Object
       file, line = method(method_name).source_location
     end
 
-    return system("tmux split-window -h \"vim #{file} +#{line}\"") if file
+    # return system("tmux split-window -h \"vim #{file} +#{line}\"") if file
+    return system("$VISUAL --goto #{file}:#{line || 0}") if file
 
     puts "Source not available. Is this a C extension?"
   end
