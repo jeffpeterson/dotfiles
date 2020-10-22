@@ -1,3 +1,4 @@
+source ~/.env
 DISABLE_AUTO_UPDATE="true"
 
 ZSH="$HOME/.oh-my-zsh"
@@ -102,7 +103,6 @@ source ~/.profile
 
 # source $HOME/code/fuchsia/scripts/fx-env.sh
 
-if which rbenv > /dev/null; then eval "$(rbenv init - --no-rehash)"; fi
 
 PROMPT="
 %{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(current_branch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
@@ -121,3 +121,6 @@ PROMPT="
 function emulator {
   cd "$ANDROID_HOME/tools" && ./emulator "$@";
 }
+
+# opam configuration
+test -r /Users/jeffpeterson/.opam/opam-init/init.zsh && . /Users/jeffpeterson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
