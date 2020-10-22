@@ -149,7 +149,7 @@ dot() {
 			optional file "$2"
 
 			if [[ ! -z $file ]]; then
-				$VISUAL "$ROOT/home/$file"
+				$VISUAL "$ROOT" "$ROOT/home/$file"
 			else
 				$VISUAL "$ROOT"
 			fi
@@ -200,4 +200,4 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-dot "$PARAMS"
+dot "${PARAMS[@]}"
