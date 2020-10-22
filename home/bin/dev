@@ -27,12 +27,21 @@ usage_cmd fwd "<scheme>" <<-DESC
 	e.g. dev fwd -R :80:localhost:3000
 DESC
 
+usage_cmd id <<-DESC
+	Generates a uuid, prints it, and copies it to clipboard.
+	e.g. 1D73E1DE-D26C-4A1F-B950-23626E1056C1
+DESC
+
 dev() {
 	required cmd "$1"
 
 	case $cmd in
 		root)
 			echo "$HOME/code"
+			;;
+
+		id)
+			uuidgen | tr '[:upper:]' '[:lower:]' | tee /dev/stderr | tr -d '\n' | pbcopy
 			;;
 
 		tu*)
