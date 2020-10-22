@@ -3,7 +3,6 @@
   "editor.roundedSelection": true,
   "diffEditor.renderSideBySide": false,
   "javascript.validate.enable": false,
-  "editor.acceptSuggestionOnEnter": "off",
   "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
@@ -27,13 +26,12 @@
     "Math.pow($x, $y)": "$x ** $y",
     "Math.pow($x, 2)": "$x * $x"
   },
-  "window.zoomLevel": -1,
+  "window.zoomLevel": 0,
   "sync.gist": "ff3cc8a2c1a598612c453f3f0fc92d6d",
   "sync.autoDownload": false,
   "sync.autoUpload": false,
   "sync.forceDownload": false,
-  "editor.wordWrap": "on",
-  "workbench.colorTheme": "Tokyo Hack",
+  "workbench.colorTheme": "Ayu Mirage",
   "workbench.iconTheme": "vs-seti",
   "files.insertFinalNewline": true,
   "editor.formatOnSave": true,
@@ -62,15 +60,9 @@
   "sync.removeExtensions": true,
   "sync.syncExtensions": true,
   "gitlens.codeLens.enabled": false,
-  "editor.rulers": [
-    80
-  ],
+  "editor.rulers": [80],
   "files.hotExit": "onExitAndWindowClose",
-  "emmet.excludeLanguages": [
-    "markdown",
-    "typescript",
-    "typescriptreact"
-  ],
+  "emmet.excludeLanguages": ["markdown", "typescript", "typescriptreact"],
   "breadcrumbs.enabled": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.suggest.completeFunctionCalls": true,
@@ -133,7 +125,6 @@
   "files.autoSave": "off",
   "eslint.run": "onSave",
   "files.exclude": {
-    "dist": true,
     "docs": true,
     "node_modules": true
   },
@@ -142,7 +133,8 @@
   "todo-tree.highlights.enabled": true,
   "search.exclude": {
     "**/node_modules": false,
-    "node_modules": true
+    "node_modules": true,
+    "dist": true
   },
   "typescript.format.semicolons": "remove",
   "[elm]": {
@@ -159,9 +151,7 @@
   "[rust]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.rulers": [
-      100
-    ],
+    "editor.rulers": [80]
   },
   "terminal.integrated.fontSize": 14,
   "editor.codeActionsOnSave": {
@@ -171,4 +161,25 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "todo-tree.tree.showScanModeButton": false,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "code-runner.executorMap": {
+    "html": "open"
+  },
+  "ruby.useLanguageServer": true,
+  "ruby.codeCompletion": "rcodetools",
+  "ruby.intellisense": "rubyLocate",
+  "solargraph.commandPath": "/Users/jeffpeterson/.rbenv/shims/solargraph",
+  "deno.enable": false,
+  "deno.alwaysShowStatus": false,
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "jest.autoEnable": false,
+  "jest.runAllTestsFirst": false
 }
