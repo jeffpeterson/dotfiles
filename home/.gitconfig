@@ -3,14 +3,15 @@
 	email = jeff@yak.sh
 
 [core]
-	editor = vim
+	# editor = vim
 	autocrlf = input
 
 [branch]
 	autoSetupRebase = remote
 
 [push]
-	default = current
+	# default = current
+	default = matching
 
 [color]
 	ui = auto
@@ -24,11 +25,12 @@
 
 	; Lists recently used branches.
 	bs = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(HEAD) %(objectname:short) %(committerdate:short) %(color:yellow)%(align:30)%(refname:short)%(end)%(color:reset) %(contents:subject)'
-	c = commit
+	; Skip pre-commit hooks
+	c = commit --no-verify
+	; Commit with pre-commit hooks
+	cv = commit
 	co = checkout
 
-	; Skip pre-commit hooks
-	cv = commit --no-verify
 	d = diff
 	f = fetch
 	; A pretty railroad log format.
