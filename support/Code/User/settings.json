@@ -1,100 +1,39 @@
 {
-  // Place your settings in this file to overwrite the default settings
-  "editor.roundedSelection": true,
-  "diffEditor.renderSideBySide": false,
-  "javascript.validate.enable": false,
-  "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "editor.fontFamily": "'Fira Code', Menlo, Monaco",
-  "editor.fontLigatures": true,
-  "editor.fontSize": 15,
-  "editor.lineHeight": 29,
-  "files.trimTrailingWhitespace": true,
-  "editor.renderIndentGuides": true,
-  "editor.scrollBeyondLastLine": true,
-  "runner.languageMap": {
-    "js": "node"
-  },
-  "runner.extensionMap": {
-    "js": "node"
-  },
-  "window.openFilesInNewWindow": "off",
-  "explorer.autoReveal": true,
   "codesift.replacements": {
     "var $foo = require($bar);": "import $foo from $bar;",
     "Math.pow($x, $y)": "$x ** $y",
     "Math.pow($x, 2)": "$x * $x"
   },
-  "window.zoomLevel": 0,
-  "sync.gist": "ff3cc8a2c1a598612c453f3f0fc92d6d",
-  "sync.autoDownload": false,
-  "sync.autoUpload": false,
-  "sync.forceDownload": false,
-  "workbench.colorTheme": "Ayu Mirage",
-  "workbench.iconTheme": "vs-seti",
-  "files.insertFinalNewline": true,
-  "editor.formatOnSave": true,
-  "gist.oauth_token": "",
-  "workbench.startupEditor": "newUntitledFile",
-  "editor.autoIndent": true,
-  "explorer.confirmDragAndDrop": false,
-  "editor.renderWhitespace": "boundary",
-  "gitlens.advanced.messages": {
-    "suppressCommitHasNoPreviousCommitWarning": false,
-    "suppressCommitNotFoundWarning": false,
-    "suppressFileNotUnderSourceControlWarning": false,
-    "suppressGitVersionWarning": false,
-    "suppressLineUncommittedWarning": false,
-    "suppressNoRepositoryWarning": false,
-    "suppressResultsExplorerNotice": false,
-    "suppressShowKeyBindingsNotice": true,
-    "suppressUpdateNotice": false,
-    "suppressWelcomeNotice": true
-  },
-  "gitlens.keymap": "chorded",
-  "elm.includeUserFunctionDocumentation": true,
-  "elm.userProjectImportStrategy": "dotIsFolder",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "sync.quietSync": false,
-  "sync.removeExtensions": true,
-  "sync.syncExtensions": true,
-  "gitlens.codeLens.enabled": false,
-  "editor.rulers": [80],
-  "files.hotExit": "onExitAndWindowClose",
-  "emmet.excludeLanguages": ["markdown", "typescript", "typescriptreact"],
-  "breadcrumbs.enabled": true,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "javascript.suggest.completeFunctionCalls": true,
-  "typescript.suggest.completeFunctionCalls": true,
-  "elm.includeParamsInUserAutocomplete": true,
-  "editor.tabCompletion": "on",
-  "editor.suggest.localityBonus": true,
+
+  "diffEditor.renderSideBySide": false,
+
   "editor.acceptSuggestionOnCommitCharacter": false,
-  "zenMode.fullScreen": false,
-  "zenMode.centerLayout": false,
-  "gitlens.views.fileHistory.enabled": true,
-  "gitlens.views.lineHistory.enabled": true,
-  "hypermerge.debug": "*",
-  "hypermerge.roots": [
-    "hypermerge:/92GyYfQs2Cseop4Znfnq2WyhCHkztBfZVTg2i2M1fabK",
-    "hypermerge:/Gdc2MkywHfVAKcRuvP1M5dfR22S1ARv4o1KneiQ2X5wP",
-    "hypermerge:/Df9vZYtdBepd491p9Dk9fb2NsDzoqRcfMwtBugdp3LV9",
-    "hypermerge:/Hqzvv47hsjFEsfJGSXnEGwcaFohYwU9EEBMhnWhFmzqq",
-    "hypermerge:/6HFN5dMgrTxufq7MKsbj1diMPc5mZU79ZyD5o9FNzhCo",
-    "hypermerge:/38aqjdM5UpDCUApBf48XXdRYKaGEYQXGEh3JinfmhxxS",
-    "hypermerge:/8xQJ8wFsQ9ct2EVzUfgzRa6zskHQwGv8SERwTgMcFdvF",
-    "hypermerge:/uhPxrnpxVAfY5kCpcrJ7BXEweaH9UH1HYxvq3egazBi",
-    "hypermerge:/G1MTuhwWU2LkKmndVRHvZ9QGhvYkDK6fden1zAzGutUd",
-    "hypermerge:/BkjLaAeFXmw1FqaCBEsLn67UujeJaiMvi71Xo615WJvp",
-    "hypermerge:/FLJpv5CXX37YC5zu6JZwMGWHsFWChuBkGrb46VRXayyW",
-    "hypermerge:/2afgkgF1ET5Dei7XJ2km5Ndtd2cGY8Guja1cKDgxuBzm",
-    "hypermerge:/7T4uB4wMiQgsi6WNbaHvMJB5x5rN7HcFSno5AKVmVoy4",
-    "hypermerge:/G1e73eGqrsEsHeChm2ZXKAMKoQSD5MJNrFbHigeRgxLa",
-    "hypermerge:/GKyWxTYKY6hV6uTwmTz5XxpN81z3aR4coWqz43nxUP1C",
-    "hypermerge:/4QtqpcYMd5uPmLXafiRhzYDyxJvFkaH7BcqfhLWUd5Sh",
-    "hypermerge:/HotW8BNS8AAC1MkBhprfSUFPGAZYz8oNoD5R8Yz43DQi"
-  ],
+  "editor.autoIndent": "advanced",
+  "editor.cursorSurroundingLines": 5,
+  "editor.folding": false,
+  "editor.fontFamily": "'Fira Code', Menlo, Monaco",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 15,
+  "editor.formatOnSave": true,
+  "editor.glyphMargin": false,
+  "editor.insertSpaces": true,
+  "editor.lineHeight": 29,
+  "editor.minimap.enabled": false,
+  "editor.minimap.showSlider": "always",
+  "editor.renderIndentGuides": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.roundedSelection": true,
+  "editor.rulers": [80],
+  "editor.scrollBeyondLastLine": true,
+  "editor.suggest.localityBonus": true,
+  "editor.suggest.showStatusBar": true,
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.tabCompletion": "on",
+  "editor.tabSize": 2,
+  "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "editor.tokenColorCustomizations": {
     "[Ayu Light]": {
       "textMateRules": [
@@ -119,17 +58,114 @@
       ]
     }
   },
-  "eslint.autoFixOnSave": true,
-  "eslint.packageManager": "yarn",
-  "eslint.trace.server": "messages",
+
+  "explorer.autoReveal": true,
+  "explorer.confirmDragAndDrop": false,
+
   "files.autoSave": "off",
-  "eslint.run": "onSave",
   "files.exclude": {
     "docs": true,
     "node_modules": true
   },
+  "files.hotExit": "onExitAndWindowClose",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  "gist.oauth_token": "",
+
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true,
+    "suppressUpdateNotice": false,
+    "suppressWelcomeNotice": true
+  },
+
+  "gitlens.keymap": "chorded",
+  "gitlens.codeLens.enabled": false,
+  "gitlens.views.fileHistory.enabled": true,
+  "gitlens.views.lineHistory.enabled": true,
+
+  "javascript.validate.enable": false,
+
+  "prettier.proseWrap": "always",
+  "prettier.arrowParens": "avoid",
+  "prettier.packageManager": "yarn",
+  "prettier.semi": false,
+  "prettier.trailingComma": "all",
+
+  "ruby.useLanguageServer": true,
+  "ruby.codeCompletion": "rcodetools",
+  "ruby.intellisense": "rubyLocate",
+
+  "runner.extensionMap": {
+    "js": "node"
+  },
+  "runner.languageMap": {
+    "js": "node"
+  },
+
+  "sync.gist": "ff3cc8a2c1a598612c453f3f0fc92d6d",
+  "sync.autoDownload": false,
+  "sync.autoUpload": false,
+  "sync.forceDownload": false,
+
+  "window.openFilesInNewWindow": "off",
+  "window.zoomLevel": 0,
+
+  "workbench.colorTheme": "Ayu Mirage",
+  "workbench.iconTheme": "vs-seti",
+  "workbench.startupEditor": "newUntitledFile",
+
+  // ^ SORTED
+  // UNSORTED:
+
+  "elm.includeUserFunctionDocumentation": true,
+  "elm.userProjectImportStrategy": "dotIsFolder",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "sync.quietSync": false,
+  "sync.removeExtensions": true,
+  "sync.syncExtensions": true,
+  "emmet.excludeLanguages": ["markdown", "typescript", "typescriptreact"],
+  "breadcrumbs.enabled": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.completeFunctionCalls": true,
+  "elm.includeParamsInUserAutocomplete": true,
+
+  "zenMode.fullScreen": false,
+  "zenMode.centerLayout": false,
+  "hypermerge.debug": "*",
+  "hypermerge.roots": [
+    "hypermerge:/92GyYfQs2Cseop4Znfnq2WyhCHkztBfZVTg2i2M1fabK",
+    "hypermerge:/Gdc2MkywHfVAKcRuvP1M5dfR22S1ARv4o1KneiQ2X5wP",
+    "hypermerge:/Df9vZYtdBepd491p9Dk9fb2NsDzoqRcfMwtBugdp3LV9",
+    "hypermerge:/Hqzvv47hsjFEsfJGSXnEGwcaFohYwU9EEBMhnWhFmzqq",
+    "hypermerge:/6HFN5dMgrTxufq7MKsbj1diMPc5mZU79ZyD5o9FNzhCo",
+    "hypermerge:/38aqjdM5UpDCUApBf48XXdRYKaGEYQXGEh3JinfmhxxS",
+    "hypermerge:/8xQJ8wFsQ9ct2EVzUfgzRa6zskHQwGv8SERwTgMcFdvF",
+    "hypermerge:/uhPxrnpxVAfY5kCpcrJ7BXEweaH9UH1HYxvq3egazBi",
+    "hypermerge:/G1MTuhwWU2LkKmndVRHvZ9QGhvYkDK6fden1zAzGutUd",
+    "hypermerge:/BkjLaAeFXmw1FqaCBEsLn67UujeJaiMvi71Xo615WJvp",
+    "hypermerge:/FLJpv5CXX37YC5zu6JZwMGWHsFWChuBkGrb46VRXayyW",
+    "hypermerge:/2afgkgF1ET5Dei7XJ2km5Ndtd2cGY8Guja1cKDgxuBzm",
+    "hypermerge:/7T4uB4wMiQgsi6WNbaHvMJB5x5rN7HcFSno5AKVmVoy4",
+    "hypermerge:/G1e73eGqrsEsHeChm2ZXKAMKoQSD5MJNrFbHigeRgxLa",
+    "hypermerge:/GKyWxTYKY6hV6uTwmTz5XxpN81z3aR4coWqz43nxUP1C",
+    "hypermerge:/4QtqpcYMd5uPmLXafiRhzYDyxJvFkaH7BcqfhLWUd5Sh",
+    "hypermerge:/HotW8BNS8AAC1MkBhprfSUFPGAZYz8oNoD5R8Yz43DQi"
+  ],
+  "eslint.autoFixOnSave": true,
+  "eslint.packageManager": "yarn",
+  "eslint.trace.server": "messages",
+  "eslint.run": "onSave",
+
   "liveshare.featureSet": "insiders",
-  "editor.minimap.showSlider": "always",
   "todo-tree.highlights.enabled": true,
   "search.exclude": {
     "**/node_modules": false,
@@ -137,49 +173,140 @@
     "dist": true
   },
   "typescript.format.semicolons": "remove",
+
+  "terminal.integrated.fontSize": 14,
+
+  "todo-tree.tree.showScanModeButton": false,
+
+  "code-runner.executorMap": {
+    "html": "open"
+  },
+
+  "solargraph.commandPath": "/Users/jeffpeterson/.rbenv/shims/solargraph",
+  "deno.enable": false,
+  "deno.alwaysShowStatus": false,
+  "jest.autoEnable": false,
+  "jest.runAllTestsFirst": false,
+  "workbench.preferredDarkColorTheme": "Ayu Mirage",
+  "workbench.preferredLightColorTheme": "Ayu Light",
+
   "[elm]": {
     "editor.formatOnSave": true,
     "editor.tabSize": 4
   },
-  "[shellscript]": {
-    "editor.tabSize": 4,
-    "editor.insertSpaces": false
-  },
-  "[typescriptreact]": {
+
+  "[graphql]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[ruby]": {
+    "editor.defaultFormatter": "castwide.solargraph"
+  },
+
   "[rust]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
     "editor.rulers": [80]
   },
-  "terminal.integrated.fontSize": 14,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+
+  "[shellscript]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
   },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "todo-tree.tree.showScanModeButton": false,
+
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+    // "editor.codeActionsOnSave": {
+    //   "source.organizeImports": true
+    // }
   },
-  "[javascript]": {
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    // "editor.codeActionsOnSave": {
+    //   "source.organizeImports": true
+    // }
+  },
+
+  "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+
+  "telemetry.enableTelemetry": false,
+  "LineCount.statistics": true,
+  "LineCount.excludes": [
+    "*.lock",
+    "*.log",
+    "**/.vscode/**",
+    "**/node_modules/**"
+  ],
+
+  "explorer.confirmDelete": false,
+  "vscodeMarkdownNotes.lowercaseNewNoteFilenames": false,
+  "vscodeMarkdownNotes.noteCompletionConvention": "toSpaces",
+  "vscodeMarkdownNotes.slugifyCharacter": "_",
+  "solargraph.formatting": true,
+  "liveshare.presence": true,
+  "liveshare.nameTagVisibility": "Never",
+  "gitlens.menus": {
+    "editor": {
+      "blame": false,
+      "clipboard": true,
+      "compare": false,
+      "history": false,
+      "remote": false
+    },
+    "editorGroup": {
+      "blame": true,
+      "compare": true
+    },
+    "editorTab": {
+      "clipboard": true,
+      "compare": true,
+      "history": true,
+      "remote": true
+    },
+    "scm": {
+      "authors": true
+    },
+    "scmGroupInline": {
+      "stash": true
+    },
+    "scmGroup": {
+      "compare": true,
+      "openClose": true,
+      "stash": true
+    },
+    "scmItem": {
+      "clipboard": true,
+      "compare": true,
+      "history": true,
+      "remote": false,
+      "stash": true
+    }
   },
-  "code-runner.executorMap": {
-    "html": "open"
-  },
-  "ruby.useLanguageServer": true,
-  "ruby.codeCompletion": "rcodetools",
-  "ruby.intellisense": "rubyLocate",
-  "solargraph.commandPath": "/Users/jeffpeterson/.rbenv/shims/solargraph",
-  "deno.enable": false,
-  "deno.alwaysShowStatus": false,
-  "editor.suggest.snippetsPreventQuickSuggestions": false,
-  "jest.autoEnable": false,
-  "jest.runAllTestsFirst": false
+  "workbench.editor.enablePreview": false,
+  "window.autoDetectColorScheme": true
 }
