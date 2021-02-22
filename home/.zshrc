@@ -79,7 +79,8 @@ precmd() {
 }
 
 c() {
-  cd ~/code/$(ls ~/code | selecta)
+  # cd ~/code/$(ls ~/code | selecta)
+  cd ~/code/$*
 }
 
 elapsed() {
@@ -97,7 +98,7 @@ plugins=(pm2 git rails bundler ruby coffee osx gem heroku pow powder rvm python 
 
 [[ (-d "$ZSH") ]] && source "$ZSH/oh-my-zsh.sh";
 
-which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux set-option -g default-command "reattach-to-user-namespace -l zsh" > /dev/null;
+# which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux set-option -g default-command "reattach-to-user-namespace -l zsh" > /dev/null;
 
 source ~/.profile
 
@@ -123,4 +124,4 @@ function emulator {
 }
 
 # opam configuration
-test -r /Users/jeffpeterson/.opam/opam-init/init.zsh && . /Users/jeffpeterson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+# test -r /Users/jeffpeterson/.opam/opam-init/init.zsh && . /Users/jeffpeterson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
