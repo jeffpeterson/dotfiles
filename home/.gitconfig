@@ -3,8 +3,11 @@
 	email = jeff@yak.sh
 
 [core]
-	# editor = vim
+	editor = code --wait
 	autocrlf = input
+
+	# ignorecase false is no good on case-insensitive FS
+	# ignorecase = false
 
 [branch]
 	autoSetupRebase = remote
@@ -78,7 +81,7 @@
 	cam = commit -am
 
 	; Show only my commits
-	me = "log --graph --format='%C(yellow)%h %C(reset)- (%ar)%C(magenta)%d %C(reset)%s %C(green)%an' --author='Jeff Peterson'"
+	me = "log --format='%C(yellow)%h %C(reset)(%ad)%C(magenta)%d %C(reset)%s' --author='Jeff Peterson' --date='format:%a, %b %d %Y %T'"
 
 	; Allows the hiding of changes from git diff/status/push/etc.
 	skip = update-index --skip-worktree
