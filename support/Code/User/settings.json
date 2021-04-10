@@ -118,7 +118,7 @@
   "window.openFilesInNewWindow": "off",
   "window.zoomLevel": 0,
 
-  "workbench.colorTheme": "Ayu Mirage",
+  "workbench.colorTheme": "Ayu Light",
   "workbench.iconTheme": "vs-seti",
   "workbench.startupEditor": "newUntitledFile",
 
