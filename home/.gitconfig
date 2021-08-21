@@ -98,6 +98,7 @@
 	autocorrect = 0
 [rerere]
 	enabled = true
+
 [remote "origin"]
 	push = HEAD
 
