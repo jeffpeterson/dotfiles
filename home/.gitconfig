@@ -10,7 +10,8 @@
 	# ignorecase = false
 
 [branch]
-	autoSetupRebase = remote
+	autoSetupMerge = always
+	autoSetupRebase = always
 
 [push]
 	# default = current
