@@ -9,7 +9,9 @@ nvm() {
   # nvm is simply too slow to init it for every shell
   # Run it once to introduce its effects
 
-  # Try homebrew
+  [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+
+  # Try homebrew first
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh" || \
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
   nvm $*
