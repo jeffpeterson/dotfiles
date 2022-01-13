@@ -74,6 +74,8 @@
 	amend = "!git diff @ @{upstream} --quiet --exit-code && echo 'Commit already pushed.' || git commit --amend --no-edit --no-verify"
 	am = amend
 
+	unstage = restore --staged
+
 	; Used for PROMPT
 	branchname = symbolic-ref --short HEAD
 	commitname = rev-parse --short HEAD
