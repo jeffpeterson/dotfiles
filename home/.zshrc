@@ -3,9 +3,11 @@ DISABLE_AUTO_UPDATE="true"
 
 ZSH="$HOME/.oh-my-zsh"
 
+setopt histignorealldups
 setopt noautocd
 setopt PROMPT_SUBST
 unsetopt AUTO_CD
+bindkey -e
 
 autoload -U colors && colors
 autoload -U compinit
