@@ -53,7 +53,7 @@
 	cat = "!sh -c 'git show $(git log --all --max-count=1 --format=%H -- $1)^:$1 | cat'" -
 
 	; Deletes merged branches.
-	trim = "!git branch --merged | grep -v dev | grep -v staging | grep -v master | grep -v '*' | xargs -n1 git branch -d"
+	trim = "!git branch --merged | grep -v dev | grep -v staging | grep -v master | grep -v main | grep -v '*' | xargs -n1 git branch -d"
 
 	; Store all working changes as a 'wip' commit.
 	wip = "!git add -A . && git c --no-verify -m wip "
@@ -105,3 +105,4 @@
 
 [init]
 	templatedir = ~/.git-templates
+	defaultBranch = main
