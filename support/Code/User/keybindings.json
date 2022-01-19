@@ -64,11 +64,6 @@
     "command": "workbench.action.toggleMaximizedPanel"
   },
   {
-    "key": "shift+cmd+r",
-    "command": "extension.runFileSpecs",
-    "when": "editorLangId == ruby"
-  },
-  {
     "key": "shift+cmd+t",
     "command": "-extension.runFileSpecs"
   },
@@ -80,7 +75,12 @@
   {
     "key": "ctrl+i",
     "command": "editor.action.triggerSuggest",
-    "when": "editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+    "when": "!suggestWidgetVisible && editorHasCompletionItemProvider && textInputFocus && !editorReadonly"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "hideSuggestWidget",
+    "when": "suggestWidgetVisible && textInputFocus"
   },
   {
     "key": "ctrl+space",
@@ -210,5 +210,34 @@
     "key": "cmd+m",
     "command": "-markdown.extension.editing.toggleMath",
     "when": "editorTextFocus && !editorReadonly && editorLangId == 'markdown'"
+  },
+  {
+    "key": "shift+cmd+r",
+    "command": "-solargraph.search"
+  },
+  {
+    "key": "shift+f12",
+    "command": "-editor.action.goToReferences",
+    "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
+  },
+  {
+    "key": "cmd+3",
+    "command": "workbench.action.showAllSymbols"
+  },
+  {
+    "key": "cmd+t",
+    "command": "-workbench.action.showAllSymbols"
+  },
+  {
+    "key": "cmd+2",
+    "command": "-workbench.action.focusSecondEditorGroup"
+  },
+  {
+    "key": "cmd+2",
+    "command": "workbench.action.gotoSymbol"
+  },
+  {
+    "key": "shift+cmd+o",
+    "command": "-workbench.action.gotoSymbol"
   }
 ]
