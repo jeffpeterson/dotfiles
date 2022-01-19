@@ -98,11 +98,9 @@ COMPLETION_WAITING_DOTS=true;
 
 plugins=(pm2 git rails bundler ruby coffee osx gem heroku pow powder rvm python npm brew cloudapp rspec jsontools);
 
-[[ (-d "$ZSH") ]] && source "$ZSH/oh-my-zsh.sh";
+[[ (-d "$ZSH") ]] && . "$ZSH/oh-my-zsh.sh";
 
 # which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux set-option -g default-command "reattach-to-user-namespace -l zsh" > /dev/null;
-
-source ~/.profile
 
 # source $HOME/code/fuchsia/scripts/fx-env.sh
 
@@ -111,13 +109,10 @@ PROMPT="
 %{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(current_branch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
 %{$fg[magenta]%}>%{$reset_color%} "
 
-eval "$(starship init zsh)"
+which starship >/dev/null && eval "$(starship init zsh)"
 
-# See .env for a function to load on-demand if this gets too slow
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-
-# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+. ~/.profile
+[ -s ~/.iterm2_shell_integration.zsh ] && . ~/.iterm2_shell_integration.zsh
 
 # tabtab source for electron-forge package
 # uninstall by removing these lines or running `tabtab uninstall electron-forge`
