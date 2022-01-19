@@ -5,8 +5,6 @@
     "Math.pow($x, 2)": "$x * $x"
   },
 
-  "diffEditor.renderSideBySide": false,
-
   "editor.acceptSuggestionOnCommitCharacter": false,
   "editor.autoIndent": "advanced",
   "editor.cursorSurroundingLines": 5,
@@ -17,11 +15,10 @@
   "editor.formatOnSave": true,
   "editor.glyphMargin": false,
   "editor.insertSpaces": true,
-  "editor.lineHeight": 29,
+  "editor.lineHeight": 0,
   "editor.minimap.enabled": false,
   "editor.minimap.showSlider": "always",
   "editor.renderIndentGuides": true,
-  "editor.renderWhitespace": "boundary",
   "editor.roundedSelection": true,
   "editor.rulers": [80],
   "editor.scrollBeyondLastLine": true,
@@ -63,10 +60,10 @@
   "explorer.confirmDragAndDrop": false,
 
   "files.autoSave": "off",
-  "files.exclude": {
-    "docs": true,
-    "node_modules": true
-  },
+  // "files.exclude": {
+  //   "docs": true,
+  //   "node_modules": true
+  // },
   "files.hotExit": "onExitAndWindowClose",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
@@ -91,8 +88,6 @@
   "gitlens.views.fileHistory.enabled": true,
   "gitlens.views.lineHistory.enabled": true,
 
-  "javascript.validate.enable": false,
-
   "prettier.proseWrap": "always",
   "prettier.arrowParens": "avoid",
   "prettier.packageManager": "yarn",
@@ -115,8 +110,7 @@
   "sync.autoUpload": false,
   "sync.forceDownload": false,
 
-  "window.openFilesInNewWindow": "off",
-  "window.zoomLevel": 0,
+"window.openFilesInNewWindow": "off",
 
   "workbench.colorTheme": "Ayu Light",
   "workbench.iconTheme": "vs-seti",
@@ -133,9 +127,7 @@
   "sync.syncExtensions": true,
   "emmet.excludeLanguages": ["markdown", "typescript", "typescriptreact"],
   "breadcrumbs.enabled": true,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "javascript.suggest.completeFunctionCalls": true,
-  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.completeFunctionCalls": false,
   "elm.includeParamsInUserAutocomplete": true,
 
   "zenMode.fullScreen": false,
@@ -160,18 +152,17 @@
     "hypermerge:/4QtqpcYMd5uPmLXafiRhzYDyxJvFkaH7BcqfhLWUd5Sh",
     "hypermerge:/HotW8BNS8AAC1MkBhprfSUFPGAZYz8oNoD5R8Yz43DQi"
   ],
-  "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
   "eslint.trace.server": "messages",
   "eslint.run": "onSave",
 
   "liveshare.featureSet": "insiders",
   "todo-tree.highlights.enabled": true,
-  "search.exclude": {
-    "**/node_modules": false,
-    "node_modules": true,
-    "dist": true
-  },
+  // "search.exclude": {
+  //   "**/node_modules": false,
+  //   "node_modules": true,
+  //   "dist": true
+  // },
   "typescript.format.semicolons": "remove",
 
   "terminal.integrated.fontSize": 14,
@@ -181,14 +172,16 @@
   "code-runner.executorMap": {
     "html": "open"
   },
-
-  "solargraph.commandPath": "/Users/jeffpeterson/.rbenv/shims/solargraph",
   "deno.enable": false,
   "deno.alwaysShowStatus": false,
   "jest.autoEnable": false,
   "jest.runAllTestsFirst": false,
   "workbench.preferredDarkColorTheme": "Ayu Mirage",
   "workbench.preferredLightColorTheme": "Ayu Light",
+
+  "[elixir]": {
+    "editor.defaultFormatter": "JakeBecker.elixir-ls"
+  },
 
   "[elm]": {
     "editor.formatOnSave": true,
@@ -217,7 +210,8 @@
 
   "[markdown]": {
     "editor.wordWrap": "on",
-    "editor.quickSuggestions": true,
+    // "editor.quickSuggestions": true,
+    // "editor.snippetSuggestions": "none",
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
@@ -228,7 +222,10 @@
   "[rust]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.rulers": [80]
+    "editor.rulers": [
+      80
+    ],
+    "editor.defaultFormatter": "rust-lang.rust"
   },
 
   "[shellscript]": {
@@ -307,6 +304,86 @@
       "stash": true
     }
   },
-  "workbench.editor.enablePreview": false,
-  "window.autoDetectColorScheme": true
+  "window.autoDetectColorScheme": true,
+  "solargraph.checkGemVersion": false,
+  "liveshare.allowInvites": "all",
+  "GitLive.Issue tracker integration": "Disabled",
+  "diffEditor.renderSideBySide": false,
+  "todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "[ ]",
+    "[x]"
+  ],
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
+  "editor.quickSuggestions": false,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter.notebook.ipynb"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "githubIssues.queries": [
+    {
+      "label": "My Issues",
+      "query": "default"
+    },
+    {
+      "label": "Created Issues",
+      "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+    }
+  ],
+  "elixirLS.suggestSpecs": false,
+  "eslint.alwaysShowStatus": true,
+  "editor.bracketPairColorization.enabled": true,
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.profiles.osx": {
+    "bash": {
+      "path": "bash",
+      "args": ["-l"],
+      "icon": "terminal-bash"
+    },
+    "zsh": {
+      "path": "zsh",
+      "args": ["-l"]
+    },
+    "fish": {
+      "path": "fish",
+      "args": ["-l"]
+    },
+    "tmux": {
+      "path": "tmux",
+      "icon": "terminal-tmux"
+    },
+    "pwsh": {
+      "path": "pwsh",
+      "icon": "terminal-powershell"
+    },
+    "JavaScript Debug Terminal": {
+      "extensionIdentifier": "ms-vscode.js-debug",
+      "icon": "debug",
+      "id": "extension.js-debug.debugTerminal",
+      "title": "JavaScript Debug Terminal"
+    }
+  },
+  "java.home": "/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "redhat.telemetry.enabled": false,
+  "workbench.colorCustomizations": {
+    // "editorUnnecessaryCode.border": "#fffb005e"
+  },
+  "javascript.suggestionActions.enabled": false,
+  "C_Cpp.clang_format_fallbackStyle": "LLVM",
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "svelte.enable-ts-plugin": true,
+  "security.workspace.trust.untrustedFiles": "open"
 }
