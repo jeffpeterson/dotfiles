@@ -41,11 +41,11 @@ dev() {
 			;;
 
 		id)
-			uuidgen | tr '[:upper:]' '[:lower:]' | tee /dev/stderr | tr -d '\n' | pbcopy
+			uuidgen | tr '[:upper:]' '[:lower:]' | tee >(tr -d '\n' | pbcopy)
 			;;
 
 		hash)
-			cat | shasum -a 256 | awk '{print $1;}' | tee /dev/stderr | tr -d '\n' | pbcopy
+			cat | shasum -a 256 | awk '{print $1;}' | tee >(tr -d '\n' | pbcopy)
 			;;
 
 		tu*)
