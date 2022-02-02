@@ -1,0 +1,10 @@
+\x auto
+\pset null '¤'
+\timing on
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTCONTROL ignoredups
+\set COMP_KEYWORD_CASE upper
+\set PROMPT1 '%[%033[1m%]%m @ %/%> '
+-- SELECT * FROM<enter>. %R shows what type of input it expects.
+\set PROMPT2 '...%R> '
+\conninfo

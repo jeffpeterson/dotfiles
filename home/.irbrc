@@ -24,3 +24,14 @@ class Object
     puts "Source not available. Is this a C extension?"
   end
 end
+
+module ActiveRecord
+  class Relation
+    def analyze
+      sql = connection.unprepared_statement { to_sql }
+      puts connection.execute("EXPLAIN (ANALYZE, BUFFERS) #{sql}").
+        map { |x| x.values }.
+        join("\n")
+    end
+  end
+end
