@@ -10,7 +10,7 @@
 	# ignorecase = false
 
 [branch]
-	autoSetupMerge = always
+	autoSetupMerge = true
 	autoSetupRebase = always
 
 [push]
