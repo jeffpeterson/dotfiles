@@ -95,8 +95,6 @@
   "prettier.trailingComma": "all",
 
   "ruby.useLanguageServer": true,
-  "ruby.codeCompletion": "rcodetools",
-  "ruby.intellisense": "rubyLocate",
 
   "runner.extensionMap": {
     "js": "node"
@@ -210,9 +208,9 @@
 
   "[markdown]": {
     "editor.wordWrap": "on",
-    // "editor.quickSuggestions": true,
-    // "editor.snippetSuggestions": "none",
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.trimAutoWhitespace": false,
+    "files.trimTrailingWhitespace": false
   },
 
   "[ruby]": {
@@ -231,6 +229,10 @@
   "[shellscript]": {
     "editor.tabSize": 4,
     "editor.insertSpaces": false
+  },
+  "[slim]": {
+    "editor.trimAutoWhitespace": false,
+    "files.trimTrailingWhitespace": false
   },
 
   "[typescript]": {
@@ -385,5 +387,7 @@
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
   "svelte.enable-ts-plugin": true,
-  "security.workspace.trust.untrustedFiles": "open"
+  "security.workspace.trust.untrustedFiles": "open",
+  "gitlens.blame.ignoreWhitespace": true,
+  "files.trimFinalNewlines": true
 }
