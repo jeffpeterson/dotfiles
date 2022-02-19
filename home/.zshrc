@@ -9,8 +9,11 @@ setopt SHARE_HISTORY
 setopt HIST_FIND_NO_DUPS
 # setopt HIST_IGNORE_ALL_DUPS
 
-setopt noautocd
+setopt PROMPT_CR
+setopt PROMPT_SP
 setopt PROMPT_SUBST
+
+setopt noautocd
 unsetopt AUTO_CD
 bindkey -e
 
