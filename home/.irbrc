@@ -11,11 +11,17 @@ def y obj
 end
 
 class Object
-  def vim method_name = nil
+  def locate_method(name)
+    method(name)
+  rescue NameError
+    instance_method(name)
+  end
+
+  def vim(method_name = nil)
     if method_name.nil? && self.is_a?(Method)
       file, line = self.source_location
     else
-      file, line = method(method_name).source_location
+      file, line = locate_method(method_name).source_location
     end
 
     # return system("tmux split-window -h \"vim #{file} +#{line}\"") if file
@@ -30,8 +36,7 @@ module ActiveRecord
     def analyze
       sql = connection.unprepared_statement { to_sql }
       puts connection.execute("EXPLAIN (ANALYZE, BUFFERS) #{sql}").
-        map { |x| x.values }.
-        join("\n")
+        map(&:values).join("\n")
     end
   end
 end
