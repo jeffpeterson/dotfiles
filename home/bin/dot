@@ -21,6 +21,18 @@ usage_cmd commit "<message>" <<-DESC
 	Commit all changes to the dotfile repo.
 DESC
 
+usage_cmd status <<-DESC
+	View dotfile changes.
+DESC
+
+usage_cmd push <<-DESC
+	Push dotfile commits.
+DESC
+
+usage_cmd pull <<-DESC
+	Pull dotfile commits.
+DESC
+
 usage_cmd repo "[dotfile]" <<-DESC
 	Show a dotfile on github.
 DESC
@@ -156,13 +168,28 @@ dot() {
 			fi
 			;;
 
-		commit)
+		commit|c*)
 			echo "$2"
 			required message "$2"
 
 			cd "$ROOT"
 			git add .
 			git commit -m "$message"
+			;;
+
+		status|s*)
+			cd "$ROOT"
+			git status
+			;;
+
+		push)
+			cd "$ROOT"
+			git push
+			;;
+
+		pull)
+			cd "$ROOT"
+			git pull
 			;;
 
 		repo)

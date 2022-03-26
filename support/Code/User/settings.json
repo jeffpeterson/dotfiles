@@ -8,7 +8,6 @@
   "editor.acceptSuggestionOnCommitCharacter": false,
   "editor.autoIndent": "advanced",
   "editor.cursorSurroundingLines": 5,
-  "editor.folding": false,
   "editor.fontFamily": "'Fira Code', Menlo, Monaco",
   "editor.fontLigatures": true,
   "editor.fontSize": 15,
@@ -26,7 +25,6 @@
   "editor.suggest.showStatusBar": true,
   "editor.suggest.snippetsPreventQuickSuggestions": false,
   "editor.tabCompletion": "on",
-  "editor.tabSize": 2,
   "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
@@ -108,9 +106,9 @@
   "sync.autoUpload": false,
   "sync.forceDownload": false,
 
-"window.openFilesInNewWindow": "off",
+  "window.openFilesInNewWindow": "off",
 
-  "workbench.colorTheme": "Ayu Light",
+  "workbench.colorTheme": "Ayu Mirage",
   "workbench.iconTheme": "vs-seti",
   "workbench.startupEditor": "newUntitledFile",
 
@@ -220,9 +218,7 @@
   "[rust]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.rulers": [
-      80
-    ],
+    "editor.rulers": [80],
     "editor.defaultFormatter": "rust-lang.rust"
   },
 
@@ -230,10 +226,7 @@
     "editor.tabSize": 4,
     "editor.insertSpaces": false
   },
-  "[slim]": {
-    "editor.trimAutoWhitespace": false,
-    "files.trimTrailingWhitespace": false
-  },
+  "[slim]": {},
 
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
