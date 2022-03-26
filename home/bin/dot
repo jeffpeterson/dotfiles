@@ -180,6 +180,7 @@ dot() {
 		status|s*)
 			cd "$ROOT"
 			git status
+			git diff
 			;;
 
 		push)
