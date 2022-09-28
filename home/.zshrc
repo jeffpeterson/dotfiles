@@ -132,3 +132,5 @@ function emulator {
 
 # opam configuration
 # test -r /Users/jeffpeterson/.opam/opam-init/init.zsh && . /Users/jeffpeterson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
