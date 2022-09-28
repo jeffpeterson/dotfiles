@@ -130,3 +130,17 @@ usage_cmd() {
 usage() {
 	printf "$DESC\n  Usage:\n\n      $NAME $(yellow "<cmd>") [flags]\n\n${USAGE}"
 }
+
+rel_path() {
+	ruby <<-END
+		require "pathname"
+		puts Pathname.new("$2").relative_path_from("$1")
+	END
+}
+
+abs_path() {
+	ruby <<-END
+		require "pathname"
+		puts Pathname.new("$1").realpath
+	END
+}

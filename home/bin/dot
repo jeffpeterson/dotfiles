@@ -2,7 +2,7 @@
 
 source "${BASH_SOURCE%/*}/_includes.sh"
 
-ROOT=`realpath ${BASH_SOURCE%/*}/../..`
+ROOT=`abs_path ${BASH_SOURCE%/*}/../..`
 REPO_ROOT="https://github.com/jeffpeterson/dotfiles"
 
 usage_name "dot" <<-DESC
@@ -73,8 +73,6 @@ usage_cmd help <<-DESC
 	Print this doc.
 DESC
 
-declare -A FLAGS
-
 dot() {
 	required "cmd" $1
 
@@ -100,9 +98,9 @@ dot() {
 			required dst $3
 
 			cur=`readlink -n "$dst"`
-			pretty="~/$(realpath -s --relative-to="$HOME" "$dst")"
+			pretty="~/$(rel_path "$HOME" "$dst")"
 
-			if [ -z "${FLAGS[force]}" ]; then
+			if [ -z "${FORCE_FLAG}" ]; then
 				if [ ! -z "$cur" ]; then
 					if [ "$cur" == "$src" ]; then
 						echo "$(dim "Found $pretty")"
@@ -122,7 +120,7 @@ dot() {
 
 		links-to)
 			required path $2
-			newpath="$(realpath -s --relative-to="$ROOT" "$path")"
+			newpath="$(rel_path "$ROOT" "$path")"
 
 			case "$newpath" in
 				home/*)
@@ -140,7 +138,7 @@ dot() {
 			;;
 
 		bin)
-			echo "$(realpath ${BASH_SOURCE%/*})"
+			echo "$(abs_path ${BASH_SOURCE%/*})"
 			;;
 
 		os)
@@ -218,7 +216,7 @@ PARAMS=()
 while [[ $# -gt 0 ]]; do
 	case "$1" in
 		-f|--force)
-			FLAGS[force]="1"
+			FORCE_FLAG="1"
 			shift
 			;;
 
