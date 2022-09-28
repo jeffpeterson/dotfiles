@@ -79,7 +79,7 @@ dot() {
 	case $cmd in
 		link)
 			dot link-all "$ROOT/home" "$HOME"
-			dot link-all "$ROOT/config" "$HOME/.config"
+			# dot link-all "$ROOT/config" "$HOME/.config"
 			show $(green "Done!")
 			;;
 
