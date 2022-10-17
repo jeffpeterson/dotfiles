@@ -32,8 +32,13 @@ usage_cmd id <<-DESC
 	e.g. 1D73E1DE-D26C-4A1F-B950-23626E1056C1
 DESC
 
+usage_cmd restart <<-DESC
+	Restart brew service.
+DESC
+
 dev() {
 	required cmd "$1"
+	args="${@:2}"
 
 	case $cmd in
 		root)
@@ -59,20 +64,29 @@ dev() {
 			ssh a.yak.sh -NT "${@:2}"
 			;;
 
-		split)
-			required name "$2"
-			args=()
+		log|tail)
+			tail -f /opt/homebrew/var/log/$2/*.log
+			;;
 
-			for cmd in "${@:2}"; do
-				args+=(splitw)
-				args+=("$cmd; bash -i")
-				args+=(";")
+		restart|r*)
+			brew services restart "$args";
+			;;
+
+		split)
+			# https://unix.stackexchange.com/questions/292137/tmux-script-to-launch-several-commands
+			required commands "$2"
+			args=("\"$cmd && $SHELL -i\"")
+
+			for cmd in "${@:3}"; do
+				args+=('\;')
+				args+=(split-window)
+				args+=("\"$cmd && $SHELL -i\"")
 			done
 
 			echo "${args[@]}"
 
-			# tmux new -A -s dev-split "$args" \
-			# 	select-layout tiled
+			# tmux new -A -s dev-split
+			tmux new-session $args
 			;;
 
 		split-example)
