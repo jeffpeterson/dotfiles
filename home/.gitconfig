@@ -16,7 +16,8 @@
 [push]
 	# default = current
 	default = matching
-
+[rebase]
+	updateRefs = true
 [color]
 	ui = auto
 
