@@ -73,11 +73,21 @@ usage_cmd help <<-DESC
 	Print this doc.
 DESC
 
+puts() {
+	[ "$QUIET_FLAG" ] || echo "$@"
+}
+
+puts_v() {
+	[ "$VERBOSE_FLAG" ] && puts "$@"
+}
+
 dot() {
 	required "cmd" $1
 
 	case $cmd in
 		link)
+			[ "$DRY_RUN_FLAG" ] && puts "Dry run: Not actually linking."
+
 			dot link-all "$ROOT/home" "$HOME"
 			# dot link-all "$ROOT/config" "$HOME/.config"
 			show $(green "Done!")
@@ -103,19 +113,23 @@ dot() {
 			if [ -z "${FORCE_FLAG}" ]; then
 				if [ ! -z "$cur" ]; then
 					if [ "$cur" == "$src" ]; then
-						echo "$(dim "Found $pretty")"
+						[ "$QUIET_FLAG" ] || puts "$(dim "Found $pretty")"
 						return
 					else
-						echo $(yellow "$pretty -> $cur already linked")
+						[ "$QUIET_FLAG" ] || puts $(yellow "$pretty -> $cur already linked")
 						return
 					fi
 				elif [ -e "$dst" ]; then
-					echo "$(red "$pretty exists!")"
+					puts "$(red "$pretty exists!")"
 					return
 				fi
 			fi
 
-			ln -nsf "$src" "$dst" && echo "$(green Linked) $pretty"
+			if [ "$DRY_RUN_FLAG" ]; then
+				puts "$(green Linked) $pretty"
+			else
+				ln -nsf "$src" "$dst" && puts "$(green Linked) $pretty"
+			fi
 			;;
 
 		links-to)
@@ -171,8 +185,12 @@ dot() {
 			required message "$2"
 
 			cd "$ROOT"
-			git add .
-			git commit -m "$message"
+			if [ "$DRY_RUN_FLAG" ]; then
+				puts "Dry run: Not actually committing."
+			else
+				git add .
+				git commit -m "$message"
+			fi
 			;;
 
 		status|s*)
@@ -183,12 +201,20 @@ dot() {
 
 		push)
 			cd "$ROOT"
-			git push
+			if [ "$DRY_RUN_FLAG" ]; then
+				echo "Dry run: Not actually pushing."
+			else
+				git push
+			fi
 			;;
 
 		pull)
 			cd "$ROOT"
-			git pull
+			if [ "$DRY_RUN_FLAG" ]; then
+				echo "Dry run: Not actually pulling."
+			else
+				git pull
+			fi
 			;;
 
 		repo)
@@ -213,10 +239,42 @@ dot() {
 
 PARAMS=()
 
+# Possible flags:
+# -f, --force: force link even if file exists
+# -h, --help: print help
+# -v, --verbose: print more info
+# -q, --quiet: print less info
+# -d, --dry-run: don't actually do anything
+# -y, --yes: answer yes to all questions
 while [[ $# -gt 0 ]]; do
 	case "$1" in
 		-f|--force)
 			FORCE_FLAG="1"
+			shift
+			;;
+
+		-h|--help)
+			usage
+			exit 0
+			;;
+
+		-v|--verbose)
+			VERBOSE_FLAG="1"
+			shift
+			;;
+
+		-q|--quiet)
+			QUIET_FLAG="1"
+			shift
+			;;
+
+		-d|--dry-run)
+			DRY_RUN_FLAG="1"
+			shift
+			;;
+
+		-y|--yes)
+			YES_FLAG="1"
 			shift
 			;;
 

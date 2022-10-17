@@ -29,7 +29,8 @@ optional() {
 	local val="${@:2}"
 
 	if [[ ! -z "$val" ]]; then
-		eval "$1=${val@Q}"
+		# eval "$1=${val@Q}" # requires newer bash
+		eval "$1=$(printf '%q' "$val")"
 	else
 		eval "unset $1"
 	fi

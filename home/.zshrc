@@ -37,9 +37,9 @@ write_defaults() {
   defaults write    com.apple.dock   expose-animation-duration    -float 0.12;
   defaults write    com.apple.finder QLEnableTextSelection        -bool  YES;
   defaults write -g ApplePressAndHoldEnabled                      -bool  NO;
-  defaults write    com.apple.dashboard mcx-disabled              -bool  YES;
-  defaults write    com.apple.mouse.tapBehavior                   -bool  YES;
-  defaults write    com.apple.trackpad.enableSecondaryClick       -bool  YES;
+  # defaults write    com.apple.dashboard mcx-disabled              -bool  YES;
+  # defaults write    com.apple.mouse.tapBehavior                   -bool  YES;
+  # defaults write    com.apple.trackpad.enableSecondaryClick       -bool  YES;
   defaults write    .GlobalPreferences com.apple.trackpad.scaling -float 2;
   killall Dock
 }
