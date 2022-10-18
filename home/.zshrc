@@ -133,4 +133,4 @@ function emulator {
 # opam configuration
 # test -r /Users/jeffpeterson/.opam/opam-init/init.zsh && . /Users/jeffpeterson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+# export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
