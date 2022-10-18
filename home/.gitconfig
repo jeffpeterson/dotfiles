@@ -25,6 +25,9 @@
 	meta = yellow
 
 [alias]
+	; root path of current repo
+	root = rev-parse --show-toplevel
+
 	; Better git branch
 	b = branch -vv
 
@@ -91,6 +94,10 @@
 	skip = update-index --skip-worktree
 	unskip = update-index --no-skip-worktree
 	skipped = !git ls-files -v | grep '^S' | cut -f2 -d' '
+
+	; Like ignore, but local-only.
+	exclude = !echo >> .git/info/exclude
+	excluded = !cat .git/info/exclude | grep -v "^#"
 
 [diff]
 	algorithm = patience
