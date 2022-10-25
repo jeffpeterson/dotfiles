@@ -94,6 +94,19 @@ dev() {
 				"ls" \
 				"ls .."
 			;;
+
+		each)
+			required cmd "$2"
+
+			local apps=(${DEV_EACH:-})
+			for app in "${apps[@]}"
+			do
+				echo "Running '$args' for $app..."
+				cd "$(dev root)/$app"
+				$args
+			done
+			;;
+
 	esac
 }
 
