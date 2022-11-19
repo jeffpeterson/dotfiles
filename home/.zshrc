@@ -1,4 +1,4 @@
-source ~/.env
+source ~/.rootenv
 DISABLE_AUTO_UPDATE="true"
 
 ZSH="$HOME/.oh-my-zsh"

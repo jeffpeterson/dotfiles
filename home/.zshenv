@@ -1,1 +1,1 @@
-source ~/.env
+source ~/.rootenv
