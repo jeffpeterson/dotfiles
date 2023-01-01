@@ -22,10 +22,6 @@ autoload -U compinit
 compinit
 zstyle ':completion:*' menu select
 
-alias no=note;
-alias be='bundle exec';
-alias g=git;
-
 osname() {
   uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
 }

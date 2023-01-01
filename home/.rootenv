@@ -56,6 +56,12 @@ export JDK_HOME=/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
 export LDFLAGS="-L/usr/local/opt/ghc@8.2/lib"
 
 alias codei=code-insiders
+alias no=note
+alias be='bundle exec'
+alias g=git
+alias r=bin/rails
+alias rk=bin/rake
+alias d=deno
 
 export GOPATH="$HOME/code/go/projects:$GOPATH"
 # export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
