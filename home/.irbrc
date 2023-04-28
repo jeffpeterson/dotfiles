@@ -6,8 +6,10 @@ IRB.conf[:PROMPT_MODE]  = :SIMPLE
 IRB.conf[:SAVE_HISTORY] = 1000
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb_history"
 
-def Fabricate(*args)
-  require './spec/support/fabricators'
+unless respond_to? :Fabricate
+  def Fabricate(*args)
+    require './spec/support/fabricators'
+  end
 end
 
 def y(obj)
@@ -72,12 +74,16 @@ module Enumerable
 end
 
 if defined? ActiveRecord
+  def policy(obj)
+    Pundit.policy({ user: me }, obj)
+  end
+
   def pg_timeout(v)
     # Set the current connection's statement timeout.
     ActiveRecord::Base.connection.execute "SET statement_timeout = #{v.in_milliseconds}"
   end
 
-  pg_timeout(60.seconds)
+  pg_timeout(60.seconds) rescue ActiveRecord::ConnectionNotEstablished
 
   def pg_ps(**options)
     # List currently active queries.
