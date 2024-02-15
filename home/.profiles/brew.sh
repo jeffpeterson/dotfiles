@@ -1,4 +1,8 @@
-push /usr/local/bin
-push /usr/local/sbin
+# push /usr/local/bin
+# push /usr/local/sbin
+# push /opt/homebrew/bin
+# push /opt/homebrew/sbin
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
