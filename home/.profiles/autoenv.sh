@@ -1,1 +1,1 @@
-which brew && source $(brew --prefix autoenv)/activate.sh
+source $(brew --prefix autoenv)/activate.sh
