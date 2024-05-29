@@ -28,6 +28,9 @@
 	; root path of current repo
 	root = rev-parse --show-toplevel
 
+	; Add a git note
+	note = notes edit
+
 	; Better git branch
 	b = branch -vv
 
