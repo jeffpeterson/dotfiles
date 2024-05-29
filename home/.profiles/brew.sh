@@ -1,5 +1,3 @@
-# push /usr/local/bin
-# push /usr/local/sbin
 # push /opt/homebrew/bin
 # push /opt/homebrew/sbin
 

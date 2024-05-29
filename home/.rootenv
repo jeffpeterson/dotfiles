@@ -36,10 +36,6 @@ profile asdf
 profile rust
 # profile rbenv
 # profile nvm
-
-sprofile sendstack
-sprofile yc
-
 profile secure
 
 push $HOME/bin
