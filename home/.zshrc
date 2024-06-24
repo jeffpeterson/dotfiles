@@ -71,7 +71,7 @@ trash() {
 }
 
 f() {
-  find . -name "*$1*"
+  find . -name "*$1*" "${@:2}"
 }
 
 typeset -F SECONDS=0;
