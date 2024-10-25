@@ -3,7 +3,6 @@
 	email = jeff@yak.sh
 
 [core]
-	editor = cursor --wait
 	autocrlf = input
 
 	# ignorecase false is no good on case-insensitive FS
