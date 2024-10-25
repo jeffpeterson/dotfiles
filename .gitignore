@@ -13,6 +13,8 @@ node_modules
 !/home/.atom/styles.less
 !/home/.atom/packages.txt
 
+/home/.bundle/cache
+
 /home/.config/*
 !/home/.config/yarn
 /home/.config/yarn/link

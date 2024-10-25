@@ -1,0 +1,3 @@
+--skip-jbuilder
+--database=sqlite3
+--full

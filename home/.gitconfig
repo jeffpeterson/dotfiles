@@ -3,7 +3,7 @@
 	email = jeff@yak.sh
 
 [core]
-	editor = code --wait
+	editor = cursor --wait
 	autocrlf = input
 
 	# ignorecase false is no good on case-insensitive FS
@@ -37,7 +37,7 @@
 	; Lists recently used branches.
 	bs = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(HEAD) %(objectname:short) %(committerdate:short) %(color:yellow)%(align:30)%(refname:short)%(end)%(color:reset) %(contents:subject)'
 	; Skip pre-commit hooks
-	c = commit --no-verify
+	c = commit --no-verify --verbose
 	; Commit with pre-commit hooks
 	cv = commit
 	co = checkout

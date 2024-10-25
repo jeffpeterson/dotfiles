@@ -34,6 +34,7 @@ push $HOME/code/flutter/bin
 
 profile asdf
 profile rust
+# profile nix
 # profile rbenv
 # profile nvm
 profile secure
@@ -43,7 +44,7 @@ push $HOME/sbin
 
 # export CDPATH="$CDPATH:$HOME/code:$HOME/work"
 export EDITOR=vim
-export VISUAL=code
+export VISUAL="cursor -w"
 export TZ=America/Los_Angeles
 export VIM_APP_DIR="$HOME/Applications"
 export FUCHSIA_BUILD_DIR=$HOME/code/fuchsia/out/x64
@@ -51,6 +52,7 @@ export FUCHSIA_BUILD_DIR=$HOME/code/fuchsia/out/x64
 export JDK_HOME=/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
 export LDFLAGS="-L/usr/local/opt/ghc@8.2/lib"
 
+alias code=cursor
 alias codei=code-insiders
 alias no=note
 alias be='bundle exec'
