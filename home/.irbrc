@@ -38,6 +38,10 @@ def go(obj)
   Launchy.open link_to(obj)
 end
 
+def rubymine(file, line = 0)
+  system("rubymine #{file} --line #{line || 0}")
+end
+
 class Object
   def locate_method(name)
     method(name)
@@ -46,14 +50,19 @@ class Object
   end
 
   def vim(method_name = nil)
-    if method_name.nil? && is_a?(Method)
-      file, line = source_location
-    else
+    if method_name
       file, line = locate_method(method_name).source_location
+    elsif is_a?(Method)
+      file, line = source_location
+    elsif is_a?(Module)
+      file, line = module_parent.const_source_location(name)
+    else
+      raise "What is this? I can't edit this..."
     end
 
     # return system("tmux split-window -h \"vim #{file} +#{line}\"") if file
-    return system("$VISUAL --goto #{file}:#{line || 0}") if file
+    # return system("$VISUAL --goto #{file}:#{line || 0}") if file
+    return rubymine(file, line || 0) if file
 
     puts 'Source not available. Is this a C extension?'
   end

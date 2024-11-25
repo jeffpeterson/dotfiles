@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+PROGRAM = File.basename $0
+
+Command = Struct.new(:parts) do
+  def count = parts.length
+  def args  = ARGV.drop(count)
+  def glob  = parts.map { "#{_1}*" }.join('-')
+  def bins  = Dir["#{Dir.pwd}/bin/#{PROGRAM}-#{glob}", "#{$0}-#{glob}"]
+  def bin   = bins.first
+  def exec! = exec(bin, *args)
+end
+
+parts = ARGV.take_while { _1 =~ /^\w[-\w]*$/ }
+command = parts.length.downto(1).lazy.map { Command.new(parts.take(_1)) }.detect(&:bin)
+
+if command
+  command.exec!
+else
+  pp Dir["#{Dir.pwd}/bin/#{PROGRAM}-*", "#{$0}-*"]
+end

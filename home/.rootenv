@@ -45,7 +45,7 @@ push $HOME/sbin
 
 # export CDPATH="$CDPATH:$HOME/code:$HOME/work"
 export EDITOR=vim
-export VISUAL="rubymine"
+export VISUAL="rubymine --wait"
 export TZ=America/Los_Angeles
 export VIM_APP_DIR="$HOME/Applications"
 export FUCHSIA_BUILD_DIR=$HOME/code/fuchsia/out/x64
@@ -54,7 +54,6 @@ export JDK_HOME=/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home
 export LDFLAGS="-L/usr/local/opt/ghc@8.2/lib"
 
 alias code=rubymine
-alias rm=rubymine
 alias codei=code-insiders
 alias no=note
 alias be='bundle exec'
@@ -62,6 +61,7 @@ alias g=git
 alias r=bin/rails
 alias rk=bin/rake
 alias d=deno
+alias tailscale=/Applications/Tailscale.app/Contents/MacOS/Tailscale
 
 export GOPATH="$HOME/code/go/projects:$GOPATH"
 # export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
