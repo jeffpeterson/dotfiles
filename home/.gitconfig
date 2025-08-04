@@ -4,6 +4,7 @@
 
 [core]
 	autocrlf = input
+	excludesfile = ~/.gitignore
 
 	# ignorecase false is no good on case-insensitive FS
 	# ignorecase = false
