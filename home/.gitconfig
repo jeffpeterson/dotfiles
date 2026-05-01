@@ -16,6 +16,7 @@
 [push]
 	# default = current
 	default = matching
+	autoSetupRemote = true
 [rebase]
 	updateRefs = true
 [color]
