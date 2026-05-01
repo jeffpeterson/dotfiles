@@ -22,6 +22,8 @@ has() {
 push /usr/local/heroku/bin
 push $HOME/.yarn/bin
 push $HOME/.bun/bin
+push $HOME/.cache/lm-studio/bin
+push $HOME/.lmstudio/bin
 push /usr/local/share/npm/bin
 push /usr/local/opt/ccache/libexec
 push /usr/local/opt/go/libexec/bin
