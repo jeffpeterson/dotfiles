@@ -130,9 +130,16 @@ function emulator {
 }
 
 # opam configuration
-# test -r /Users/jeffpeterson/.opam/opam-init/init.zsh && . /Users/jeffpeterson/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+# test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 # export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/yaks/.cache/lm-studio/bin"
+export PATH="$PATH:$HOME/.cache/lm-studio/bin"
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# bun
+# export BUN_INSTALL="$HOME/.bun"
+# export PATH="$BUN_INSTALL/bin:$PATH"

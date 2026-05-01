@@ -2,25 +2,26 @@
 .netrwhist
 .DS_Store
 node_modules
+tmp
+
 /log
-/tmp
 
 /home/.vim/bundle
 /home/sbin
 /home/.profiles/secure*
-/home/.atom/*
-!/home/.atom/snippets.cson
-!/home/.atom/config.cson
-!/home/.atom/init.coffee
-!/home/.atom/keymap.cson
-!/home/.atom/styles.less
-!/home/.atom/packages.txt
 
 /home/.bundle/cache
 
 /home/.config/*
+!/home/.config/btop
+!/home/.config/gh
+!/home/.config/opencode
 !/home/.config/yarn
 /home/.config/yarn/link
+
+/home/.pi/*
+!/home/.pi/agent/models.json
+!/home/.pi/agent/settings.json
 
 /support/Code/*
 !/support/Code/User

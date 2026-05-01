@@ -6,6 +6,8 @@ IRB.conf[:PROMPT_MODE]  = :SIMPLE
 IRB.conf[:SAVE_HISTORY] = 1000
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb_history"
 
+$LOAD_PATH.unshift File.expand_path('.ruby', __dir__)
+
 unless respond_to? :Fabricate
   def Fabricate(*args)
     require './spec/support/fabricators'
@@ -38,8 +40,17 @@ def go(obj)
   Launchy.open link_to(obj)
 end
 
+def system_echo(src)
+  puts src
+  system src
+end
+
 def rubymine(file, line = 0)
-  system("rubymine #{file} --line #{line || 0}")
+  system_echo("rubymine #{file} --line #{line || 0}")
+end
+
+def vscode(file, line = 0)
+  system_echo("code --goto #{file}:#{line || 0}")
 end
 
 class Object
@@ -62,7 +73,7 @@ class Object
 
     # return system("tmux split-window -h \"vim #{file} +#{line}\"") if file
     # return system("$VISUAL --goto #{file}:#{line || 0}") if file
-    return rubymine(file, line || 0) if file
+    return vscode(file, line || 0) if file
 
     puts 'Source not available. Is this a C extension?'
   end

@@ -89,7 +89,6 @@ dot() {
 			[ "$DRY_RUN_FLAG" ] && puts "Dry run: Not actually linking."
 
 			dot link-all "$ROOT/home" "$HOME"
-			# dot link-all "$ROOT/config" "$HOME/.config"
 			show $(green "Done!")
 			;;
 
