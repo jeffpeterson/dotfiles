@@ -78,6 +78,8 @@ alias r=bin/rails
 alias rk=bin/rake
 alias d=deno
 alias tailscale=/Applications/Tailscale.app/Contents/MacOS/Tailscale
+alias elihu=hermes
+alias el=elihu
 
 # RubyMine
 # export VISUAL="rubymine --wait"
