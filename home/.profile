@@ -1,6 +1,6 @@
 if [ "$TERM" = "linux" ]; then
-  echo -en "\e]P07A8478" # black
-  echo -en "\e]P8859289" # darkgrey
+  echo -en "\e]P0232A2E" # black
+  echo -en "\e]P856635F" # darkgrey
   echo -en "\e]P1E67E80" # darkred
   echo -en "\e]P9E67E80" # red
   echo -en "\e]P2A7C080" # darkgreen
