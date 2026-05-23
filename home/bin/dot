@@ -171,11 +171,18 @@ dot() {
 
 		edit)
 			optional file "$2"
+			# use VISUAL by default and EDITOR if on linux term or ssh
+			if [ -z "$VISUAL" ] || [ "$TERM" == "linux" ] || [ -n "$SSH_CONNECTION" ]; then
+				editor="$EDITOR"
+			else
+				editor="$VISUAL"
+			fi
+
 
 			if [[ ! -z $file ]]; then
-				$VISUAL "$ROOT" "$ROOT/home/$file"
+				$editor "$ROOT" "$ROOT/home/$file"
 			else
-				$VISUAL "$ROOT"
+				$editor "$ROOT"
 			fi
 			;;
 
