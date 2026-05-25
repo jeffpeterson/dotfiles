@@ -3,7 +3,8 @@ push() {
 }
 
 profile() {
-  source "$HOME/.profiles/$1.sh"
+  local pth="$HOME/.profiles/$1.sh"
+  [[ -f "$pth" ]] && source "$pth"
 }
 
 sprofile() {
@@ -15,7 +16,13 @@ has() {
   which "$1" > /dev/null 2>&1
 }
 
+export OS=`uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'`
+
 # push /usr/local/opt/node@4/bin
+
+profile "$OS"
+sprofile "$OS"
+
 [ -d "/opt/homebrew" ] && profile brew
 [ -d "/opt/homebrew" ] && profile autoenv
 
@@ -77,7 +84,6 @@ alias g=git
 alias r=bin/rails
 alias rk=bin/rake
 alias d=deno
-alias tailscale=/Applications/Tailscale.app/Contents/MacOS/Tailscale
 alias elihu=hermes
 alias el=elihu
 
