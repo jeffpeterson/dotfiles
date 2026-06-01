@@ -1,13 +1,13 @@
 -- See `:h mapleader`
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.o.smartcase  = true
 
-vim.o.wrap = false
-vim.o.cursorline = true -- Highlight the line where the cursor is on.
-vim.o.scrolloff = 10 -- Keep this many screen lines above/below the cursor.
-vim.o.list = true -- Show <tab> and trailing spaces.
-vim.o.number = true -- Show line numbers
+vim.o.wrap           = false
+vim.o.cursorline     = true -- Highlight the line where the cursor is on.
+vim.o.scrolloff      = 10 -- Keep this many screen lines above/below the cursor.
+vim.o.list           = true -- Show <tab> and trailing spaces.
+vim.o.number         = true -- Show line numbers
 vim.o.relativenumber = true -- Show relative line numbers except current
 
 -- If performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
@@ -25,7 +25,7 @@ vim.keymap.set({'i'}, 'jk', '<esc>')
 vim.keymap.set({'i'}, 'JK', '<esc>')
 vim.keymap.set({'i'}, 'jK', '<esc>')
 vim.keymap.set({'i'}, 'Jk', '<esc>')
---
+
 -- Map <A-j>, <A-k>, <A-h>, <A-l> to navigate between windows in any modes
 vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-n><C-w>h')
 vim.keymap.set({ 't', 'i' }, '<A-j>', '<C-\\><C-n><C-w>j')
@@ -70,24 +70,19 @@ vim.cmd('packadd! nohlsearch')
 
 -- Install third-party plugins via "vim.pack.add()".
 vim.pack.add({
-  -- Quickstart configs for LSP
-  'https://github.com/neovim/nvim-lspconfig',
-  -- Fuzzy picker
-  'https://github.com/ibhagwan/fzf-lua',
-  -- Autocompletion
-  'https://github.com/nvim-mini/mini.completion',
-  -- Enhanced quickfix/loclist
-  'https://github.com/stevearc/quicker.nvim',
-  -- Git integration
-  'https://github.com/lewis6991/gitsigns.nvim',
-  -- Color scheme
-  'https://github.com/neanias/everforest-nvim',
-  -- Ex: cs"'
-  'https://github.com/kylechui/nvim-surround',
+  'https://github.com/neovim/nvim-lspconfig',     -- Quickstart configs for LSP
+  'https://github.com/ibhagwan/fzf-lua',          -- Fuzzy picker
+  'https://github.com/nvim-mini/mini.completion', -- Autocompletion
+  'https://github.com/nvim-mini/mini.align',      -- Alignment
+  'https://github.com/stevearc/quicker.nvim',     -- Enhanced quickfix/loclist
+  'https://github.com/lewis6991/gitsigns.nvim',   -- Git integration
+  'https://github.com/neanias/everforest-nvim',   -- Color scheme
+  'https://github.com/kylechui/nvim-surround',    -- Ex: cs"'
 })
 
 require('fzf-lua').setup { fzf_colors = true }
 require('mini.completion').setup {}
+require('mini.align').setup {}
 require('quicker').setup {}
 require('gitsigns').setup {}
 require('everforest').load()
