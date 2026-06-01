@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem "csv"
+  gem "logger"
+  gem "fiddle"
+  gem "glimmer-dsl-libui"
+end
+
+include Glimmer
+
+window('hello world', 300, 200) {
+  button('Button') {
+    on_clicked do
+      msg_box('Information', 'You clicked the button')
+    end
+  }
+}.show

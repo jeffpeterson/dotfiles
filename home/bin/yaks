@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+require 'bundler/inline'
+
+gemfile do
+  gem 'puma'
+  gem 'pg'
+  gem 'thor'
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem 'cafe_car', path: '~/code/@craft-concept/cafe_car'
+  gem 'potter', path: '~/code/@craft-concept/potter'
+end
+
+require "rails/all"
+
+module Yaks
+  class Application < Rails::Application
+    config.eager_load = false
+    config.consider_all_requests_local = true
+  end
+end
+
+CafeCar.auto_resolve!(Yaks)
+CafeCar.auto_resolve!(Potter::InformationSchema)
+Rails.application.initialize!
+# Potter.migrate!
+
+module Yaks
+  class CLI < Thor
+    desc "console", "Start the console"
+    def console
+      TOPLEVEL_BINDING.irb
+    end
+
+    desc "server", "Start a rails server"
+    def server
+      require "puma/configuration"
+
+      Rails.application.routes.draw do
+        mount CafeCar::Engine => "/"
+        namespace :potter do
+          scope module: :information_schema, as: :information_schema do
+            resources :tables
+            resources :indexes
+          end
+        end
+      end
+
+      conf = Puma::Configuration.new do |c|
+        c.app Rails.application
+        c.port 7445
+        c.log_requests
+      end
+
+      Puma::Launcher.new(conf).run
+    end
+  end
+end
+
+Yaks::CLI.start(ARGV)

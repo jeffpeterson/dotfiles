@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+
+require 'bundler/inline'
+
+gemfile do
+  gem "potter", path: "~/code/@craft-concept/potter"
+  gem "thor"
+end
+
+class CopilotTransaction < Potter::Model
+  date    :date, format: "%Y-%m-%d"
+  string  :name
+  float   :amount
+  string  :status
+  string  :category
+  string  :parent_category
+  boolean :excluded
+  string  :tags
+  string  :type
+  string  :account
+  string  :account_mask
+  string  :note
+  string  :recurring
+
+  filter :before, -> { date >= _1 }
+
+  def transfer? = type == "internal transfer"
+  def income?   = type == "income"
+
+  def credit? = amount < 0
+  def debit?  = !credit?
+end
+
+class MonarchTransaction < Potter::Model
+  date    :date
+  string  :merchant
+  string  :category
+  string  :account
+  string  :original_statement
+  string  :notes
+  float   :amount, scale: 2, note: "positive numbers for income and negative numbers for expenses"
+  string  :tags
+end
+
+class MintTransaction < Potter::Model
+  date    :date
+  string  :description
+  string  :original_description
+  float   :amount, scale: 2, note: "positive numbers for income and negative numbers for expenses"
+  string  :transaction_type
+  string  :category
+  string  :account_name
+  string  :labels
+  string  :notes
+end
+
+MonarchTransaction.from CopilotTransaction do |m|
+  m.date     = date
+  m.merchant = name
+  m.category = category.presence
+  m.category = "Transfer" if transfer?
+  m.category = "Income"   if income?
+  m.account  = account
+  m.original_statement = name
+  m.notes    = note
+  m.amount   = -amount
+  m.tags     = [*tags, type].join(",").presence
+end
+
+MintTransaction.from CopilotTransaction do |m|
+  m.date                 = date
+  m.description          = name
+  m.original_description = name
+  m.amount               = -amount
+  m.transaction_type     = credit? ? "credit" : "debit"
+  m.category             = category.presence
+  m.category             = "Transfer" if transfer?
+  m.category             = "Income"   if income?
+  m.account_name         = account
+  m.notes                = note
+  m.labels               = [*tags, type, "Copilot Import"].join(",").presence
+end
+
+class Finance < Thor
+  desc "copilot", "Parse a copilot CSV"
+  option :before
+  def copilot(path)
+    CSV.read(path)
+      .drop(1)
+      .then { CopilotTransaction.all _1 }
+      .if(options[:before]) { date < _1 }
+      .if(options[:before]) { before(_1) }
+      .to(MonarchTransaction)
+      .write(CSV)
+      .then do |rows|
+        CSV.open(path.sub(/\.csv/, '.monarch.csv'), 'w') do |csv|
+          rows.each { csv << _1 }
+        end
+      end
+  end
+end
+
+Finance.start(ARGV)

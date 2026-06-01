@@ -1,0 +1,100 @@
+#!/usr/bin/env ruby
+
+require 'bundler/inline'
+
+gemfile do
+  gem 'puma'
+  gem 'cafe_car', path: '~/code/@craft-concept/cafe_car'
+  gem 'potter', path: '~/code/@craft-concept/potter'
+  gem 'sqlite3'
+  gem 'thor'
+  gem "better_errors"
+  gem "binding_of_caller"
+end
+
+require "rails/all"
+
+module ClickUp
+  class Application < Rails::Application
+    config.eager_load = false
+    config.consider_all_requests_local = true
+  end
+end
+
+CafeCar.auto_resolve!(ClickUp)
+
+Potter.database(:clickup)
+Rails.application.initialize!
+Potter.migrate!
+
+module ClickUp
+  class Request < Potter::Request
+    attribute :body, ActiveRecord::Type::Json.new
+
+    root "https://api.clickup.com/api/v2/"
+    header accept: 'application/json',
+           content_type: 'application/json',
+           authorization: ENV['CLICKUP_API_TOKEN']
+
+    merged_scope :body, ->(body) { where(body:) }
+
+    scope :user,  -> { path("user") }
+    scope :task,  ->(*id) { accounts.path(*id) }
+    scope :tasks, -> { path("tasks") }
+  end
+
+  class Response < Potter::Response
+    attribute :body, ActiveRecord::Type::Json.new
+    normalizes :body, with: -> { JSON.parse(_1) rescue _1 }
+  end
+
+
+  class Task < Potter::Model
+    string :title
+    json :metadata
+  end
+end
+
+module ClickUp
+  class CLI < Thor
+    desc "console", "Start the console"
+    def console
+      TOPLEVEL_BINDING.irb
+    end
+
+    desc "auth", "Check API authentication."
+    def auth
+      pp ClickUp::Request.user.response!
+      ClickUp::Request.path("team")
+    end
+
+    desc "last", "Print last request and response"
+    def last
+      pp ClickUp::Request.last
+      pp ClickUp::Response.last
+    end
+
+    desc "server", "Start a rails server"
+    def server
+      require "puma/configuration"
+
+      Rails.application.routes.draw do
+        mount CafeCar::Engine => "/"
+        scope module: :click_up, as: :click_up do
+          resources :requests
+          resources :responses
+        end
+      end
+
+      conf = Puma::Configuration.new do |c|
+        c.app Rails.application
+        c.port 3000
+        c.log_requests
+      end
+
+      Puma::Launcher.new(conf).run
+    end
+  end
+end
+
+ClickUp::CLI.start(ARGV)
