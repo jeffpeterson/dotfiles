@@ -12,11 +12,15 @@ tmp
 
 /home/.bundle/cache
 
+/home/.codex/*
+!/home/.codex/AGENTS.md
+
 /home/.config/*
 !/home/.config/btop
 !/home/.config/gh
 !/home/.config/opencode
 !/home/.config/yarn
+!/home/.config/nvim
 /home/.config/yarn/link
 
 /home/.pi/*
