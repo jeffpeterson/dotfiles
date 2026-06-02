@@ -21,6 +21,7 @@ tmp
 !/home/.config/opencode
 !/home/.config/yarn
 !/home/.config/nvim
+!/home/.config/kitty
 /home/.config/yarn/link
 
 /home/.pi/*
