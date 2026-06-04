@@ -178,11 +178,22 @@ dot() {
 				editor="$VISUAL"
 			fi
 
+			case $file in
+				nvim|neovim)
+					file=".config/nvim/init.lua"
+					;;
+				zsh)
+					file=".rootenv"
+					;;
+				*)
+			esac
 
+
+			cd "$ROOT"
 			if [[ ! -z $file ]]; then
-				$editor "$ROOT" "$ROOT/home/$file"
+				$editor "$ROOT/home/$file"
 			else
-				$editor "$ROOT"
+				$editor
 			fi
 			;;
 
