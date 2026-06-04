@@ -28,16 +28,15 @@ vim.pack.add {
   'https://github.com/rmagatti/auto-session',       -- Restore last session per directory
   'https://github.com/j-hui/fidget.nvim',           -- Show LSP messages in bottom-right corner
 
+  'https://github.com/tpope/vim-fugitive',      -- Git integration
   'https://github.com/stevearc/quicker.nvim',   -- Enhanced quickfix/loclist
   'https://github.com/lewis6991/gitsigns.nvim', -- Git integration
   'https://github.com/neanias/everforest-nvim', -- Color scheme
   'https://github.com/neovim/nvim-lspconfig',   -- Quickstart configs for LSP
-  'https://github.com/j-hui/fidget.nvim',
 }
 
 -- }}}
 -- PLUGIN CONFIGURATION {{{
-
 
 require('everforest').load()
 require('mini.completion').setup {}
@@ -80,12 +79,32 @@ require('auto-session').setup {
 
 require('lualine').setup {
   sections = {
-    lualine_c = {'%f'}
-  }
+    lualine_b = {
+      'branch',
+      { 'diff',
+        on_click = function(clicks, button, modifiers)
+          if clicks == 1 and button == 'l' then
+            vim.cmd('Git diff %')
+          end
+        end
+      },
+      'diagnostics'
+    },
+    lualine_c = { {'filename', path = 1} }
+  },
+
+  inactive_sections = {
+    lualine_b = { 'diff' },
+    lualine_c = { { 'filename', path = 1} }
+  },
 }
 
 require('gitsigns').setup {
-  current_line_blame = true
+  current_line_blame = true,
+  current_line_blame_opts = {
+    delay = 0,
+    virt_text_pos = 'right_align',
+  }
 }
 
 vim.lsp.enable('ruby_lsp')
@@ -105,11 +124,12 @@ vim.o.shiftwidth = 2
 vim.o.expandtab  = true
 
 vim.o.wrap              = false
-vim.o.cursorline        = true -- Highlight the line where the cursor is on.
-vim.o.scrolloff         = 3    -- Keep this many screen lines above/below the cursor.
-vim.o.list              = true -- Show <tab> and trailing spaces.
-vim.o.number            = true -- Show line numbers
--- vim.o.relativenumber = true -- Show relative line numbers except current
+vim.o.cursorline        = true  -- Highlight the line where the cursor is on.
+vim.o.scrolloff         = 3     -- Keep this many screen lines above/below the cursor.
+vim.o.list              = true  -- Show <tab> and trailing spaces.
+vim.o.number            = true  -- Show line numbers
+vim.o.signcolumn        = 'yes' -- Always show sign column
+-- vim.o.relativenumber = true  -- Show relative line numbers except current
 
 -- If performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s). See `:h 'confirm'`
