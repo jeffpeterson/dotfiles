@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "auto-session": {
+      "rev": "3e145ee9af42eb6764908a1a481f53fe7f0bdbe5",
+      "src": "https://github.com/rmagatti/auto-session"
+    },
     "everforest-nvim": {
       "rev": "d235ca0aa6a29546e661a020e2618612acbbffbe",
       "src": "https://github.com/neanias/everforest-nvim"
@@ -19,6 +23,14 @@
     "mini.completion": {
       "rev": "04abe6fc7860858785ba63c435d76bf5b8b64b5f",
       "src": "https://github.com/nvim-mini/mini.completion"
+    },
+    "mini.sessions": {
+      "rev": "e59286b20fbf61171039ddfebc736cf9562e75d5",
+      "src": "https://github.com/nvim-mini/mini.sessions"
+    },
+    "mini.starter": {
+      "rev": "a7d8b353cf120fee32bb5d88e7a9de5eaec746e7",
+      "src": "https://github.com/nvim-mini/mini.starter"
     },
     "neo-tree.nvim": {
       "rev": "1f62784a592233908331ed7a5e45f5ad199ba7aa",

@@ -1,7 +1,7 @@
 -- vim:foldmethod=marker
 
 -- OPTIONS {{{
--- :help option-list
+-- :h option-list
 --
 -- See `:h mapleader`
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
@@ -10,6 +10,7 @@ vim.o.smartcase  = true
 
 vim.o.tabstop    = 2
 vim.o.shiftwidth = 2
+vim.o.expandtab  = true
 
 vim.o.wrap           = false
 vim.o.cursorline     = true -- Highlight the line where the cursor is on.
@@ -30,10 +31,12 @@ vim.o.confirm = true
 -- Use <Esc> to exit terminal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
-vim.keymap.set({'i'}, 'jk', '<esc>')
-vim.keymap.set({'i'}, 'JK', '<esc>')
-vim.keymap.set({'i'}, 'jK', '<esc>')
-vim.keymap.set({'i'}, 'Jk', '<esc>')
+vim.keymap.set({'i', 't'}, 'jk', '<Esc>')
+vim.keymap.set({'i', 't'}, 'JK', '<Esc>')
+vim.keymap.set({'i', 't'}, 'jK', '<Esc>')
+vim.keymap.set({'i', 't'}, 'Jk', '<Esc>')
+
+vim.keymap.set('n', '<C-p>', ':FzfLua files<CR>')
 --
 -- }}}
 
@@ -74,35 +77,53 @@ end, { desc = 'Print the git blame for the current line' })
 vim.cmd('packadd! nohlsearch')
 
 -- Install third-party plugins via "vim.pack.add()".
-vim.pack.add({
+vim.pack.add {
   'https://github.com/MunifTanjim/nui.nvim',          -- UI component library
-  'https://github.com/nvim-lua/plenary.nvim',         -- String helpers
+  'https://github.com/nvim-lua/plenary.nvim',         -- Lua helpers
   'https://github.com/nvim-tree/nvim-web-devicons',   -- Nerd Font icon support
 
   'https://github.com/tpope/vim-sleuth',
 
-  -- 'https://github.com/ibhagwan/fzf-lua',           -- Fuzzy picker
+  'https://github.com/ibhagwan/fzf-lua',           -- Fuzzy picker
+  -- 'https://github.com/nvim-telescope/telescope.nvim', -- Fuzzy picker
+
   'https://github.com/nvim-neo-tree/neo-tree.nvim',   -- File explorer
-  'https://github.com/nvim-telescope/telescope.nvim', -- Fuzzy picker
   'https://github.com/neovim/nvim-lspconfig',     -- Quickstart configs for LSP
-  'https://github.com/nvim-mini/mini.completion', -- Autocompletion
   'https://github.com/nvim-mini/mini.align',      -- Alignment. Ex: vip ga=
+  'https://github.com/nvim-mini/mini.completion', -- Autocompletion
+  -- 'https://github.com/nvim-mini/mini.sessions',   -- Session management
+  -- 'https://github.com/nvim-mini/mini.starter',    -- Start screen
+  'https://github.com/rmagatti/auto-session',
   'https://github.com/stevearc/quicker.nvim',     -- Enhanced quickfix/loclist
   'https://github.com/lewis6991/gitsigns.nvim',   -- Git integration
   'https://github.com/neanias/everforest-nvim',   -- Color scheme
   'https://github.com/kylechui/nvim-surround',    -- Quote wrapping. Ex: cs"'
-})
+}
 
 -- require('fzf-lua').setup { fzf_colors = true }
 require('neo-tree').setup {
+  -- close_if_last_window = true,
   filesystem = {
+    bind_to_cwd = true,
+    use_libuv_file_watcher = true,
+    follow_current_file = {
+      enabled = true
+    },
     filtered_items = {
       visible = true,
       hide_dotfiles = false,
     }
   }
 }
-require('telescope').setup {}
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = vim.schedule_wrap(function()
+    vim.cmd("Neotree show")
+  end),
+})
+require('auto-session').setup {
+  cwd_change_handling = true
+}
+require('fzf-lua').setup {}
 require('mini.completion').setup {}
 require('mini.align').setup {}
 require('quicker').setup {}
