@@ -180,11 +180,11 @@ dot() {
 
 			case $file in
 				nvim|neovim)
-					file=".config/nvim/init.lua"
-					;;
+					file=".config/nvim/init.lua";;
+				tmux)
+					file=".tmux.conf";;
 				zsh)
-					file=".rootenv"
-					;;
+					file=".rootenv";;
 				*)
 			esac
 

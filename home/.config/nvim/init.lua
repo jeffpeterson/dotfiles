@@ -21,6 +21,7 @@ vim.pack.add {
   'https://github.com/nvim-mini/mini.align',      -- Alignment. Ex: vip ga =
   'https://github.com/nvim-mini/mini.completion', -- Autocompletion
   'https://github.com/kylechui/nvim-surround',    -- Quote wrapping. Ex: cs"'
+  'https://github.com/windwp/nvim-autopairs',     -- Auto-pair brackets
 
   'https://github.com/nvim-lualine/lualine.nvim',   -- Status line
   'https://github.com/nvim-neo-tree/neo-tree.nvim', -- File explorer
@@ -41,6 +42,7 @@ vim.pack.add {
 require('everforest').load()
 require('mini.completion').setup {}
 require('mini.align').setup {}
+require('nvim-autopairs').setup {}
 require('quicker').setup {}
 require('fzf-lua').setup {}
 
