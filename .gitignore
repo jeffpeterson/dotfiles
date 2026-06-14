@@ -24,6 +24,11 @@ tmp
 !/home/.config/kitty
 /home/.config/yarn/link
 
+!/home/.config/agents
+
+/home/.claude/*
+!/home/.claude/CLAUDE.md
+
 /home/.pi/*
 !/home/.pi/agent/models.json
 !/home/.pi/agent/settings.json
