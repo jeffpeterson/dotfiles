@@ -168,6 +168,8 @@ vim.keymap.set('n', '<Leader>k', '<Cmd>FzfLua files<CR>')
 vim.keymap.set('n', '<Leader>p', '<Cmd>FzfLua files<CR>')
 vim.keymap.set('n', '<Leader>b', '<Cmd>Neotree toggle<CR>')
 
+vim.keymap.set('n', '<Leader>w', '<Cmd>set wrap!<CR>')
+
 -- }}}
 -- AUTOCOMMANDS (EVENT HANDLERS) {{{
 --
