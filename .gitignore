@@ -28,6 +28,7 @@ tmp
 
 /home/.claude/*
 !/home/.claude/CLAUDE.md
+!/home/.claude/settings.json
 
 /home/.pi/*
 !/home/.pi/agent/models.json

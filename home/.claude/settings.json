@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo *)",
+      "Bash(zig *)",
+      "Bash(sed *)",
+      "Bash(git *)"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "claude-opus-4-8",
+  "theme": "auto",
+  "editorMode": "normal",
+  "verbose": false,
+  "preferredNotifChannel": "terminal_bell",
+  "autoCompactEnabled": true,
+  "switchModelsOnFlag": false,
+  "agentPushNotifEnabled": true
+}
