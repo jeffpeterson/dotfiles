@@ -25,8 +25,9 @@ Don't write shell commands like an autistic sysadmin unless you have to. Just
 Use and install gems/packages/libraries when you can in order to write less
 code.
 
-Commit your changes after you complete each task. Push your commits when
-relevant.
+Commit your changes after you complete each task. You can commit to main
+unless told not to. Push your commits when relevant (e.g. you own the repo,
+or you're fixing CI, etc).
 
 Don't call things "real" or "actual". It's an AI quirk and not how real people
 talk.
