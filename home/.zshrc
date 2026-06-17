@@ -1,4 +1,5 @@
 source ~/.rootenv
+
 DISABLE_AUTO_UPDATE="true"
 
 ZSH="$HOME/.oh-my-zsh"
@@ -21,9 +22,6 @@ unsetopt AUTO_CD
 bindkey -e
 
 autoload -U colors && colors
-autoload -U compinit
-compinit
-zstyle ':completion:*' menu select
 typeset -F SECONDS=0;
 
 local timer=$SECONDS
@@ -86,3 +84,7 @@ function emulator {
 # bun
 # export BUN_INSTALL="$HOME/.bun"
 # export PATH="$BUN_INSTALL/bin:$PATH"
+
+# starts zsh autocompletion. must be after homebrew adds completions
+autoload -U compinit && compinit
+zstyle ':completion:*' menu select
