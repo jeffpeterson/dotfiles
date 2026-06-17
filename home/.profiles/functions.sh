@@ -47,3 +47,7 @@ c() {
   cd ~/code/$*
 }
 
+# after `tmux a` on a server, run fix-ssh to fix agent forwarding
+fix-ssh() {
+  eval $(tmux show-env -s |grep '^SSH_')
+}
