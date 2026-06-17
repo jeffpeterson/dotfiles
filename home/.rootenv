@@ -8,7 +8,11 @@ has() {
   which "$1" > /dev/null 2>&1
 }
 
-export OS=`uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'`
+osname() {
+  uname -a | cut -d " " -f 1 | tr '[:upper:]' '[:lower:]'
+}
+
+export OS=`osname`
 
 push /usr/local/heroku/bin
 push $HOME/.yarn/bin
