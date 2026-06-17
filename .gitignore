@@ -1,4 +1,5 @@
 *.mdb
+*.local.*
 
 .idea
 .netrwhist
@@ -18,15 +19,14 @@ log
 !/home/.codex/AGENTS.md
 
 /home/.config/*
+!/home/.config/agents
 !/home/.config/btop
 !/home/.config/gh/config.yml
+!/home/.config/kitty
+!/home/.config/nvim
 !/home/.config/opencode
 !/home/.config/yarn
-!/home/.config/nvim
-!/home/.config/kitty
 /home/.config/yarn/link
-
-!/home/.config/agents
 
 /home/.claude/*
 !/home/.claude/CLAUDE.md
@@ -39,10 +39,8 @@ log
 /support/Code/*
 !/support/Code/User
 /support/Code/User/*
-
 !/support/Code/User/snippets
 /support/Code/User/snippets/secure.*
-
 !/support/Code/User/keybindings.json
 !/support/Code/User/launch.json
 !/support/Code/User/locale.json
