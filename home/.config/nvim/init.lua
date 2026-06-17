@@ -67,9 +67,10 @@ require('neo-tree').setup {
     }
   }
 }
-vim.api.nvim_create_autocmd('VimEnter', {
-  command = "Neotree show",
-})
+
+-- vim.api.nvim_create_autocmd('VimEnter', {
+--   command = "Neotree show",
+-- })
 
 vim.api.nvim_create_autocmd('VimLeavePre', {
   command = "Neotree close",
