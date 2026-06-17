@@ -87,11 +87,6 @@ precmd() {
   timer=$SECONDS
 }
 
-c() {
-  # cd ~/code/$(ls ~/code | selecta)
-  cd ~/code/$*
-}
-
 elapsed() {
   printf '%.2fs' $timer_difference
 }
@@ -118,7 +113,6 @@ PROMPT="
 
 which starship >/dev/null && eval "$(starship init zsh)"
 
-. ~/.profile
 [ -s ~/.iterm2_shell_integration.zsh ] && . ~/.iterm2_shell_integration.zsh
 
 # tabtab source for electron-forge package
