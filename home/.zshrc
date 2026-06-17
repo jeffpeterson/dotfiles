@@ -1,7 +1,5 @@
 source ~/.rootenv
 
-DISABLE_AUTO_UPDATE="true"
-
 HISTSIZE=5000000
 
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -18,6 +16,10 @@ setopt PROMPT_SUBST
 setopt noautocd
 unsetopt AUTO_CD
 bindkey -e
+
+# starts zsh autocompletion. must be after homebrew adds completions
+autoload -U compinit && compinit -u # FIXME: -u ignores insecure
+zstyle ':completion:*' menu select
 
 autoload -U colors && colors
 typeset -F SECONDS=0;
@@ -67,6 +69,3 @@ which starship >/dev/null && eval "$(starship init zsh)"
 # export BUN_INSTALL="$HOME/.bun"
 # export PATH="$BUN_INSTALL/bin:$PATH"
 
-# starts zsh autocompletion. must be after homebrew adds completions
-autoload -U compinit && compinit
-zstyle ':completion:*' menu select
