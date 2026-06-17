@@ -54,7 +54,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 require('neo-tree').setup {
-  -- close_if_last_window = true,
+  close_if_last_window = true,
   filesystem = {
     bind_to_cwd = true,
     use_libuv_file_watcher = true,
@@ -164,6 +164,7 @@ vim.keymap.set({'i', 't'}, 'JK', '<Esc>')
 vim.keymap.set({'i', 't'}, 'jK', '<Esc>')
 vim.keymap.set({'i', 't'}, 'Jk', '<Esc>')
 
+vim.keymap.set('n', '<Leader>/', '<Cmd>FzfLua live_grep<CR>')
 vim.keymap.set('n', '<Leader>k', '<Cmd>FzfLua files<CR>')
 vim.keymap.set('n', '<Leader>p', '<Cmd>FzfLua files<CR>')
 vim.keymap.set('n', '<Leader>b', '<Cmd>Neotree toggle<CR>')
