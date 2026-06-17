@@ -5457,6 +5457,8 @@
 	</dict>
 	<key>Default Bookmark Guid</key>
 	<string>544B9965-15FD-4FC2-B158-06B689E7E319</string>
+	<key>Default Browser Profile Guid</key>
+	<string>544B9965-15FD-4FC2-B158-06B689E7E319</string>
 	<key>DimBackgroundWindows</key>
 	<false/>
 	<key>DimInactiveSplitPanes</key>
@@ -5471,6 +5473,8 @@
 	<false/>
 	<key>FsTabDelay</key>
 	<real>1</real>
+	<key>HTMLTabTitles</key>
+	<false/>
 	<key>HapticFeedbackForEsc</key>
 	<false/>
 	<key>HiddenAFRStrokeThickness</key>
@@ -5485,6 +5489,8 @@
 	<false/>
 	<key>HideTab</key>
 	<true/>
+	<key>HideTabNumber</key>
+	<false/>
 	<key>HighlightTabLabels</key>
 	<true/>
 	<key>HotKeyBookmark</key>
@@ -5871,6 +5877,8 @@
 			<false/>
 			<key>Horizontal Spacing</key>
 			<real>1</real>
+			<key>Icon</key>
+			<integer>1</integer>
 			<key>Idle Code</key>
 			<integer>0</integer>
 			<key>Initial Text</key>
@@ -6363,6 +6371,8 @@
 			<array/>
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
+			<key>Title Components</key>
+			<integer>260</integer>
 			<key>Transparency</key>
 			<real>0.014894600957632065</real>
 			<key>Triggers</key>
@@ -6374,6 +6384,8 @@
 			<key>Use Bright Bold</key>
 			<false/>
 			<key>Use Canonical Parser</key>
+			<false/>
+			<key>Use Custom Tab Title</key>
 			<false/>
 			<key>Use Italic Font</key>
 			<false/>
@@ -6464,12 +6476,20 @@
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.42890876531600952</real>
+	<key>StatusBarPosition</key>
+	<integer>0</integer>
+	<key>StretchTabsToFillBar</key>
+	<false/>
 	<key>SwitchTabModifier</key>
 	<integer>4</integer>
 	<key>SwitchWindowModifier</key>
 	<integer>6</integer>
+	<key>TabStyleWithAutomaticOption</key>
+	<integer>5</integer>
 	<key>TabViewType</key>
 	<integer>1</integer>
+	<key>TabsHaveCloseButton</key>
+	<false/>
 	<key>ThreeFingerEmulates</key>
 	<false/>
 	<key>TmuxDashboardLimit</key>
