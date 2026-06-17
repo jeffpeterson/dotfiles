@@ -1,10 +1,11 @@
+*.mdb
+
 .idea
 .netrwhist
 .DS_Store
 node_modules
 tmp
-
-/log
+log
 
 /home/.vim/bundle
 /home/sbin
@@ -18,7 +19,7 @@ tmp
 
 /home/.config/*
 !/home/.config/btop
-!/home/.config/gh
+!/home/.config/gh/config.yml
 !/home/.config/opencode
 !/home/.config/yarn
 !/home/.config/nvim

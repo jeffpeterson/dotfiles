@@ -5,7 +5,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (local)",
       "options": {
-        "baseURL": "http://localhost:11434/v1"
+        "baseURL": "https://ollama.ibis-micro.ts.net/v1"
       },
       "models": {
         "gemma4:latest": {
