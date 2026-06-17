@@ -1,3 +1,10 @@
+alias ls='ls --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
 if [ "$TERM" = "linux" ]; then
   echo -en "\e]P0232A2E" # black
   echo -en "\e]P856635F" # darkgrey

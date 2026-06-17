@@ -9,6 +9,7 @@ tmp
 /home/.vim/bundle
 /home/sbin
 /home/.profiles/secure*
+/home/.profiles/.*
 
 /home/.bundle/cache
 
