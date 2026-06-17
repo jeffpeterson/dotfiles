@@ -2,8 +2,6 @@ source ~/.rootenv
 
 DISABLE_AUTO_UPDATE="true"
 
-ZSH="$HOME/.oh-my-zsh"
-
 HISTSIZE=5000000
 
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -43,18 +41,6 @@ current_branch() {
   git branchname 2>/dev/null || git commitname 2>/dev/null
 }
 
-COMPLETION_WAITING_DOTS=true;
-#REPORTTIME=10
-
-plugins=(pm2 git rails bundler ruby coffee osx gem heroku pow powder rvm python npm brew cloudapp rspec jsontools);
-
-[[ (-d "$ZSH") ]] && . "$ZSH/oh-my-zsh.sh";
-
-# which reattach-to-user-namespace > /dev/null && which tmux > /dev/null && tmux set-option -g default-command "reattach-to-user-namespace -l zsh" > /dev/null;
-
-# source $HOME/code/fuchsia/scripts/fx-env.sh
-
-
 PROMPT="
 %{$fg[yellow]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg[magenta]%}%~%{$reset_color%} * %{$fg[green]%}\$(current_branch) %{$reset_color%}\$(elapsed) %(?..%{$fg[red]%})(exit %?)
 %{$fg[magenta]%}>%{$reset_color%} "
@@ -66,10 +52,6 @@ which starship >/dev/null && eval "$(starship init zsh)"
 # tabtab source for electron-forge package
 # uninstall by removing these lines or running `tabtab uninstall electron-forge`
 # [[ -f /usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /usr/local/lib/node_modules/electron-forge/node_modules/tabtab/.completions/electron-forge.zsh
-
-function emulator {
-  cd "$ANDROID_HOME/tools" && ./emulator "$@";
-}
 
 # opam configuration
 # test -r $HOME/.opam/opam-init/init.zsh && . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
