@@ -1,5 +1,6 @@
 *.mdb
 *.local.*
+*.un~
 
 .idea
 .netrwhist
@@ -20,6 +21,7 @@ log
 
 /home/.config/*
 !/home/.config/agents
+!/home/.config/bat
 !/home/.config/btop
 !/home/.config/gh/config.yml
 !/home/.config/kitty
