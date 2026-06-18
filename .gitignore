@@ -9,7 +9,6 @@ node_modules
 tmp
 log
 
-/home/.vim/bundle
 /home/sbin
 /home/.profiles/secure*
 /home/.profiles/.*
@@ -37,6 +36,9 @@ log
 /home/.pi/*
 !/home/.pi/agent/models.json
 !/home/.pi/agent/settings.json
+
+/home/.vim/bundle
+/home/.vim/plugged
 
 /support/Code/*
 !/support/Code/User

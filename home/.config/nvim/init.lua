@@ -5,6 +5,10 @@
 
 -- Add the "nohlsearch" package to automatically disable search highlighting after
 -- 'updatetime' and when going to insert mode.
+
+vim.opt.runtimepath:append("~/.vim")
+vim.opt.packpath:append("~/.vim/pack")
+vim.cmd("source ~/.vimrc")
 vim.cmd('packadd! nohlsearch')
 
 -- Install third-party plugins via "vim.pack.add()".
@@ -116,30 +120,6 @@ vim.lsp.enable('ruby_lsp')
 -- OPTIONS {{{
 -- :h option-list
 
-vim.g.mapleader = ' ' -- :h mapleader
-
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
-vim.o.ignorecase = true
-vim.o.smartcase  = true
-
--- 2 space indentation as default
-vim.o.shiftwidth = 2
-vim.o.expandtab  = true
-
-vim.o.wrap              = false
-vim.o.cursorline        = true  -- Highlight the line where the cursor is on.
-vim.o.scrolloff         = 3     -- Keep this many screen lines above/below the cursor.
-vim.o.list              = true  -- Show <tab> and trailing spaces.
-vim.o.number            = true  -- Show line numbers
-vim.o.signcolumn        = 'yes' -- Always show sign column
--- vim.o.relativenumber = true  -- Show relative line numbers except current
-
--- If performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
--- instead raise a dialog asking if you wish to save the current file(s). See `:h 'confirm'`
-vim.o.confirm = true
-
-vim.o.undofile = true
-
 -- local statusline = { -- :h 'statusline'
 --   ' %f', -- File path relative to cwd
 --   '%r',  -- [RO]
@@ -160,17 +140,10 @@ vim.o.undofile = true
 -- Use <Esc> to exit terminal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
-vim.keymap.set({'i', 't'}, 'jk', '<Esc>')
-vim.keymap.set({'i', 't'}, 'JK', '<Esc>')
-vim.keymap.set({'i', 't'}, 'jK', '<Esc>')
-vim.keymap.set({'i', 't'}, 'Jk', '<Esc>')
-
 vim.keymap.set('n', '<Leader>/', '<Cmd>FzfLua live_grep<CR>')
 vim.keymap.set('n', '<Leader>k', '<Cmd>FzfLua files<CR>')
 vim.keymap.set('n', '<Leader>p', '<Cmd>FzfLua files<CR>')
 vim.keymap.set('n', '<Leader>b', '<Cmd>Neotree toggle<CR>')
-
-vim.keymap.set('n', '<Leader>w', '<Cmd>set wrap!<CR>')
 
 -- }}}
 -- AUTOCOMMANDS (EVENT HANDLERS) {{{

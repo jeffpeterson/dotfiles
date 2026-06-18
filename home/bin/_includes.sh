@@ -55,35 +55,35 @@ wrapped() {
 
 
 color() {
-	wrapped "$1" "${@:2}" 39
+	wrapped "$1" "${*:2}" 39
 }
 
 bold() {
-	wrapped 1 "$@" 21
+	wrapped 1 "$*" 21
 }
 
 dim() {
-	wrapped 2 "$@" 22
+	wrapped 2 "$*" 22
 }
 
 underline() {
-	wrapped 4 "$@" 24
+	wrapped 4 "$*" 24
 }
 
 red() {
-	color 31 "$@"
+	color 31 "$*"
 }
 
 yellow() {
-	color 33 "$@"
+	color 33 "$*"
 }
 
 green() {
-	color 32 "$@"
+	color 32 "$*"
 }
 
 h1() {
-	underline "$(green "$@")"
+	underline "$(green "$*")"
 }
 
 USAGE=""

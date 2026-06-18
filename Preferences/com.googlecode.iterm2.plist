@@ -5530,6 +5530,8 @@
 			<false/>
 			<key>Ambiguous Double Width</key>
 			<false/>
+			<key>Animate Movement</key>
+			<false/>
 			<key>Ansi 0 Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -5777,7 +5779,7 @@
 			<key>Blink Allowed</key>
 			<true/>
 			<key>Blinking Cursor</key>
-			<true/>
+			<false/>
 			<key>Blur</key>
 			<false/>
 			<key>Blur Radius</key>
@@ -5829,6 +5831,8 @@
 				<key>Red Component</key>
 				<real>0.22745098039215686</real>
 			</dict>
+			<key>Cursor Shadow</key>
+			<false/>
 			<key>Cursor Text Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -5856,6 +5860,8 @@
 			<false/>
 			<key>Disable Window Resizing</key>
 			<true/>
+			<key>Faint Text Alpha</key>
+			<real>0.50113859811041328</real>
 			<key>Flashing Bell</key>
 			<true/>
 			<key>Foreground Color</key>
@@ -6202,7 +6208,7 @@
 				<real>0.99697142839431763</real>
 			</dict>
 			<key>Minimum Contrast</key>
-			<real>0.30149322660098521</real>
+			<real>0.4460052339901478</real>
 			<key>Mouse Reporting</key>
 			<true/>
 			<key>Name</key>
@@ -6380,7 +6386,7 @@
 			<key>Unlimited Scrollback</key>
 			<true/>
 			<key>Use Bold Font</key>
-			<false/>
+			<true/>
 			<key>Use Bright Bold</key>
 			<false/>
 			<key>Use Canonical Parser</key>
@@ -6388,7 +6394,7 @@
 			<key>Use Custom Tab Title</key>
 			<false/>
 			<key>Use Italic Font</key>
-			<false/>
+			<true/>
 			<key>Use Non-ASCII Font</key>
 			<false/>
 			<key>Use Tab Color</key>
