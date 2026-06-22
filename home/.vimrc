@@ -1,79 +1,84 @@
-let mapleader   = " "
-let g:mapleader = " "
+let mapleader   = ","
+let g:mapleader = ","
 
-if !has('nvim')
+if has('nvim')
+  packadd! nohlsearch
+else
   packadd! comment
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'tpope/vim-sensible' " Sensible vim option defaults
-Plug 'tpope/vim-sleuth'   " Auto indentation detection
+Plug 'tpope/vim-sensible'      " Sensible vim option defaults
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-sleuth'        " Auto indentation detection
+Plug 'tpope/vim-speeddating'   " Modify dates with <C-a> and <C-x>
+Plug 'tpope/vim-surround'
 Plug 'junegunn/vim-easy-align' " Alignment. Ex: vipga=
 
-Plug 'tpope/vim-fugitive'     " Git integration
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
 
-if !has('nvim')
+Plug 'tpope/vim-fugitive'     " Git integration
+Plug 'airblade/vim-gitgutter' " Git gutter
+Plug 'zivyangll/git-blame.vim'
+
+if has('nvim')
+  Plug 'nvim-lualine/lualine.nvim'
+else
+  Plug 'vim-airline/vim-airline'
   Plug 'rishi-opensource/vim-claude-code'
 endif
+" Plug 'prabirshrestha/vim-lsp'
+Plug 'dense-analysis/ale'
 
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'sainnhe/everforest' " Warm green-based colorscheme
+" " Plug 'FredKSchott/CoVim'
+" " Plug 'SirVer/ultisnips'
+" " Plug 'Valloric/YouCompleteMe'
+" Plug 'briancollins/vim-jst'
+" Plug 'derekwyatt/vim-scala'
+" Plug 'flazz/vim-colorschemes'
+" Plug 'rking/ag.vim'
+" Plug 'groenewege/vim-less'
+" Plug 'itspriddle/vim-marked'
+" Plug 'jonathanfilip/vim-lucius'
+" Plug 'mileszs/ack.vim'
+" Plug 'msp.vim'
+" Plug 'mxw/vim-jsx'
+" Plug 'pangloss/vim-javascript'
+" Plug 'Raimondi/delimitMate'
+" Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/syntastic'
+" Plug 'slim-template/vim-slim'
+" " Plug 'tomtom/tlib_vim'
+" Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-cucumber'
+" Plug 'tpope/vim-endwise'
+" Plug 'tpope/vim-fireplace'
+" Plug 'tpope/vim-haml'
+" Plug 'tpope/vim-markdown'
+" Plug 'tpope/vim-rails'
+" Plug 'tpope/vim-repeat'
+" Plug 'vim-ruby/vim-ruby'
+" Plug 'wavded/vim-stylus'
+" Plug 'xhr/vim-io'
+" Plug 'zaiste/tmux.vim'
+" Plug 'garbas/vim-snipmate'
+" Plug 'honza/vim-snippets'
+" Plug 'MarcWeber/vim-addon-mw-utils'
+" Plug 'tomtom/tlib_vim'
 call plug#end()
 
+if has('termguicolors')
+  set termguicolors
+endif
+let g:everforest_background = 'soft'
 colorscheme everforest
-
-" " Bundle 'bling/vim-airline'
-" " Bundle 'FredKSchott/CoVim'
-" " Bundle 'SirVer/ultisnips'
-" " Bundle 'Valloric/YouCompleteMe'
-" Bundle 'airblade/vim-gitgutter'
-" Bundle 'briancollins/vim-jst'
-" Bundle 'chriskempson/vim-tomorrow-theme'
-" Bundle 'derekwyatt/vim-scala'
-" Bundle 'flazz/vim-colorschemes'
-" Bundle 'gmarik/vundle'
-" Bundle 'rking/ag.vim'
-" Bundle 'godlygeek/tabular'
-" Bundle 'groenewege/vim-less'
-" Bundle 'itspriddle/vim-marked'
-" Bundle 'jonathanfilip/vim-lucius'
-" Bundle 'kchmck/vim-coffee-script'
-" Bundle 'kien/ctrlp.vim'
-" Bundle 'Lokaltog/vim-easymotion'
-" Bundle 'mileszs/ack.vim'
-" Bundle 'mintplant/vim-literate-coffeescript'
-" Bundle 'msp.vim'
-" Bundle 'mxw/vim-jsx'
-" " Bundle 'jiangmiao/simple-javascript-indenter'
-" Bundle 'pangloss/vim-javascript'
-" Bundle 'Raimondi/delimitMate'
-" Bundle 'scrooloose/nerdtree'
-" Bundle 'scrooloose/syntastic'
-" Bundle 'slim-template/vim-slim'
-" " Bundle 'tomtom/tlib_vim'
-" Bundle 'tpope/vim-commentary'
-" Bundle 'tpope/vim-cucumber'
-" Bundle 'tpope/vim-endwise'
-" Bundle 'tpope/vim-fireplace'
-" Bundle 'tpope/vim-fugitive'
-" Bundle 'tpope/vim-haml'
-" Bundle 'tpope/vim-markdown'
-" Bundle 'tpope/vim-rails'
-" Bundle 'tpope/vim-repeat'
-" Bundle 'tpope/vim-surround'
-" " Bundle 'uggedal/go-vim'
-" Bundle 'vim-ruby/vim-ruby'
-" Bundle 'wavded/vim-stylus'
-" Bundle 'xhr/vim-io'
-" Bundle 'zaiste/tmux.vim'
-" 
-" Bundle 'garbas/vim-snipmate'
-" Bundle 'honza/vim-snippets'
-" Bundle 'MarcWeber/vim-addon-mw-utils'
-" Bundle 'tomtom/tlib_vim'
 
 " let g:airline_section_a      (the mode indicator)
 " let g:airline_section_b      (the fugitive branch indicator)
@@ -86,43 +91,16 @@ colorscheme everforest
 " let g:UltiSnipsJumpForwardTrigger                       = '<c-j>'
 " let g:UltiSnipsListSnippets                             = '<c-m>'
 
-let g:jsx_ext_required = 0
-
 let g:airline_enable_fugitive = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme           = 'simple'
+let g:airline_theme = 'everforest'
 
 let g:AutoCloseExpandEnterOn = ""
 
-let g:EasyMotion_leader_key               = ',,'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:markdown_fenced_languages           = ['io', 'javascript', 'coffee', 'ruby']
 
-" let g:UltiSnipsExpandTrigger = '<c-l>'
-
-let g:ycm_add_preview_to_completeopt                    = 0
-let g:ycm_collect_identifiers_from_comments_and_strings = 0
-let g:ycm_complete_in_comments                          = 1
-let g:ycm_complete_in_strings                           = 1
-let g:ycm_min_num_of_chars_for_completion               = 1
-
-let g:SimpleJsIndenter_CaseIndentLevel = 0
-let g:SimpleJsIndenter_BriefMode = 1
-
-let javascript_enable_domhtmlcss = 1
-
-let g:syntastic_javascript_checkers = ['jsxhint']
-
-let g:ctrlp_follow_symlinks = 1
-let g:ctrlp_max_files       = 0
-let g:ctrlp_match_window    = 'bottom,order:btt,min:1,max:50'
-let g:ctrlp_user_command = {
-  \ 'types': {
-    \ 1: ['.git', 'cd %s && git ls-files --others --cached --exclude-standard'],
-    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-    \ },
-  \ 'fallback': 'find %s -type f'
-  \ }
+let g:ale_completion_enabled = 1
 
 let &t_SI = "\e[6 q" " bar when Starting Insert mode
 let &t_EI = "\e[2 q" " block when Ending Insert mode
@@ -185,30 +163,19 @@ set noswapfile
 " set printfont=courier:h8
 " set printoptions=number:y,duplex:off,paper:letter,left:20pt,right:20pt
 
+" inoremap <C-U>            <C-G>u<C-U>
 
-cmap     w!!              w !sudo tee % >/dev/null
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap     ga               <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap     ga               <Plug>(EasyAlign)
 imap     jk               <esc>
 imap     JK               <esc>
 imap     Jk               <esc>
 imap     jK               <esc>
-inoremap <C-U>            <C-G>u<C-U>
-map      ;                :
-map      <leader>cC       viw:s/\v%(%(\l)@<=[_-]\|<)(\l)/\u\1/ge<cr>
-map      <leader>cc       viw:s/\v%(\l)@<=[_-](\l)/\u\1/ge<cr>
-map      <leader>cu       viw:s/\v%(\l)@<=(\u)/_\l\1/ge<cr>
-map      <leader>cu       viw:s/\v%(\l)@<=(\u)/-\l\1/ge<cr>
-map      \                <nop>
-map      Q                gq
-nmap     <leader>bi       <leader>rv:BundleInstall<cr>
-nmap     <leader>bu       <leader>rv:BundleUpdate<cr>
-
+cmap     w!!              w !sudo tee % >/dev/null
 " use <escape> to exit terminal mode
-tnoremap <esc> <C-\\><C-n>
-
-" es6:
-map <leader>6i :s/^var \(.\+\) = require('\(.\+\)');\?$/import \1 from '\2'/<cr>
-map <leader>6j :s/: /={/eg<cr>:s/,/}/eg<cr>:s/\(\w\+\)({/<\1 /eg<cr>
-
+tnoremap <expr> <Esc>     (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
 nnoremap <leader>m        :make<return><return>
 nnoremap <leader>1        yypVr=  " Markdown heading 1
 nnoremap <leader>2        yypVr-  " Markdown heading 2
@@ -216,6 +183,12 @@ nnoremap <leader><space>  :%s/ \+$//eg<return>
 nnoremap <leader><tab>    :retab<return>
 nnoremap <leader>`        :MarkedOpen<return>
 nnoremap <leader>a        vip:sort i<return>
+" nmap     <leader>bi       <leader>rv:BundleInstall<cr>
+" nmap     <leader>bu       <leader>rv:BundleUpdate<cr>
+map      <leader>cC       viw:s/\v%(%(\l)@<=[_-]\|<)(\l)/\u\1/ge<cr>
+map      <leader>cc       viw:s/\v%(\l)@<=[_-](\l)/\u\1/ge<cr>
+map      <leader>cu       viw:s/\v%(\l)@<=(\u)/_\l\1/ge<cr>
+map      <leader>cu       viw:s/\v%(\l)@<=(\u)/-\l\1/ge<cr>
 nnoremap <leader>ev       :e $MYVIMRC<return>
 nnoremap <leader>eg       :e ~/.gvimrc<return>
 nnoremap <leader>es       :e ~/.vim/schemes<return>
@@ -223,12 +196,12 @@ nnoremap <leader>et       :e ~/.tmux.conf<return>
 nnoremap <leader>gb       :Gblame<return>
 nnoremap <leader>gd       :Gdiff<return>
 nnoremap <leader>H        :so $VIMRUNTIME/syntax/hitest.vim<return>
-nnoremap <leader>k        :<return>
+nnoremap <leader>k        :Files<return>
 nnoremap <leader>x        :!chmod a+x %<return>
 nnoremap <leader>X        :!chmod a-x %<return>
 nnoremap <leader>n        :NERDTreeToggle<return>
-nnoremap <leader>pi       :PlugInstall<return>
-nnoremap <leader>pu       :PlugUpdate<return>
+nmap     <leader>pi       <leader>rv:PlugInstall<return>
+nmap     <leader>pu       <leader>rv:PlugUpdate<return>
 nnoremap <leader>rg       :source ~/.gvimrc<return>
 nnoremap <leader>rs       :call ReloadAllSnippets()<return>
 nnoremap <leader>rv       :source $MYVIMRC<return>
@@ -242,7 +215,6 @@ nnoremap <leader>v        mqHmw<C-w>v`wzt`q<C-w>l`q
 nnoremap <leader>w        :set wrap!<cr>
 nnoremap <leader>q        :wqa<return>
 nnoremap <leader>z        zf}
-noremap  ;;               ;
 
 command! W w !sudo tee % > /dev/null
 
@@ -299,3 +271,4 @@ autocmd FileType ruby     set commentstring=#\ %s
 autocmd FileType scss.css set commentstring=//\ %s
 autocmd FileType sh       set commentstring=#\ %s
 autocmd FileType vim      set commentstring=\"\ %s
+

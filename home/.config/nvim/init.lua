@@ -9,7 +9,6 @@
 vim.opt.runtimepath:append("~/.vim")
 vim.opt.packpath:append("~/.vim/pack")
 vim.cmd("source ~/.vimrc")
-vim.cmd('packadd! nohlsearch')
 
 -- Install third-party plugins via "vim.pack.add()".
 vim.pack.add {
@@ -19,36 +18,21 @@ vim.pack.add {
 
   'https://github.com/nvim-treesitter/nvim-treesitter',         -- Treesitter parser management
   'https://github.com/nvim-treesitter/nvim-treesitter-context', -- Sticky enclosing blocks
-  'https://github.com/rrethy/nvim-treesitter-endwise',          -- Auto `end` insertion
-
-  'https://github.com/tpope/vim-sleuth',          -- Auto indentation detection
-  'https://github.com/nvim-mini/mini.align',      -- Alignment. Ex: vip ga =
-  'https://github.com/nvim-mini/mini.completion', -- Autocompletion
-  'https://github.com/kylechui/nvim-surround',    -- Quote wrapping. Ex: cs"'
-  'https://github.com/windwp/nvim-autopairs',     -- Auto-pair brackets
+  -- 'https://github.com/rrethy/nvim-treesitter-endwise',          -- Auto `end` insertion
 
   'https://github.com/nvim-lualine/lualine.nvim',   -- Status line
-  'https://github.com/nvim-neo-tree/neo-tree.nvim', -- File explorer
-  'https://github.com/ibhagwan/fzf-lua',            -- Fuzzy picker
-  'https://github.com/rmagatti/auto-session',       -- Restore last session per directory
+  -- 'https://github.com/nvim-neo-tree/neo-tree.nvim', -- File explorer
   'https://github.com/j-hui/fidget.nvim',           -- Show LSP messages in bottom-right corner
 
-  'https://github.com/tpope/vim-fugitive',      -- Git integration
-  'https://github.com/stevearc/quicker.nvim',   -- Enhanced quickfix/loclist
-  'https://github.com/lewis6991/gitsigns.nvim', -- Git integration
-  'https://github.com/neanias/everforest-nvim', -- Color scheme
+  -- 'https://github.com/stevearc/quicker.nvim',   -- Enhanced quickfix/loclist
+  -- 'https://github.com/lewis6991/gitsigns.nvim', -- Git integration
   'https://github.com/neovim/nvim-lspconfig',   -- Quickstart configs for LSP
 }
 
 -- }}}
 -- PLUGIN CONFIGURATION {{{
 
-require('everforest').load()
-require('mini.completion').setup {}
-require('mini.align').setup {}
-require('nvim-autopairs').setup {}
-require('quicker').setup {}
-require('fzf-lua').setup {}
+-- require('quicker').setup {}
 
 require('nvim-treesitter').install {'javascript', 'ruby', 'rust', 'zig' }
 
@@ -57,32 +41,28 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function() vim.treesitter.start() end,
 })
 
-require('neo-tree').setup {
-  close_if_last_window = true,
-  filesystem = {
-    bind_to_cwd = true,
-    use_libuv_file_watcher = true,
-    follow_current_file = {
-      enabled = true
-    },
-    filtered_items = {
-      visible = true,
-      hide_dotfiles = false,
-    }
-  }
-}
+-- require('neo-tree').setup {
+--   close_if_last_window = true,
+--   filesystem = {
+--     bind_to_cwd = true,
+--     use_libuv_file_watcher = true,
+--     follow_current_file = {
+--       enabled = true
+--     },
+--     filtered_items = {
+--       visible = true,
+--       hide_dotfiles = false,
+--     }
+--   }
+-- }
 
 -- vim.api.nvim_create_autocmd('VimEnter', {
 --   command = "Neotree show",
 -- })
 
-vim.api.nvim_create_autocmd('VimLeavePre', {
-  command = "Neotree close",
-})
-
-require('auto-session').setup {
-  cwd_change_handling = true
-}
+-- vim.api.nvim_create_autocmd('VimLeavePre', {
+--   command = "Neotree close",
+-- })
 
 require('lualine').setup {
   sections = {
