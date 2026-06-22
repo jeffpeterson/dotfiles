@@ -20,6 +20,7 @@ vim.pack.add {
   'https://github.com/nvim-treesitter/nvim-treesitter-context', -- Sticky enclosing blocks
   -- 'https://github.com/rrethy/nvim-treesitter-endwise',          -- Auto `end` insertion
 
+  'https://github.com/nvim-lualine/lualine.nvim',   -- Status line
   -- 'https://github.com/nvim-neo-tree/neo-tree.nvim', -- File explorer
   'https://github.com/j-hui/fidget.nvim',           -- Show LSP messages in bottom-right corner
 
@@ -117,11 +118,8 @@ vim.lsp.enable('ruby_lsp')
 -- See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
 
 -- Use <Esc> to exit terminal mode
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+-- vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
-vim.keymap.set('n', '<Leader>/', '<Cmd>FzfLua live_grep<CR>')
-vim.keymap.set('n', '<Leader>k', '<Cmd>FzfLua files<CR>')
-vim.keymap.set('n', '<Leader>p', '<Cmd>FzfLua files<CR>')
 vim.keymap.set('n', '<Leader>b', '<Cmd>Neotree toggle<CR>')
 
 -- }}}

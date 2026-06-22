@@ -23,9 +23,7 @@ Plug 'tpope/vim-fugitive'     " Git integration
 Plug 'airblade/vim-gitgutter' " Git gutter
 Plug 'zivyangll/git-blame.vim'
 
-if has('nvim')
-  Plug 'nvim-lualine/lualine.nvim'
-else
+if !has('nvim')
   Plug 'vim-airline/vim-airline'
   Plug 'rishi-opensource/vim-claude-code'
 endif
@@ -132,6 +130,7 @@ set signcolumn=yes    " always show sign column
 set colorcolumn=80
 set ruler             " show the cursor row:col pct%
 set cursorline        " highlight the cursor line
+set fillchars+=vert:│
 
 set virtualedit=all
 set scrolloff=3       " Keep this many lines above/below cursor
@@ -178,6 +177,8 @@ imap     jK               <esc>
 cmap     w!!              w !sudo tee % >/dev/null
 " use <escape> to exit terminal mode
 tnoremap <expr> <Esc>     (&filetype == "fzf") ? "<Esc>" : "<c-\><c-n>"
+nnoremap <leader>/        :Rg<return>
+nnoremap <leader>?        :Maps<return>
 nnoremap <leader>m        :make<return><return>
 nnoremap <leader>1        yypVr=  " Markdown heading 1
 nnoremap <leader>2        yypVr-  " Markdown heading 2
