@@ -32,6 +32,8 @@ endif
 " Plug 'prabirshrestha/vim-lsp'
 Plug 'dense-analysis/ale'
 
+Plug 'tpope/vim-rails'
+
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }

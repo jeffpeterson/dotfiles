@@ -39,6 +39,7 @@ log
 
 /home/.vim/bundle
 /home/.vim/plugged
+/home/.vim/session
 
 /support/Code/*
 !/support/Code/User

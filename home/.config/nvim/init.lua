@@ -20,7 +20,6 @@ vim.pack.add {
   'https://github.com/nvim-treesitter/nvim-treesitter-context', -- Sticky enclosing blocks
   -- 'https://github.com/rrethy/nvim-treesitter-endwise',          -- Auto `end` insertion
 
-  'https://github.com/nvim-lualine/lualine.nvim',   -- Status line
   -- 'https://github.com/nvim-neo-tree/neo-tree.nvim', -- File explorer
   'https://github.com/j-hui/fidget.nvim',           -- Show LSP messages in bottom-right corner
 
@@ -86,13 +85,13 @@ require('lualine').setup {
   },
 }
 
-require('gitsigns').setup {
-  current_line_blame = true,
-  current_line_blame_opts = {
-    delay = 0,
-    virt_text_pos = 'right_align',
-  }
-}
+-- require('gitsigns').setup {
+--   current_line_blame = true,
+--   current_line_blame_opts = {
+--     delay = 0,
+--     virt_text_pos = 'right_align',
+--   }
+-- }
 
 vim.lsp.enable('ruby_lsp')
 
