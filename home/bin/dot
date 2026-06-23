@@ -191,10 +191,14 @@ dot() {
       fi
 
       case $file in
+        claude)
+          file=".claude/settings.json";;
         nvim|neovim)
           file=".config/nvim/init.lua";;
         tmux)
           file=".tmux.conf";;
+        vim)
+          file=".vimrc";;
         zsh)
           file=".rootenv";;
         *)

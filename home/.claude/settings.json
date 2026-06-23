@@ -15,5 +15,6 @@
   "preferredNotifChannel": "terminal_bell",
   "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "teammateMode": "auto"
 }
