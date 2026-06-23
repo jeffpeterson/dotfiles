@@ -9,6 +9,14 @@
     "defaultMode": "auto"
   },
   "model": "claude-opus-4-8",
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    }
+  },
   "theme": "auto",
   "editorMode": "normal",
   "verbose": false,
@@ -16,5 +24,8 @@
   "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
   "agentPushNotifEnabled": true,
-  "teammateMode": "auto"
+  "teammateMode": "auto",
+  "enabledPlugins": {
+    "codex@openai-codex": true
+  }
 }
