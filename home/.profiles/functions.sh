@@ -36,9 +36,10 @@ drop() {
 
 # trash file1 file2 file3
 trash() {
-  mkdir -p ~/.Trash
+  dst="$HOME/.Trash"
+  mkdir -p "$dst"
   for f in "$@"; do
-    out="~/.Trash/${f//\//}"
+    out="$dst/${f//\//-}"
     mv "$f" "$out"
     echo "$out"
   done
