@@ -36,7 +36,12 @@ drop() {
 
 # trash file1 file2 file3
 trash() {
-  mv $@ ~/.Trash/
+  mkdir -p ~/.Trash
+  for f in "$@"; do
+    out="~/.Trash/${f//\//}"
+    mv "$f" "$out"
+    echo "$out"
+  done
 }
 
 f() {
