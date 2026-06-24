@@ -10,7 +10,8 @@
   },
   "model": "claude-opus-4-8",
   "enabledPlugins": {
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "discord@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -21,6 +22,7 @@
     }
   },
   "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "editorMode": "normal",
   "verbose": false,
@@ -28,6 +30,5 @@
   "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
   "teammateMode": "auto",
-  "agentPushNotifEnabled": true,
-  "skipDangerousModePermissionPrompt": true
+  "agentPushNotifEnabled": true
 }
