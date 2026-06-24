@@ -199,7 +199,8 @@ nnoremap <leader>et       :e ~/.tmux.conf<return>
 nnoremap <leader>gb       :Gblame<return>
 nnoremap <leader>gd       :Gdiff<return>
 nnoremap <leader>H        :so $VIMRUNTIME/syntax/hitest.vim<return>
-nnoremap <leader>k        :Files<return>
+nnoremap <leader>k        :GFiles<return>
+nnoremap <leader>K        :Files<return>
 nnoremap <leader>x        :!chmod a+x %<return>
 nnoremap <leader>X        :!chmod a-x %<return>
 nnoremap <leader>n        :NERDTreeToggle<return>
