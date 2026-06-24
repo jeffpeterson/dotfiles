@@ -18,7 +18,7 @@ unsetopt AUTO_CD
 bindkey -e
 
 # starts zsh autocompletion. must be after homebrew adds completions
-autoload -U compinit && compinit -u # FIXME: -u ignores insecure
+autoload -Uz compinit && compinit -u # FIXME: -u ignores insecure
 zstyle ':completion:*' menu select
 
 autoload -U colors && colors
