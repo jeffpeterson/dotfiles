@@ -9,6 +9,9 @@
     "defaultMode": "auto"
   },
   "model": "claude-opus-4-8",
+  "enabledPlugins": {
+    "codex@openai-codex": true
+  },
   "extraKnownMarketplaces": {
     "openai-codex": {
       "source": {
@@ -17,15 +20,14 @@
       }
     }
   },
+  "tui": "fullscreen",
   "theme": "auto",
   "editorMode": "normal",
   "verbose": false,
   "preferredNotifChannel": "terminal_bell",
   "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
-  "agentPushNotifEnabled": true,
   "teammateMode": "auto",
-  "enabledPlugins": {
-    "codex@openai-codex": true
-  }
+  "agentPushNotifEnabled": true,
+  "skipDangerousModePermissionPrompt": true
 }
