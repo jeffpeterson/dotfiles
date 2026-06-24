@@ -1,6 +1,9 @@
 source ~/.rootenv
 
-HISTSIZE=5000000
+HISTSIZE=50000
+SAVEHIST=50000
+HISTFILE=~/.zsh_history
+setopt appendhistory
 
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt EXTENDED_HISTORY
@@ -8,7 +11,6 @@ setopt INC_APPEND_HISTORY_TIME
 setopt SHARE_HISTORY
 setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_ALL_DUPS
-
 setopt PROMPT_CR
 setopt PROMPT_SP
 setopt PROMPT_SUBST
