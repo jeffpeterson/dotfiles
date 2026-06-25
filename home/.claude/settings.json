@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Bash(cargo *)",
@@ -10,8 +13,8 @@
   },
   "model": "claude-opus-4-8",
   "enabledPlugins": {
-    "codex@openai-codex": true,
-    "discord@claude-plugins-official": true
+    "discord@claude-plugins-official": true,
+    "codex@openai-codex": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -30,5 +33,6 @@
   "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
   "teammateMode": "auto",
+  "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true
 }
