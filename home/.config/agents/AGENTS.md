@@ -46,9 +46,16 @@ talk.
 - Offload research, exploration, and parallel analysis to subagents
 - For complex problems, throw more compute at it via subagents
 - One tack per subagent for focused execution
+- For a result you need handed back, spawn a one-shot/unnamed subagent or a fork —
+  NOT a named teammate (named teammates can exhaust their context on spawn and never
+  deliver; reserve them for genuine multi-turn collaboration)
+- Don't prime a subagent's context with files/tools — it has your full abilities, just
+  a different prompt. If it can't find what it needs, fix its persona, not the prompt
 
 ### 3. Self-Improvement Loop
 - After a correction from the user: capture the pattern in your memory
+- Memory (`~/.claude/...`) is LOCAL and not backed up — mirror any durable lesson into
+  a git-tracked file (a repo's docs/AGENTS), or it's lost on the next wipe
 - Write rules for yourself that prevent the same mistake
 - Ruthlessly iterate on these lessons until mistake rate drops
 
@@ -77,5 +84,6 @@ talk.
 3. **Track Progress**:   Mark items complete as you go
 4. **Explain Changes**:  High-level summary at each step
 5. **Capture Lessons**:  After corrections from the user, save a feedback
-                         memory in your auto-memory system
+                         memory in your auto-memory system — and mirror durable
+                         ones to git (memory is local + ephemeral)
 
