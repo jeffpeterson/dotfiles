@@ -46,9 +46,11 @@ talk.
 - Offload research, exploration, and parallel analysis to subagents
 - For complex problems, throw more compute at it via subagents
 - One tack per subagent for focused execution
-- For a result you need handed back, spawn a one-shot/unnamed subagent or a fork —
-  NOT a named teammate (named teammates can exhaust their context on spawn and never
-  deliver; reserve them for genuine multi-turn collaboration)
+- For a result handed back to you, use an unnamed one-shot subagent or a fork — both
+  auto-return. A NAMED teammate won't auto-return; it must `SendMessage` its output, so
+  reserve names for multi-turn collaboration you steer, not one-shot fetches. Its
+  `idle_notification (available)` means "turn done", not "failed". (Heavy context is a
+  FORK risk — forks inherit your history — not a fresh-teammate one.)
 - Don't prime a subagent's context with files/tools — it has your full abilities, just
   a different prompt. If it can't find what it needs, fix its persona, not the prompt
 
