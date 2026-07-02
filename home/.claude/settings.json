@@ -12,6 +12,11 @@
     "defaultMode": "auto"
   },
   "model": "claude-opus-4-8",
+  "statusLine": {
+    "type": "command",
+    "command": "~/bin/claude-status",
+    "padding": 0
+  },
   "enabledPlugins": {
     "discord@claude-plugins-official": true,
     "codex@openai-codex": true
