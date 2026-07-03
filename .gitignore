@@ -28,6 +28,7 @@ log
 !/home/.config/nvim
 !/home/.config/opencode
 !/home/.config/sway
+/home/.config/sway/config.d
 /home/.config/opencode/skills
 !/home/.config/yarn
 /home/.config/yarn/link
