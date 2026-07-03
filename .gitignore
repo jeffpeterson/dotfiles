@@ -27,6 +27,7 @@ log
 !/home/.config/kitty
 !/home/.config/nvim
 !/home/.config/opencode
+!/home/.config/sway
 /home/.config/opencode/skills
 !/home/.config/yarn
 /home/.config/yarn/link
