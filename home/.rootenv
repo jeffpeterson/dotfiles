@@ -26,6 +26,7 @@ push /usr/local/opt/ccache/libexec
 push /usr/local/opt/go/libexec/bin
 push /usr/local/opt/openjdk/bin
 push /usr/local/opt/ghc@8.2/bin
+push $HOME/.opencode/bin
 
 push $HOME/.local/bin
 push $HOME/code/go/projects/bin
