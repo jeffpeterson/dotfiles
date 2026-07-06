@@ -1,5 +1,6 @@
 {
   "env": {
+    "ANTHROPIC_BASE_URL": "http://ai.ibis-micro.ts.net",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
@@ -11,14 +12,13 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-opus-4-8",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "~/bin/claude-status",
     "padding": 0
   },
   "enabledPlugins": {
-    "discord@claude-plugins-official": true,
     "codex@openai-codex": true
   },
   "extraKnownMarketplaces": {
@@ -34,7 +34,7 @@
   "theme": "auto",
   "editorMode": "normal",
   "verbose": false,
-  "preferredNotifChannel": "terminal_bell",
+  "preferredNotifChannel": "auto",
   "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
   "teammateMode": "auto",
