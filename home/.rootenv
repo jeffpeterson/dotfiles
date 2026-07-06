@@ -14,6 +14,8 @@ osname() {
 
 export OS=`osname`
 
+PATH="$PATH:bin"
+
 push /usr/local/heroku/bin
 push $HOME/.yarn/bin
 push $HOME/.bun/bin
