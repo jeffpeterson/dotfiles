@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# publish — DEPRECATED alias for `share --public`. The command was renamed to
+# `share`, which is PRIVATE (tailnet-only) by default; pass -p/--public to publish
+# to the open internet. This alias preserves the old public-by-default behavior so
+# existing callers keep working. Prefer `share -p <path>` going forward.
+set -euo pipefail
+
+echo "publish: renamed to 'share' (private by default) — publishing publicly; use 'share -p'." >&2
+
+dir=$(cd "$(dirname "$0")" && pwd)
+exec "$dir/share" --public "$@"

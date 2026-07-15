@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# share — copy files into ~/shared. Private by default (tailnet-only); public on
+# request. Each file lands at ~/shared/<name>, served two ways:
+#
+#   share <path> [path...]             private → https://shared.yak.sh/<name>
+#                                        (owner's Tailscale tailnet only, NOT public)
+#   share -p / --public <path> ...     ALSO public → https://public.yak.sh/<name>
+#                                        (open internet — anyone with the link)
+#   share -f / --force <path> ...      skip the secret-name safety check
+#
+# The default is SAFE: nothing reaches the open internet without -p/--public.
+# Public means anyone with the link — never make public secrets, .env, keys, or PII.
+#
+# Under the hood: private = a plain file under ~/shared; public = that file with its
+# sticky bit set (chmod +t), which the public-share server gates on. Re-sharing a
+# file privately (no -p) also UNPUBLISHES it (clears the sticky bit).
+set -euo pipefail
+
+shared="$HOME/shared"
+private_url="https://shared.yak.sh"
+public_url="https://public.yak.sh"
+
+public=0
+force=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -p | --public) public=1; shift ;;
+    -f | --force)  force=1;  shift ;;
+    -pf | -fp)     public=1; force=1; shift ;;
+    --)            shift; break ;;
+    -*)            echo "share: unknown option: $1" >&2; exit 1 ;;
+    *)             break ;;
+  esac
+done
+
+if [ $# -eq 0 ]; then
+  echo "usage: share [-p|--public] [-f|--force] <path> [path...]" >&2
+  exit 1
+fi
+
+mkdir -p "$shared"
+
+# Obvious secret-bearing names — refuse unless -f.
+looks_secret() {
+  case "${1##*/}" in
+    .env | *.env | .env.* | *.pem | *.key | id_rsa | id_ed25519 | *.p12 | *.pfx | credentials | *.secret) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+status=0
+for src in "$@"; do
+  if [ ! -f "$src" ]; then
+    echo "share: not a file: $src" >&2
+    status=1
+    continue
+  fi
+  if [ "$force" -eq 0 ] && looks_secret "$src"; then
+    echo "share: refusing $src (looks like a secret; use -f to override)" >&2
+    status=1
+    continue
+  fi
+  name=${src##*/}
+  dest="$shared/$name"
+  cp "$src" "$dest"
+  if [ "$public" -eq 1 ]; then
+    chmod +t "$dest"
+    echo "$public_url/$name"
+  else
+    chmod -t "$dest"   # ensure private even if a prior public copy set the sticky bit
+    echo "$private_url/$name"
+  fi
+done
+
+exit $status
