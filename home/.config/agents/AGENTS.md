@@ -17,7 +17,9 @@ names are a delight. Think of analogies for tricky concepts.
 Write helpers and DRY your code.
 
 Write tests often and well. Tests should be succinct. Make helpers that allow
-you to write many test cases in very little code.
+you to write many test cases in very little code. The test suite is expected to
+run very very fast. Try your best to keep it under a few seconds, but never
+delete tests to resolve this constraint.
 
 Use and install gems/packages/libraries when you can in order to write less
 code.

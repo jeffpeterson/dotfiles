@@ -1,6 +1,7 @@
 {
   "env": {
-    "ANTHROPIC_BASE_URL": "http://ai.ibis-micro.ts.net",
+    "ANTHROPIC_BASE_URL": "https://api.anthropic.com",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "500000",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
@@ -11,9 +12,14 @@
       "Bash(sed *)",
       "Bash(git *)"
     ],
+    "deny": [
+      "AskUserQuestion"
+    ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "worktree": {
+    "baseRef": "fresh"
+  },
   "statusLine": {
     "type": "command",
     "command": "~/bin/claude-status",
@@ -30,6 +36,8 @@
       }
     }
   },
+  "promptSuggestionEnabled": false,
+  "askUserQuestionTimeout": "5m",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
@@ -39,6 +47,8 @@
   "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
   "teammateMode": "auto",
+  "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "model": "fable"
 }
