@@ -22,11 +22,25 @@ check() {
 	fi
 }
 
-mkdir -p "$DIR/coloring-book-maker" "$DIR/plain"
-printf '{"venture":"crayonbloom"}\n' >"$DIR/coloring-book-maker/operate.json"
+ventures=(
+  bindery:bindery
+  cafe_car:cafe_car
+  crayonbloom:coloring-book-maker
+  holdco:holdco
+  homelab:homelab
+  tasks:tasks
+  trading:trading
+  ufos:ufos
+)
+for fixture in "${ventures[@]}"; do
+  id="${fixture%%:*}"
+  repo="${fixture#*:}"
+  mkdir -p "$DIR/$repo"
+  printf '{"venture":"%s"}\n' "$id" >"$DIR/$repo/operate.json"
+  check "$id uses its registry id" "$DIR/$repo" "$id"
+done
 
-check 'operate venture is the cache label' \
-	"$DIR/coloring-book-maker" crayonbloom
+mkdir -p "$DIR/plain"
 check 'project basename remains the fallback' "$DIR/plain" plain
 
 cat >"$DIR/cache/usage.coloring-book-maker" <<-EOF
