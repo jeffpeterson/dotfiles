@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+
+BIN="$(cd "$(dirname "$0")" && pwd)/claude-status"
+DIR="$(mktemp -d)"
+pass=0 fail=0
+trap 'rm -rf "$DIR"' EXIT
+
+check() {
+	local desc="$1" project="$2" want="$3"
+	rm -f "$DIR/cache"/usage.*
+	CLAUDE_USAGE_DIR="$DIR/cache" NO_COLOR=1 "$BIN" <<-EOF >/dev/null
+		{"workspace":{"project_dir":"$project"}}
+	EOF
+	if [ -f "$DIR/cache/usage.$want" ]; then
+		((pass++))
+		printf 'ok   %s\n' "$desc"
+	else
+		((fail++))
+		printf 'FAIL %s\n' "$desc"
+	fi
+}
+
+mkdir -p "$DIR/coloring-book-maker" "$DIR/plain"
+printf '{"venture":"crayonbloom"}\n' >"$DIR/coloring-book-maker/operate.json"
+
+check 'operate venture is the cache label' \
+	"$DIR/coloring-book-maker" crayonbloom
+check 'project basename remains the fallback' "$DIR/plain" plain
+
+cat >"$DIR/cache/usage.coloring-book-maker" <<-EOF
+	CWD=$DIR/coloring-book-maker
+	SEVEN_DAY_PCT=42
+	SEVEN_DAY_RESET=9999999999
+EOF
+CLAUDE_USAGE_DIR="$DIR/cache" NO_COLOR=1 "$BIN" <<-EOF >/dev/null
+	{"workspace":{"project_dir":"$DIR/coloring-book-maker"}}
+EOF
+if [ ! -e "$DIR/cache/usage.coloring-book-maker" ] \
+	&& grep -q '^SEVEN_DAY_PCT=42$' "$DIR/cache/usage.crayonbloom"; then
+	((pass++))
+	printf 'ok   basename cache migrates with its usage\n'
+else
+	((fail++))
+	printf 'FAIL basename cache migrates with its usage\n'
+fi
+
+printf '\n%d passed, %d failed\n' "$pass" "$fail"
+[ "$fail" = 0 ]

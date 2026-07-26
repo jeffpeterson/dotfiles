@@ -9,8 +9,9 @@
 # footer for the pane.
 #
 # Cache contract (consumers: holdco's bin/holdco-tokens, bin/self-clear):
-# one KEY=VALUE file per project dir, keyed by workspace.project_dir basename
-# (stable for a session's lifetime — the live cwd drifts with in-session cd).
+# one KEY=VALUE file per project dir, keyed by operate.json's venture id when
+# present, otherwise the workspace.project_dir basename (stable for a session's
+# lifetime — the live cwd drifts with in-session cd).
 # Keys: LABEL SESSION_ID CWD MODEL CTX_PCT COST_USD FIVE_HOUR_PCT
 # FIVE_HOUR_RESET SEVEN_DAY_PCT SEVEN_DAY_RESET CTX_TOKENS CACHE_PCT
 # SEND_COST LAST_TURN_TS UPDATED_AT.
@@ -65,12 +66,29 @@ data="$(printf '%s' "$input" | "$JQ" -r '
 
 val() { printf '%s\n' "$data" | sed -n "s/^$1=//p"; }
 
+safe_label() { printf '%s' "$1" | tr -c 'A-Za-z0-9._-' '_'; }
+
 cwd="$(val CWD)"; [ -n "$cwd" ] || cwd="$PWD"
-label="$(basename "$cwd")"
+fallback="$(safe_label "$(basename "$cwd")")"
+label=""
+[ -f "$cwd/operate.json" ] \
+	&& label="$("$JQ" -r '.venture // empty | strings' \
+		"$cwd/operate.json" 2>/dev/null)"
+[ -n "$label" ] || label="$(basename "$cwd")"
 # Sanitize to a safe filename (keeps the project name readable).
-label="$(printf '%s' "$label" | tr -c 'A-Za-z0-9._-' '_')"
+label="$(safe_label "$label")"
 [ -n "$label" ] || label="unknown"
 CACHE_FILE="$CACHE_DIR/usage.$label"
+
+# Retire the basename-keyed cache after a venture adopts a canonical id. The
+# CWD guard keeps an unrelated project with the same basename untouched.
+legacy="$CACHE_DIR/usage.$fallback"
+if [ "$legacy" != "$CACHE_FILE" ] && [ -f "$legacy" ] \
+	&& [ "$(sed -n 's/^CWD=//p' "$legacy" | head -1)" = "$cwd" ]; then
+	if [ -f "$CACHE_FILE" ]; then rm -f "$legacy"
+	else mv "$legacy" "$CACHE_FILE" 2>/dev/null
+	fi
+fi
 
 model="$(val MODEL)"
 ctx="$(val CTX_PCT)"
