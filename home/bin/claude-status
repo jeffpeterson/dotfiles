@@ -185,11 +185,17 @@ mkdir -p "$CACHE_DIR" 2>/dev/null
 	printf 'LAST_TURN_TS=%s\n' "$last_turn_ts"
 	printf 'UPDATED_AT=%s\n' "$now"
 } >"$CACHE_FILE.tmp.$$" 2>/dev/null && mv "$CACHE_FILE.tmp.$$" "$CACHE_FILE" 2>/dev/null
+# Write-then-rename is atomic for readers but not self-cleaning for us: a failed
+# write or rename leaves scratch behind under a name consumers' usage.* globs
+# still match. Drop ours on the way out (a kill -9 escapes this — prune sweeps
+# those below).
+rm -f "$CACHE_FILE.tmp.$$" 2>/dev/null
 
 # Liveness-prune sibling caches, at most once an hour: delete usage.* files
 # with no live claude/node process at their CWD AND no update in >24h — dead
 # sessions from finished work (their stale readings otherwise linger for
-# consumers to trip over). Linux-only (/proc); a no-op elsewhere.
+# consumers to trip over) — plus any orphaned .tmp.* scratch, which is swept on
+# age alone. Linux-only (/proc); a no-op elsewhere.
 prune_corpses() {
 	local marker="$CACHE_DIR/.last-prune" last=0
 	[ -f "$marker" ] && last="$(cat "$marker" 2>/dev/null || echo 0)"
@@ -204,7 +210,9 @@ prune_corpses() {
 		[ -n "$link" ] || continue
 		pid="${p#/proc/}"; pid="${pid%/cwd}"
 		comm="$(cat "/proc/$pid/comm" 2>/dev/null)" || continue
-		case "$comm" in claude | node) live["$link"]=1 ;; esac
+		# Node names its main thread, so comm reads node-MainThread, not node —
+		# match the prefixes or this map is silently always empty.
+		case "$comm" in claude | claude-* | node | node-*) live["$link"]=1 ;; esac
 	done
 	for f in "$CACHE_DIR"/usage.*; do
 		[ -f "$f" ] || continue
@@ -212,7 +220,13 @@ prune_corpses() {
 		fcwd="$(sed -n 's/^CWD=//p' "$f" | head -1)"
 		fupd="$(sed -n 's/^UPDATED_AT=//p' "$f" | head -1)"
 		[[ "$fupd" =~ ^[0-9]+$ ]] || fupd=0
-		[ -n "${live[$fcwd]:-}" ] && continue
+		# Scratch orphaned by a write that died before its rename. The liveness
+		# rule below must never protect one: a temp carries the CWD of the session
+		# that was writing it, which is typically still running, so "live process
+		# there" would keep it forever. No write takes an hour (and a truncated
+		# one has no UPDATED_AT at all, so it reads as ancient and goes at once).
+		case "$f" in *.tmp.*) ((now - fupd > 3600)) && rm -f "$f"; continue ;; esac
+		[ -n "$fcwd" ] && [ -n "${live[$fcwd]:-}" ] && continue
 		((now - fupd > 86400)) && rm -f "$f"
 	done
 }

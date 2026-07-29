@@ -60,5 +60,49 @@ else
 	printf 'FAIL basename cache migrates with its usage\n'
 fi
 
+# Orphaned scratch: a write that dies before its rename leaves usage.<id>.tmp.<pid>
+# behind, carrying the CWD of a session that is usually still running. The prune's
+# liveness rule would keep it forever, so it renders as a phantom duplicate row in
+# every consumer's fleet view. Temps go on age alone.
+mkdir -p "$DIR/homelab"
+printf '{"venture":"homelab"}\n' >"$DIR/homelab/operate.json"
+(cd "$DIR/homelab" && exec node -e 'setTimeout(()=>{},20000)') &
+node_pid=$!
+trap 'rm -rf "$DIR"; kill "$node_pid" 2>/dev/null' EXIT
+
+temp() { # temp <name> <updated_at>
+	printf 'LABEL=homelab\nCWD=%s\nUPDATED_AT=%s\n' "$DIR/homelab" "$2" >"$DIR/cache/$1"
+}
+prune() { # the prune is gated to once an hour — clear the marker to force it
+	rm -f "$DIR/cache/.last-prune"
+	CLAUDE_USAGE_DIR="$DIR/cache" NO_COLOR=1 "$BIN" <<-EOF >/dev/null
+		{"workspace":{"project_dir":"$DIR/homelab"}}
+	EOF
+}
+swept() { # swept <desc> <file> <gone|kept>
+	local got=kept
+	[ -e "$DIR/cache/$2" ] || got=gone
+	if [ "$got" = "$3" ]; then ((pass++)); printf 'ok   %s\n' "$1"
+	else ((fail++)); printf 'FAIL %s (want %s, got %s)\n' "$1" "$3" "$got"; fi
+}
+
+# A live-but-idle operator keeps its cache. This is the rule that quietly did
+# nothing for months: node names its main thread, so comm is node-MainThread and
+# the liveness map matched nothing, leaving every consumer on an age-only rule.
+printf 'LABEL=homelab\nCWD=%s\nUPDATED_AT=1\n' "$DIR/homelab" >"$DIR/cache/usage.idle-but-live"
+printf 'LABEL=homelab\nCWD=%s/gone\nUPDATED_AT=1\n' "$DIR" >"$DIR/cache/usage.plain-corpse"
+prune
+swept 'ancient cache at a live CWD survives' usage.idle-but-live kept
+swept 'ancient cache with no live process is a corpse' usage.plain-corpse gone
+
+now="$(date +%s)"
+temp usage.homelab.tmp.111 "$((now - 7200))"                     # stale orphan
+temp usage.homelab.tmp.222 "$now"                                # plausibly mid-write
+printf 'LABEL=homelab\n' >"$DIR/cache/usage.homelab.tmp.333"     # truncated: no CWD, no UPDATED_AT
+prune
+swept 'stale temp is swept despite a live process at its CWD' usage.homelab.tmp.111 gone
+swept 'truncated temp is swept at once' usage.homelab.tmp.333 gone
+swept 'a mid-write temp is left alone' usage.homelab.tmp.222 kept
+
 printf '\n%d passed, %d failed\n' "$pass" "$fail"
 [ "$fail" = 0 ]
