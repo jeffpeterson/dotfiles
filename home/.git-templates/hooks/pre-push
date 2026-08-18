@@ -1,3 +1,42 @@
 #!/bin/sh
+#
+# Refuse a push that carries a 'wip' commit message.
+#
+# Read git's pre-push stdin protocol — one line per ref crossing the wire:
+#   <local ref> <local sha> <remote ref> <remote sha>
+# That is the exact set of commits being pushed, so no @{upstream} needs to
+# exist (a worktree branch created without one is the whole point). An all-zero
+# oid means "no such object": local zero is a ref deletion (nothing to screen),
+# remote zero is a branch the remote has never seen (range over --not --remotes).
+# Match the zero oid by SHAPE, not a fixed 40 zeros, so a sha256 repo works too.
+#
+# A git that CANNOT look must refuse the push, never wave it through: capture
+# the log into a variable so a failing git trips `|| exit 1`, and read grep's
+# exit code (0 match / 1 no match) via `if`, never a piped truth value that
+# conflates "no match" with "could not look" — that conflation was the old bug.
 
-! git log @{upstream}..@ --pretty=%B | grep "^wip$"
+is_zero() {
+  case "$1" in
+    *[!0]*) return 1 ;;
+    "") return 1 ;;
+    *) return 0 ;;
+  esac
+}
+
+while read -r _local_ref local_sha _remote_ref remote_sha
+do
+  is_zero "$local_sha" && continue
+
+  if is_zero "$remote_sha"
+  then
+    commits=$(git log "$local_sha" --not --remotes --pretty=%B) || exit 1
+  else
+    commits=$(git log "$remote_sha..$local_sha" --pretty=%B) || exit 1
+  fi
+
+  if printf '%s\n' "$commits" | grep -q '^wip$'
+  then
+    echo "pre-push: a commit message contains a 'wip' line" >&2
+    exit 1
+  fi
+done
