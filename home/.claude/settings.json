@@ -3,7 +3,7 @@
     "ANTHROPIC_BASE_URL": "https://api.anthropic.com",
     "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "500000",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "0"
   },
   "permissions": {
     "allow": [
@@ -17,6 +17,91 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "fable",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__tasks__task_comment",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/check-comment-size.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/check-comment-size.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PATH=\"$HOME/.deno/bin:$PATH\" TASKS_PROVIDER=claude task session context --hook || true"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PATH=\"$HOME/.deno/bin:$PATH\" TASKS_PROVIDER=claude task session context --hook || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PATH=\"$HOME/.deno/bin:$PATH\" TASKS_PROVIDER=claude task-turn || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PATH=\"$HOME/.deno/bin:$PATH\" TASKS_PROVIDER=claude task-turn || true",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -x \"${CLAUDE_PROJECT_DIR}/.claude/hooks/self-clear-stop.sh\" ]; then \"${CLAUDE_PROJECT_DIR}/.claude/hooks/self-clear-stop.sh\"; else cat >/dev/null; fi || true",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PATH=\"$HOME/.deno/bin:$PATH\" TASKS_PROVIDER=claude task session wrap --hook || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  },
   "worktree": {
     "baseRef": "fresh"
   },
@@ -26,7 +111,9 @@
     "padding": 0
   },
   "enabledPlugins": {
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "tasks@tasks-fleet": true,
+    "stripe@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -34,11 +121,18 @@
         "source": "github",
         "repo": "openai/codex-plugin-cc"
       }
+    },
+    "tasks-fleet": {
+      "source": {
+        "source": "directory",
+        "path": "/home/yaks/code/tasks/channels/marketplace"
+      }
     }
   },
   "promptSuggestionEnabled": false,
   "askUserQuestionTimeout": "5m",
   "tui": "fullscreen",
+  "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "editorMode": "normal",
@@ -49,6 +143,5 @@
   "teammateMode": "auto",
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "model": "fable"
+  "agentPushNotifEnabled": true
 }
