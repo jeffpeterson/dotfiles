@@ -1,0 +1,166 @@
+#!/usr/bin/env python3
+"""Exercise share with private fixtures and a scratch HOME, never live data."""
+import os
+import importlib.machinery
+import importlib.util
+from unittest.mock import patch
+from pathlib import Path
+import stat
+import sys
+sys.dont_write_bytecode = True
+import subprocess
+import tempfile
+import unittest
+
+SHARE = Path(__file__).with_name('share')
+
+
+class ShareTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.home = self.root / 'home'
+        self.home.mkdir()
+        self.src = self.root / 'source'
+        self.src.mkdir()
+        self.shared = self.home / 'shared'
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def run_share(self, *args, ok=True):
+        result = subprocess.run([str(SHARE), *map(str, args)],
+                                env={**os.environ, 'HOME': str(self.home)},
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0 if ok else 1, result.stderr)
+        if not ok:
+            self.assertEqual(result.stdout, '')
+        return result.stdout.strip()
+
+    def public(self, path):
+        return bool(path.stat().st_mode & stat.S_ISVTX)
+
+    def test_file_and_public_private(self):
+        file = self.src / 'a #?.txt'
+        file.write_text('private fixture')
+        file.chmod(0o1755)
+        url = self.run_share(file)
+        dest = self.shared / file.name
+        self.assertEqual(url, 'https://shared.yak.sh/a%20%23%3F.txt')
+        self.assertEqual(dest.read_text(), 'private fixture')
+        self.assertFalse(self.public(dest))
+        self.assertTrue(dest.stat().st_mode & stat.S_IXUSR)
+        self.run_share('-p', file)
+        self.assertTrue(self.public(dest))
+        self.run_share(file)
+        self.assertFalse(self.public(dest))
+
+    def test_directory_replacement_and_trailing_slash(self):
+        tree = self.src / 'folder space'
+        (tree / 'nested').mkdir(parents=True)
+        (tree / 'nested' / 'file.txt').write_text('nested data')
+        (tree / 'stale.txt').write_text('remove me')
+        url = self.run_share('-p', str(tree) + '///')
+        self.assertEqual(url, 'https://public.yak.sh/folder%20space/')
+        dest = self.shared / tree.name
+        self.assertEqual((dest / 'nested' / 'file.txt').read_text(), 'nested data')
+        self.assertTrue(all(self.public(p) for p in [dest, *dest.rglob('*')]))
+        (tree / 'stale.txt').unlink()
+        self.run_share(str(tree) + '/')
+        self.assertFalse((dest / 'stale.txt').exists())
+        self.assertFalse(any(self.public(p) for p in [dest, *dest.rglob('*')]))
+        self.assertFalse((dest / tree.name).exists())
+        self.run_share('-p', tree)
+        self.assertTrue(all(self.public(p) for p in [dest, *dest.rglob('*')]))
+
+    def test_recursive_secrets_and_force(self):
+        tree = self.src / 'tree'
+        (tree / 'nested').mkdir(parents=True)
+        for name in ('.env', '.env.local', 'a.pem', 'credentials', 'id_ed25519'):
+            secret = tree / 'nested' / name
+            secret.write_text('fixture secret')
+            self.run_share('-p', tree, ok=False)
+            self.assertFalse((self.shared / 'tree').exists())
+            secret.unlink()
+        (tree / 'nested' / '.env').write_text('fixture')
+        self.run_share('-f', tree)
+        self.assertFalse(self.public(self.shared / 'tree' / 'nested' / '.env'))
+        self.run_share(tree, ok=False)
+
+    def test_symlinks_and_special_files(self):
+        file = self.src / 'file'
+        file.write_text('not to leak')
+        link = self.src / 'link'
+        link.symlink_to(file)
+        self.run_share('-pf', link, ok=False)
+        tree = self.src / 'tree'
+        tree.mkdir()
+        (tree / 'nested').symlink_to(file)
+        self.run_share('-pf', tree, ok=False)
+        (tree / 'nested').unlink()
+        alias = self.src / 'alias'
+        alias.symlink_to(tree, target_is_directory=True)
+        (tree / 'file').write_text('private')
+        self.run_share(alias / 'file', ok=False)
+        self.run_share(str(alias) + '/', ok=False)
+        os.mkfifo(tree / 'fifo')
+        self.run_share('-f', tree, ok=False)
+        (self.shared / 'file').symlink_to(file)
+        self.run_share('-p', file, ok=False)
+        self.assertEqual(file.read_text(), 'not to leak')
+
+    def test_errors_preserve_existing_share(self):
+        file = self.src / 'file'
+        file.write_text('old')
+        self.run_share('-p', file)
+        file.unlink()
+        file.mkdir()
+        (file / '.env').write_text('secret')
+        self.run_share(file, ok=False)
+        self.assertEqual((self.shared / 'file').read_text(), 'old')
+        self.assertTrue(self.public(self.shared / 'file'))
+        self.run_share(self.src / 'missing', ok=False)
+        if os.getuid() != 0:
+            (file / '.env').unlink()
+            bad = file / 'unreadable'
+            bad.write_text('fixture')
+            bad.chmod(0)
+            try:
+                self.run_share('-p', file, ok=False)
+                self.assertEqual((self.shared / 'file').read_text(), 'old')
+            finally:
+                bad.chmod(0o600)
+        self.assertFalse(list(self.shared.glob('.share-*')))
+        self.run_share(self.home, ok=False)
+
+    def test_partial_copy_failure(self):
+        loader = importlib.machinery.SourceFileLoader('share', str(SHARE))
+        spec = importlib.util.spec_from_loader(loader.name, loader)
+        module = importlib.util.module_from_spec(spec)
+        loader.exec_module(module)
+        file = self.src / 'file'
+        file.write_text('old')
+        self.run_share('-p', file)
+        file.write_text('replacement')
+
+        def fail(src, dest):
+            dest.write(b'partial')
+            raise OSError('injected copy failure')
+
+        with patch.object(module.shutil, 'copyfileobj', fail):
+            with self.assertRaises(OSError):
+                module.publish(str(file), self.shared, False, False)
+        self.assertEqual((self.shared / 'file').read_text(), 'old')
+        self.assertTrue(self.public(self.shared / 'file'))
+        self.assertFalse(list(self.shared.glob('.share-*')))
+
+    def test_shared_symlink_refused(self):
+        self.shared.symlink_to(self.src, target_is_directory=True)
+        file = self.root / 'file'
+        file.write_text('fixture')
+        self.run_share(file, ok=False)
+        self.assertFalse((self.src / 'file').exists())
+
+
+if __name__ == '__main__':
+    unittest.main()

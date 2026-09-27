@@ -1,75 +1,129 @@
-#!/usr/bin/env bash
-# share — copy files into ~/shared. Private by default (tailnet-only); public on
-# request. Each file lands at ~/shared/<name>, served two ways:
-#
-#   share <path> [path...]             private → https://shared.yak.sh/<name>
-#                                        (owner's Tailscale tailnet only, NOT public)
-#   share -p / --public <path> ...     ALSO public → https://public.yak.sh/<name>
-#                                        (open internet — anyone with the link)
-#   share -f / --force <path> ...      skip the secret-name safety check
-#
-# The default is SAFE: nothing reaches the open internet without -p/--public.
-# Public means anyone with the link — never make public secrets, .env, keys, or PII.
-#
-# Under the hood: private = a plain file under ~/shared; public = that file with its
-# sticky bit set (chmod +t), which the public-share server gates on. Re-sharing a
-# file privately (no -p) also UNPUBLISHES it (clears the sticky bit).
-set -euo pipefail
+#!/usr/bin/env python3
+"""Copy files or directories to ~/shared; private unless -p/--public.
 
-shared="$HOME/shared"
-private_url="https://shared.yak.sh"
-public_url="https://public.yak.sh"
+share [-p|--public] [-f|--force] <path> [path...]
+Private: https://shared.yak.sh/<name> (tailnet only).
+Public: https://public.yak.sh/<name> (anyone with the link).
+-f overrides secret-name checks, never symlink or special-file refusal.
+Re-sharing replaces the whole copy, including its publication permissions.
+"""
 
-public=0
-force=0
-while [ $# -gt 0 ]; do
-  case "$1" in
-    -p | --public) public=1; shift ;;
-    -f | --force)  force=1;  shift ;;
-    -pf | -fp)     public=1; force=1; shift ;;
-    --)            shift; break ;;
-    -*)            echo "share: unknown option: $1" >&2; exit 1 ;;
-    *)             break ;;
-  esac
-done
+import fnmatch
+import os
+from pathlib import Path
+import shutil
+import stat
+import sys
+import tempfile
+from urllib.parse import quote
 
-if [ $# -eq 0 ]; then
-  echo "usage: share [-p|--public] [-f|--force] <path> [path...]" >&2
-  exit 1
-fi
 
-mkdir -p "$shared"
+SECRETS = ('.env', '*.env', '.env.*', '*.pem', '*.key', 'id_rsa',
+           'id_ed25519', '*.p12', '*.pfx', 'credentials', '*.secret')
 
-# Obvious secret-bearing names — refuse unless -f.
-looks_secret() {
-  case "${1##*/}" in
-    .env | *.env | .env.* | *.pem | *.key | id_rsa | id_ed25519 | *.p12 | *.pfx | credentials | *.secret) return 0 ;;
-    *) return 1 ;;
-  esac
-}
 
-status=0
-for src in "$@"; do
-  if [ ! -f "$src" ]; then
-    echo "share: not a file: $src" >&2
-    status=1
-    continue
-  fi
-  if [ "$force" -eq 0 ] && looks_secret "$src"; then
-    echo "share: refusing $src (looks like a secret; use -f to override)" >&2
-    status=1
-    continue
-  fi
-  name=${src##*/}
-  dest="$shared/$name"
-  cp "$src" "$dest"
-  if [ "$public" -eq 1 ]; then
-    chmod +t "$dest"
-    echo "$public_url/$name"
-  else
-    chmod -t "$dest"   # ensure private even if a prior public copy set the sticky bit
-    echo "$private_url/$name"
-  fi
-done
+def open_source(path):
+    # Open every component without following links, including source parents.
+    parts = Path(os.path.abspath(path)).parts
+    fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        for part in parts[1:]:
+            child = os.open(part, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                            dir_fd=fd)
+            os.close(fd)
+            fd = child
+        return fd
+    except BaseException:
+        os.close(fd)
+        raise
 
-exit $status
+
+def copy(fd, dest, name, public, force):
+    if not force and any(fnmatch.fnmatchcase(name, p) for p in SECRETS):
+        raise ValueError(f'refusing {name} (looks like a secret; use -f to override)')
+    mode = os.fstat(fd).st_mode
+    if stat.S_ISDIR(mode):
+        dest.mkdir()
+        for name in os.listdir(fd):
+            child = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                            dir_fd=fd)
+            try:
+                copy(child, dest / name, name, public, force)
+            finally:
+                os.close(child)
+        dest.chmod(0o1755 if public else 0o755)
+    elif stat.S_ISREG(mode):
+        with os.fdopen(os.dup(fd), 'rb') as src, dest.open('wb') as out:
+            shutil.copyfileobj(src, out)
+        # Retain executability, not source sticky/setuid/setgid bits.
+        dest.chmod(0o644 | (mode & 0o111) | (0o1000 if public else 0))
+    else:
+        raise ValueError(f'refusing non-regular file: {name}')
+
+
+def publish(src, shared, public, force):
+    path = Path(os.path.abspath(src))
+    name = path.name
+    if not name:
+        raise ValueError('refusing filesystem root')
+    dest = shared / name
+    if dest.is_symlink():
+        raise ValueError(f'refusing destination symlink: {dest}')
+    fd = open_source(src)
+    try:
+        directory = stat.S_ISDIR(os.fstat(fd).st_mode)
+        if directory and shared.is_relative_to(path):
+            raise ValueError('refusing a directory containing ~/shared')
+        # Copy and validate before touching the previous share. Staging names
+        # are hidden from the public server, even while setting sticky bits.
+        with tempfile.TemporaryDirectory(prefix='.share-', dir=shared) as tmp:
+            stage = Path(tmp) / 'new'
+            copy(fd, stage, name, public, force)
+            old = Path(tmp) / 'old'
+            if dest.exists():
+                dest.rename(old)
+            try:
+                stage.rename(dest)
+            except BaseException:
+                if old.exists():
+                    old.rename(dest)
+                raise
+    finally:
+        os.close(fd)
+    host = 'public' if public else 'shared'
+    print(f'https://{host}.yak.sh/{quote(name, safe="")}'
+          + ('/' if directory else ''))
+
+
+def main(args):
+    public = force = False
+    while args and args[0].startswith('-'):
+        option = args.pop(0)
+        if option == '--':
+            break
+        if option in ('-p', '--public', '-pf', '-fp'):
+            public = True
+        if option in ('-f', '--force', '-pf', '-fp'):
+            force = True
+        if option not in ('-p', '--public', '-f', '--force', '-pf', '-fp'):
+            print(f'share: unknown option: {option}', file=sys.stderr)
+            return 1
+    if not args:
+        print(__doc__, file=sys.stderr)
+        return 1
+    shared = Path.home() / 'shared'
+    status = 0
+    for src in args:
+        try:
+            if shared.is_symlink():
+                raise ValueError(f'refusing shared symlink: {shared}')
+            shared.mkdir(exist_ok=True)
+            publish(src, shared, public, force)
+        except (OSError, ValueError) as error:
+            print(f'share: {src}: {error}', file=sys.stderr)
+            status = 1
+    return status
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))
