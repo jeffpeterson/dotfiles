@@ -1,0 +1,8 @@
+[Unit]
+Description=Expire old Wrangler CLI logs
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/wrangler-log-clean
+IOSchedulingClass=idle
+Slice=background.slice
