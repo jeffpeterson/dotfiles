@@ -1,0 +1,33 @@
+# This box's graph: `yak serve` over ~/.yak/yak.json, on the port tasks.yak.sh
+# and the `tasks` MCP entry already reach (the config's `port`). It holds the
+# lease, so the effect sweep and every plugin's duties (the mail pull, spawn,
+# embedding) run here. Agents it launches leave this unit's cgroup through
+# `systemd-run --user --scope` (@yaks/process), so a restart never takes them.
+#
+# The code is the main checkout's (~/.deno/bin/yak runs packages/cli/yak.ts
+# there): a landed change runs after `systemctl --user restart yak`.
+
+[Unit]
+Description=yak serve (~/.yak/yak.json)
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/.yak
+# The PATH every agent it spawns inherits: ~/.deno/bin carries yak and task,
+# Linuxbrew carries deno/git/gh/node, and the provider CLIs resolve here.
+Environment=PATH=%h/.deno/bin:%h/.local/bin:%h/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+Environment=LANG=C.UTF-8 LC_ALL=C.UTF-8
+# One module cache for every process on the box, whatever HOME a probe moves.
+Environment=DENO_DIR=%h/.cache/deno
+ExecStart=%h/.deno/bin/yak serve --config %h/.yak/yak.json
+Restart=always
+RestartSec=2
+# A stop winds serve down (@yaks/process/wind): it takes no new request, run or
+# step, and exits once the effects it started have finished, however long they
+# take; the journal says which ones it is waiting on. So systemd never kills it
+# for being slow: only an effect's own timeout bounds the wait, and a second
+# SIGTERM (`systemctl --user kill yak`) ends what is left where it stands.
+TimeoutStopSec=infinity
+
+[Install]
+WantedBy=default.target
