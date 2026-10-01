@@ -1,11 +1,8 @@
 # This box's graph: `yak serve` over ~/.yak/yak.json, on the port tasks.yak.sh
-# and the `tasks` MCP entry already reach (the config's `port`). It holds the
-# lease, so the effect sweep and every plugin's duties (the mail pull, spawn,
-# embedding) run here. Agents it launches leave this unit's cgroup through
-# `systemd-run --user --scope` (@yaks/process), so a restart never takes them.
-#
-# The code is the main checkout's (~/.deno/bin/yak runs packages/cli/yak.ts
-# there): a landed change runs after `systemctl --user restart yak`.
+# and the `tasks` MCP entry already reach (the config's `port`). This process
+# serves web only; independent yak-work@ workers hold duty leases and effects.
+# Managed runs leave the launcher's cgroup and survive either host restarting.
+# The main checkout's source is live after `yak restart`.
 
 [Unit]
 Description=yak serve (~/.yak/yak.json)
