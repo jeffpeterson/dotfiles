@@ -19,14 +19,12 @@ Environment=PATH=%h/.deno/bin:%h/.local/bin:%h/bin:/home/linuxbrew/.linuxbrew/bi
 Environment=LANG=C.UTF-8 LC_ALL=C.UTF-8
 # One module cache for every process on the box, whatever HOME a probe moves.
 Environment=DENO_DIR=%h/.cache/deno
-ExecStart=%h/.deno/bin/yak serve --config %h/.yak/yak.json
+ExecStart=%h/.deno/bin/yak serve --no-duties --config %h/.yak/yak.json
 Restart=always
 RestartSec=2
-# A stop winds serve down (@yaks/process/wind): it takes no new request, run or
-# step, and exits once the effects it started have finished, however long they
-# take; the journal says which ones it is waiting on. So systemd never kills it
-# for being slow: only an effect's own timeout bounds the wait, and a second
-# SIGTERM (`systemctl --user kill yak`) ends what is left where it stands.
+# Use `yak restart` for a ready-first worker handover and serve restart.
+# Stop only serve, not the managed processes it spawned; allow unbounded drain.
+KillMode=process
 TimeoutStopSec=infinity
 
 [Install]
