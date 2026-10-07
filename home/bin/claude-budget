@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#
+# claude-budget — the plan's weekly and five-hour usage against pace.
+#
+# Reads the usage cache claude-status writes on every render
+# (~/.cache/claude-usage/usage.<project>; the newest file wins, since the caps
+# are the account's, shared by every session). Pace is the share of the window
+# already gone: using 15% of the week 18% of the way in is under pace.
+#
+#   claude-budget          one line; exit 1 when the week is over pace
+#   claude-budget --json   the same as JSON
+#
+# Deps: bash, awk, date.
+
+set -uo pipefail
+dir="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
+file="$(ls -t "$dir"/usage.* 2>/dev/null | head -1)"
+[ -n "$file" ] || { echo "claude-budget: no usage cache in $dir" >&2; exit 2; }
+
+val() { sed -n "s/^$1=//p" "$file"; }
+now="$(date +%s)"
+week="$(val SEVEN_DAY_PCT)"; week_reset="$(val SEVEN_DAY_RESET)"
+hour="$(val FIVE_HOUR_PCT)"; hour_reset="$(val FIVE_HOUR_RESET)"
+updated="$(val UPDATED_AT)"
+[ -n "$week" ] && [ -n "$week_reset" ] || {
+	echo "claude-budget: no weekly reading yet in $file" >&2; exit 2; }
+
+# Share of a window gone, in percent: windows are 7 days and 5 hours long.
+gone() { awk -v r="$1" -v n="$now" -v len="$2" \
+	'BEGIN { g = 100 * (len - (r - n)) / len; printf "%.0f", (g < 0 ? 0 : g) }'; }
+week_gone="$(gone "$week_reset" 604800)"
+hour_gone="$( [ -n "$hour_reset" ] && gone "$hour_reset" 18000 || echo "")"
+age=$(( now - ${updated:-$now} ))
+over=$(awk -v u="$week" -v g="$week_gone" 'BEGIN { print (u > g) ? 1 : 0 }')
+
+if [ "${1:-}" = "--json" ]; then
+	printf '{"week":%s,"week_gone":%s,"week_reset":"%s","five_hour":%s,"five_hour_gone":%s,"over_pace":%s,"age_s":%s}\n' \
+		"$week" "$week_gone" "$(date -u -d "@$week_reset" +%FT%TZ)" \
+		"${hour:-null}" "${hour_gone:-null}" \
+		"$( [ "$over" = 1 ] && echo true || echo false)" "$age"
+else
+	printf 'week %s%% used, %s%% gone (resets %s); 5h %s%% used, %s%% gone; %s; reading %ss old\n' \
+		"$week" "$week_gone" "$(date -u -d "@$week_reset" '+%a %H:%MZ')" \
+		"${hour:-?}" "${hour_gone:-?}" \
+		"$( [ "$over" = 1 ] && echo over pace || echo under pace)" "$age"
+fi
+exit "$over"
