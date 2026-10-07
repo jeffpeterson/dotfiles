@@ -5,7 +5,7 @@
 # The main checkout's source is live after `yak restart`.
 
 [Unit]
-Description=yak serve (~/.yak/yak.json)
+Description=yak web (%i; ~/.yak/yak.json)
 After=network-online.target
 
 [Service]
@@ -16,13 +16,21 @@ Environment=PATH=%h/.deno/bin:%h/.local/bin:%h/bin:/home/linuxbrew/.linuxbrew/bi
 Environment=LANG=C.UTF-8 LC_ALL=C.UTF-8
 # One module cache for every process on the box, whatever HOME a probe moves.
 Environment=DENO_DIR=%h/.cache/deno
-ExecStart=%h/.deno/bin/yak serve --no-duties --config %h/.yak/yak.json
+# `--share` lets the replacement `yak restart` starts listen on the same port
+# before this one stops, so a restart refuses no request; `--ready` is the
+# file it waits on.
+ExecStartPre=/usr/bin/rm -f %t/yak-web-%i.ready
+ExecStart=%h/.deno/bin/yak serve --no-duties --share --ready %t/yak-web-%i.ready --config %h/.yak/yak.json
+ExecStopPost=/usr/bin/rm -f %t/yak-web-%i.ready
 Restart=always
 RestartSec=2
-# Use `yak restart` for a ready-first worker handover and serve restart.
-# Stop only serve, not the managed processes it spawned; allow unbounded drain.
+# Use `yak restart` for a ready-first handover, not a direct unit restart.
+# Stop only serve, not the managed processes it spawned. A stopping serve
+# closes its sockets and lets requests in flight finish for 10s (its grace),
+# then exits; 30s leaves room to close the graph before systemd kills it.
 KillMode=process
-TimeoutStopSec=infinity
+TimeoutStopSec=30s
 
 [Install]
 WantedBy=default.target
+DefaultInstance=boot

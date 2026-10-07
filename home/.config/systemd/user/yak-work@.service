@@ -16,9 +16,12 @@ ExecStopPost=/usr/bin/rm -f %t/yak-work-%i.ready
 Restart=on-failure
 RestartSec=2
 # Use `yak restart` for a ready-first handover, not a direct unit restart.
-# Stop only this worker; managed processes outlive it and drain is unbounded.
+# Stop only this worker; managed processes outlive it. Its replacement is
+# already working, so a drain costs no caller anything: it lets the step in
+# flight finish, a model request or a tool call that may run for minutes, and
+# after 15 minutes the step is cut and reported to its session.
 KillMode=process
-TimeoutStopSec=infinity
+TimeoutStopSec=15min
 # Signal exits use 143: failure exits restart, explicit systemd stops do not.
 
 [Install]

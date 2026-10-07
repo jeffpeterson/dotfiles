@@ -1,0 +1,25 @@
+# The box tracker's graph: `yak serve` over ~/.yak/tracker.json on :5175, for
+# tracker.yak.sh. Web only; yak-tracker@ workers run its intake and effects.
+
+[Unit]
+Description=yak tracker web (%i; ~/.yak/tracker.json, :5175)
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/.yak
+Environment=PATH=%h/.deno/bin:%h/.local/bin:%h/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+Environment=LANG=C.UTF-8 LC_ALL=C.UTF-8
+Environment=DENO_DIR=%h/.cache/deno
+# `--share` and `--ready`: the ready-first handover of yak-web@.service.
+ExecStartPre=/usr/bin/rm -f %t/yak-tracker-web-%i.ready
+ExecStart=%h/.deno/bin/yak serve --no-duties --share --ready %t/yak-tracker-web-%i.ready --config %h/.yak/tracker.json
+ExecStopPost=/usr/bin/rm -f %t/yak-tracker-web-%i.ready
+Restart=always
+RestartSec=2
+# A 10s grace for requests in flight, then exit; see yak-web@.service.
+KillMode=process
+TimeoutStopSec=30s
+
+[Install]
+WantedBy=default.target
+DefaultInstance=boot

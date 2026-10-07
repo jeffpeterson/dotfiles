@@ -12,8 +12,10 @@ ExecStart=%h/.deno/bin/yak work --config %h/.yak/tracker.json --roles effects,@y
 ExecStopPost=/usr/bin/rm -f %t/yak-tracker-%i.ready
 Restart=on-failure
 RestartSec=2
+# Its steps are graph writes, git reads and Sentry fetches bounded at 15s, and
+# a drain takes well under a second; 2 minutes bounds one that hangs.
 KillMode=process
-TimeoutStopSec=infinity
+TimeoutStopSec=2min
 
 [Install]
 WantedBy=default.target
