@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-~/code/yak-sh/src/bin/yak.js "$@"

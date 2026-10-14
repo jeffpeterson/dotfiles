@@ -94,7 +94,15 @@ require('lualine').setup {
 --   }
 -- }
 
-vim.lsp.enable('ruby_lsp')
+-- vim.lsp.config('ts_ls', {
+--     root_markers = { "package.json" },
+--     workspace_required = true,
+-- })
+-- vim.lsp.config('denols', {
+--     root_markers = { "deno.json", "deno.jsonc" },
+-- })
+--
+vim.lsp.enable({ 'denols', 'ts_ls', 'ruby_lsp' })
 
 -- }}}
 -- OPTIONS {{{

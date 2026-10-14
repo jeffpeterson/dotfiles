@@ -28,7 +28,7 @@ if !has('nvim')
   Plug 'rishi-opensource/vim-claude-code'
 endif
 " Plug 'prabirshrestha/vim-lsp'
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 
 Plug 'tpope/vim-rails'
 

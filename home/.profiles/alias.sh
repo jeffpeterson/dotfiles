@@ -9,3 +9,4 @@ alias d=deno
 alias elihu=hermes
 alias el=elihu
 
+alias less='less --mouse'

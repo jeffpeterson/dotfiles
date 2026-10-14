@@ -5,7 +5,15 @@
       "enabled": true,
       "type": "remote",
       "url": "https://mcp.railway.com"
+    },
+    "tasks": {
+      "enabled": true,
+      "type": "remote",
+      "url": "https://tasks.yak.sh/mcp"
     }
+  },
+  "permission": {
+    "*": "allow"
   },
   "provider": {
     "ollama-local": {

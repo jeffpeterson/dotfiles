@@ -79,3 +79,8 @@ which starship >/dev/null && eval "$(starship init zsh)"
 # bun
 # export BUN_INSTALL="$HOME/.bun"
 # export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
+
+# >>> Codex installer >>>
+export PATH="$HOME/.local/bin:$PATH"
+# <<< Codex installer <<<
