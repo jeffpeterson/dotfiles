@@ -15,6 +15,10 @@ ExecStartPre=/usr/bin/rm -f %t/yak-tracker-web-%i.ready
 ExecStart=%h/.deno/bin/yak serve --no-duties --share --ready %t/yak-tracker-web-%i.ready --config %h/.yak/tracker.json
 ExecStopPost=/usr/bin/rm -f %t/yak-tracker-web-%i.ready
 Restart=always
+# A signalled yak drains and returns 143. Classify a deliberate stop as clean,
+# but still restart an unexpected signal; systemctl stop suppresses restarts.
+SuccessExitStatus=143
+RestartForceExitStatus=143
 RestartSec=2
 # A 10s grace for requests in flight, then exit; see yak-web@.service.
 KillMode=process

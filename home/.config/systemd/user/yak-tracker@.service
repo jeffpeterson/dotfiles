@@ -11,6 +11,10 @@ ExecStartPre=/usr/bin/rm -f %t/yak-tracker-%i.ready
 ExecStart=%h/.deno/bin/yak work --config %h/.yak/tracker.json --roles effects,@yaks/tracker --ready %t/yak-tracker-%i.ready
 ExecStopPost=/usr/bin/rm -f %t/yak-tracker-%i.ready
 Restart=on-failure
+# A signalled yak drains and returns 143. Classify a deliberate stop as clean,
+# but still restart an unexpected signal; systemctl stop suppresses restarts.
+SuccessExitStatus=143
+RestartForceExitStatus=143
 RestartSec=2
 # Its steps are graph writes, git reads and Sentry fetches bounded at 15s, and
 # a drain takes well under a second; 2 minutes bounds one that hangs.
