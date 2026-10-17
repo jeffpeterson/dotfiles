@@ -20,11 +20,10 @@ SuccessExitStatus=143
 RestartForceExitStatus=143
 RestartSec=2
 # Use `yak restart` for a ready-first handover, not a direct unit restart.
-# Stop only this worker; managed processes outlive it. Its replacement is
-# already working, so a drain costs no caller anything: it lets the step in
-# flight finish, a model request or a tool call that may run for minutes, and
-# after 15 minutes the step is cut and reported to its session.
-KillMode=process
+# TERM only the launcher, which forwards it once so the worker drains.
+# At the timeout KILL the whole unit, including the runtime child. Managed
+# runs live in independent systemd scopes and are not in this cgroup.
+KillMode=mixed
 TimeoutStopSec=15min
 # Signal exits use 143: failure exits restart, explicit systemd stops do not.
 
