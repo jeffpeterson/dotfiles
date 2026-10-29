@@ -21,7 +21,7 @@ Environment=DENO_DIR=%h/.cache/deno
 # file it waits on.
 ExecStartPre=/usr/bin/rm -f %t/yak-web-%i.ready
 ExecStart=%h/.deno/bin/yak serve --no-duties --share --ready %t/yak-web-%i.ready --config %h/.yak/yak.json
-ExecStopPost=/usr/bin/rm -f %t/yak-web-%i.ready
+ExecStopPost=-/usr/bin/rm -f %t/yak-web-%i.ready
 Restart=always
 # A signalled yak drains and returns 143. Classify a deliberate stop as clean,
 # but still restart an unexpected signal; systemctl stop suppresses restarts.

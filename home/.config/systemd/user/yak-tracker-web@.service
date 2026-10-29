@@ -13,7 +13,7 @@ Environment=DENO_DIR=%h/.cache/deno
 # `--share` and `--ready`: the ready-first handover of yak-web@.service.
 ExecStartPre=/usr/bin/rm -f %t/yak-tracker-web-%i.ready
 ExecStart=%h/.deno/bin/yak serve --no-duties --share --ready %t/yak-tracker-web-%i.ready --config %h/.yak/tracker.json
-ExecStopPost=/usr/bin/rm -f %t/yak-tracker-web-%i.ready
+ExecStopPost=-/usr/bin/rm -f %t/yak-tracker-web-%i.ready
 Restart=always
 # A signalled yak drains and returns 143. Classify a deliberate stop as clean,
 # but still restart an unexpected signal; systemctl stop suppresses restarts.

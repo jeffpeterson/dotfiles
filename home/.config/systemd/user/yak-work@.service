@@ -12,7 +12,7 @@ Environment=LANG=C.UTF-8 LC_ALL=C.UTF-8
 Environment=DENO_DIR=%h/.cache/deno
 ExecStartPre=/usr/bin/rm -f %t/yak-work-%i.ready
 ExecStart=%h/.deno/bin/yak work --process yak-work --config %h/.yak/yak.json --ready %t/yak-work-%i.ready
-ExecStopPost=/usr/bin/rm -f %t/yak-work-%i.ready
+ExecStopPost=-/usr/bin/rm -f %t/yak-work-%i.ready
 Restart=on-failure
 # A signalled yak drains and returns 143. Classify a deliberate stop as clean,
 # but still restart an unexpected signal; systemctl stop suppresses restarts.
