@@ -125,3 +125,8 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !gh auth git-credential
+
+# GitHub Git traffic uses gh credentials over HTTPS, independent of SSH agents.
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+	insteadOf = ssh://git@github.com/
