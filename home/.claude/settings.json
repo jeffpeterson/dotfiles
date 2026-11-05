@@ -23,7 +23,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "yak session context --hook - || true"
+            "command": "payload=$(cat); via=${CLAUDE_CODE_SESSION_ID:-${TASKS_SESSION:-${CODEX_THREAD_ID:-}}}; case \"${CLAUDE_CODE_SESSION_ID:+${AI_AGENT:-}}\" in *_agent) case \"$PWD\" in */.claude/worktrees/agent-*) agent=${PWD##*/.claude/worktrees/agent-}; agent=${agent%%/*}; case \"$agent\" in ''|*[!0-9a-f]*) ;; *) via=$agent ;; esac ;; esac ;; esac; if answer=$(printf %s \"$payload\" | curl --fail --silent --connect-timeout 0.1 --max-time 2 --header \"x-via: $via\" --header 'content-type: application/json' --data-binary @- 'http://127.0.0.1:5173/session/hook'); then printf '%s\\n' \"$answer\"; else printf %s \"$payload\" | yak session context --hook - || true; fi"
           }
         ]
       }
@@ -33,7 +33,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "yak session context --hook - || true"
+            "command": "payload=$(cat); via=${CLAUDE_CODE_SESSION_ID:-${TASKS_SESSION:-${CODEX_THREAD_ID:-}}}; case \"${CLAUDE_CODE_SESSION_ID:+${AI_AGENT:-}}\" in *_agent) case \"$PWD\" in */.claude/worktrees/agent-*) agent=${PWD##*/.claude/worktrees/agent-}; agent=${agent%%/*}; case \"$agent\" in ''|*[!0-9a-f]*) ;; *) via=$agent ;; esac ;; esac ;; esac; if answer=$(printf %s \"$payload\" | curl --fail --silent --connect-timeout 0.1 --max-time 2 --header \"x-via: $via\" --header 'content-type: application/json' --data-binary @- 'http://127.0.0.1:5173/session/hook'); then printf '%s\\n' \"$answer\"; else printf %s \"$payload\" | yak session context --hook - || true; fi"
           }
         ]
       }
@@ -54,7 +54,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "yak session wrap --hook - || true",
+            "command": "payload=$(cat); via=${CLAUDE_CODE_SESSION_ID:-${TASKS_SESSION:-${CODEX_THREAD_ID:-}}}; case \"${CLAUDE_CODE_SESSION_ID:+${AI_AGENT:-}}\" in *_agent) case \"$PWD\" in */.claude/worktrees/agent-*) agent=${PWD##*/.claude/worktrees/agent-}; agent=${agent%%/*}; case \"$agent\" in ''|*[!0-9a-f]*) ;; *) via=$agent ;; esac ;; esac ;; esac; if answer=$(printf %s \"$payload\" | curl --fail --silent --connect-timeout 0.1 --max-time 2 --header \"x-via: $via\" --header 'content-type: application/json' --data-binary @- 'http://127.0.0.1:5173/session/hook'); then printf '%s\\n' \"$answer\"; else printf %s \"$payload\" | yak session wrap --hook - || true; fi",
             "timeout": 5
           }
         ]
@@ -65,7 +65,30 @@
         "hooks": [
           {
             "type": "http",
-            "url": "http://localhost:5173/session/hook",
+            "url": "http://127.0.0.1:5173/session/hook",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "payload=$(cat); via=${CLAUDE_CODE_SESSION_ID:-${TASKS_SESSION:-${CODEX_THREAD_ID:-}}}; case \"${CLAUDE_CODE_SESSION_ID:+${AI_AGENT:-}}\" in *_agent) case \"$PWD\" in */.claude/worktrees/agent-*) agent=${PWD##*/.claude/worktrees/agent-}; agent=${agent%%/*}; case \"$agent\" in ''|*[!0-9a-f]*) ;; *) via=$agent ;; esac ;; esac ;; esac; if answer=$(printf %s \"$payload\" | curl --fail --silent --connect-timeout 0.1 --max-time 2 --header \"x-via: $via\" --header 'content-type: application/json' --data-binary @- 'http://127.0.0.1:5173/session/hook'); then printf '%s\\n' \"$answer\"; else printf %s \"$payload\" | yak session context --hook - || true; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__.*",
+        "hooks": [
+          {
+            "type": "http",
+            "url": "http://127.0.0.1:5173/session/hook",
             "timeout": 2
           }
         ]
