@@ -2,25 +2,37 @@
 #
 # claude-budget — the plan's weekly and five-hour usage against pace.
 #
-# Reads the usage cache claude-status writes on every render
-# (~/.cache/claude-usage/usage.<project>; the newest file wins, since the caps
-# are the account's, shared by every session). Pace is the share of the window
-# already gone: using 15% of the week 18% of the way in is under pace.
+# Reads the plan's meters from ~/.cache/claude-usage/plan, which
+# claude-plan-usage refreshes here when it is over five minutes old. Fable has
+# its own meter, capped at half the week, and a Fable reset gives its share of
+# the week back. So pace is judged on the rest: the week's percent minus the
+# points Fable used, against the share of the window already gone. Using 15%
+# of the week outside Fable 18% of the way in is under pace.
 #
-#   claude-budget          one line; exit 1 when the week is over pace
+# Without a plan reading for the open week (signed out, endpoint down), the
+# newest usage.<project> file claude-status writes gives the week alone; the
+# line then says Fable is unknown and pace is judged on the whole week.
+#
+#   claude-budget          one line; exit 1 when over pace
 #   claude-budget --json   the same as JSON
 #
-# Deps: bash, awk, date.
+# Deps: bash, awk, date, claude-plan-usage.
 
 set -uo pipefail
 dir="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
-file="$(ls -t "$dir"/usage.* 2>/dev/null | head -1)"
+now="$(date +%s)"
+"$(dirname "$0")/claude-plan-usage" 2>/dev/null
+
+file="$dir/plan"
+val() { sed -n "s/^$1=//p" "$file" 2>/dev/null; }
+reset="$(val SEVEN_DAY_RESET)"
+[[ "$reset" =~ ^[0-9]+$ ]] && ((reset > now)) \
+	|| file="$(ls -t "$dir"/usage.* 2>/dev/null | head -1)"
 [ -n "$file" ] || { echo "claude-budget: no usage cache in $dir" >&2; exit 2; }
 
-val() { sed -n "s/^$1=//p" "$file"; }
-now="$(date +%s)"
 week="$(val SEVEN_DAY_PCT)"; week_reset="$(val SEVEN_DAY_RESET)"
 hour="$(val FIVE_HOUR_PCT)"; hour_reset="$(val FIVE_HOUR_RESET)"
+fable="$(val FABLE_PCT)"; fable_week="$(val FABLE_WEEK_PCT)"
 updated="$(val UPDATED_AT)"
 [ -n "$week" ] && [ -n "$week_reset" ] || {
 	echo "claude-budget: no weekly reading yet in $file" >&2; exit 2; }
@@ -28,20 +40,32 @@ updated="$(val UPDATED_AT)"
 # Share of a window gone, in percent: windows are 7 days and 5 hours long.
 gone() { awk -v r="$1" -v n="$now" -v len="$2" \
 	'BEGIN { g = 100 * (len - (r - n)) / len; printf "%.0f", (g < 0 ? 0 : g) }'; }
+num() { awk -v v="$1" 'BEGIN { printf "%g", v }'; }
+week="$(num "$week")"
 week_gone="$(gone "$week_reset" 604800)"
 hour_gone="$( [ -n "$hour_reset" ] && gone "$hour_reset" 18000 || echo "")"
 age=$(( now - ${updated:-$now} ))
-over=$(awk -v u="$week" -v g="$week_gone" 'BEGIN { print (u > g) ? 1 : 0 }')
+# What a Fable reset does not give back; the whole week when Fable is unknown.
+other="$(awk -v w="$week" -v f="${fable_week:-0}" \
+	'BEGIN { o = w - f; printf "%g", (o < 0 ? 0 : o) }')"
+over=$(awk -v u="$other" -v g="$week_gone" 'BEGIN { print (u > g) ? 1 : 0 }')
 
 if [ "${1:-}" = "--json" ]; then
-	printf '{"week":%s,"week_gone":%s,"week_reset":"%s","five_hour":%s,"five_hour_gone":%s,"over_pace":%s,"age_s":%s}\n' \
-		"$week" "$week_gone" "$(date -u -d "@$week_reset" +%FT%TZ)" \
+	printf '{"week":%s,"fable":%s,"fable_week":%s,"other":%s,"week_gone":%s,"week_reset":"%s","five_hour":%s,"five_hour_gone":%s,"over_pace":%s,"age_s":%s}\n' \
+		"$week" "${fable:-null}" "${fable_week:-null}" "$other" "$week_gone" \
+		"$(date -u -d "@$week_reset" +%FT%TZ)" \
 		"${hour:-null}" "${hour_gone:-null}" \
 		"$( [ "$over" = 1 ] && echo true || echo false)" "$age"
 else
-	printf 'week %s%% used, %s%% gone (resets %s); 5h %s%% used, %s%% gone; %s; reading %ss old\n' \
-		"$week" "$week_gone" "$(date -u -d "@$week_reset" '+%a %H:%MZ')" \
-		"${hour:-?}" "${hour_gone:-?}" \
+	if [ -n "$fable" ]; then
+		split="$(num "$fable_week") Fable, which a reset gives back, + $other other"
+		cap="Fable $(num "$fable")% of its cap"
+	else
+		split="Fable's share unknown"; cap="Fable unknown"
+	fi
+	printf 'week %s%% used (%s), %s%% gone (resets %s); %s; 5h %s%% used, %s%% gone; other %s; reading %ss old\n' \
+		"$week" "$split" "$week_gone" "$(date -u -d "@$week_reset" '+%a %H:%MZ')" \
+		"$cap" "${hour:-?}" "${hour_gone:-?}" \
 		"$( [ "$over" = 1 ] && echo over pace || echo under pace)" "$age"
 fi
 exit "$over"

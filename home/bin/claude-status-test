@@ -6,6 +6,8 @@ BIN="$(cd "$(dirname "$0")" && pwd)/claude-status"
 DIR="$(mktemp -d)"
 pass=0 fail=0
 trap 'rm -rf "$DIR"' EXIT
+export CLAUDE_CREDENTIALS=/dev/null # no sign-in: nothing here reads the usage endpoint
+BUDGET="$(dirname "$BIN")/claude-budget"
 
 check() {
 	local desc="$1" project="$2" want="$3"
@@ -103,6 +105,39 @@ prune
 swept 'stale temp is swept despite a live process at its CWD' usage.homelab.tmp.111 gone
 swept 'truncated temp is swept at once' usage.homelab.tmp.333 gone
 swept 'a mid-write temp is left alone' usage.homelab.tmp.222 kept
+
+# The plan's meters: a reply from the usage endpoint becomes one line of pace.
+# Fable's points of the week come back at a Fable reset, so pace is judged on
+# the rest.
+printf '{"claudeAiOauth":{"accessToken":"t","expiresAt":%s000}}' "$((now + 3600))" >"$DIR/creds"
+budget() { # budget <desc> <week%> <fable% of cap> <fable points> <% of week gone> <want>
+	local got reset=$((now + 604800 - 6048 * $5)) shares=""
+	[ -n "$4" ] && shares="\"weekly_scoped_shares\":[{\"limit_index\":1,\"used_percent_of_weekly\":$4}],"
+	rm -rf "$DIR/plan"; mkdir -p "$DIR/plan"
+	cat >"$DIR/reply" <<-EOF
+		{"seven_day":{"utilization":$2,"resets_at":"$(date -u -d "@$reset" +%FT%T.000123+00:00)"},
+		 $shares
+		 "limits":[{"kind":"weekly_all","percent":$2},
+		  {"kind":"weekly_scoped","percent":$3,"scope":{"model":{"display_name":"Fable"}}}]}
+	EOF
+	got="$(CLAUDE_USAGE_DIR="$DIR/plan" CLAUDE_CREDENTIALS="$DIR/creds" \
+		CLAUDE_USAGE_URL="file://$DIR/reply" "$BUDGET")"
+	if [[ "$got" == *"$6"* ]]; then ((pass++)); printf 'ok   %s\n' "$1"
+	else ((fail++)); printf 'FAIL %s\n     want: %s\n     got:  %s\n' "$1" "$6" "$got"; fi
+}
+budget "Fable's meter and its points of the week are printed" 16 18 9 10 \
+	'week 16% used (9 Fable, which a reset gives back, + 7 other), 10% gone'
+budget 'Fable is shown as a percent of its own cap' 16 18 9 10 'Fable 18% of its cap'
+budget 'under pace when only Fable ran ahead' 40 70 35 10 'other under pace'
+budget 'over pace when the rest ran ahead' 40 10 5 10 'other over pace'
+budget "a reply without shares takes half of Fable's meter" 16 18 "" 10 '9 Fable'
+
+rm -rf "$DIR/plan"; mkdir -p "$DIR/plan"
+printf 'SEVEN_DAY_PCT=14\nSEVEN_DAY_RESET=%s\nUPDATED_AT=%s\n' "$((now + 302400))" "$now" >"$DIR/plan/usage.tasks"
+got="$(CLAUDE_USAGE_DIR="$DIR/plan" "$BUDGET")"
+if [[ "$got" == *"week 14% used (Fable's share unknown), 50% gone"* ]]; then
+	((pass++)); printf 'ok   without a plan reading, the status line cache gives the week alone\n'
+else ((fail++)); printf 'FAIL without a plan reading: %s\n' "$got"; fi
 
 printf '\n%d passed, %d failed\n' "$pass" "$fail"
 [ "$fail" = 0 ]

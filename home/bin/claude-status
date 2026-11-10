@@ -16,6 +16,11 @@
 # FIVE_HOUR_RESET SEVEN_DAY_PCT SEVEN_DAY_RESET CTX_TOKENS CACHE_PCT
 # SEND_COST LAST_TURN_TS UPDATED_AT.
 #
+# The payload has no per-model meter, so each render also asks
+# claude-plan-usage, in the background, to refresh ~/.cache/claude-usage/plan
+# (it reads the usage endpoint at most once every five minutes). Fable's meter
+# in the footer comes from that file.
+#
 # Cap semantics — the hard-won lesson (2026-07-01 incident): the provider's
 # used_percentage is NOT monotonic within a reset window. It can legitimately
 # DROP with the same resets_at (observed: 45% -> 14% mid-window while the
@@ -29,6 +34,7 @@
 # before the current window must never surface.
 #
 # Deps: jq + bash only (fast; runs on every prompt render). No jq -> exit 0.
+# claude-plan-usage adds curl, off the render's path.
 
 set -uo pipefail
 
@@ -232,10 +238,15 @@ prune_corpses() {
 }
 prune_corpses 2>/dev/null
 
+# Refresh the plan's meters without holding up the render.
+"$(dirname "$0")/claude-plan-usage" </dev/null >/dev/null 2>&1 &
+PLAN_FILE="$CACHE_DIR/plan"
+plan() { sed -n "s/^$1=//p" "$PLAN_FILE" 2>/dev/null; }
+
 # ---- render the pane footer -------------------------------------------------
 #
 # Three logical clusters, divided by a dimmed " │ ":
-#   <model>  │  <Nk ctx> · <NN% cached> · ~$<send-cost>  │  5h NN% · 7d NN%
+#   <model>  │  <Nk ctx> · <NN% cached> · ~$<send-cost>  │  5h NN% · 7d NN% · fable NN%
 # Color carries health, not decoration: cache% is GREEN warm / YELLOW <50 /
 # RED <20 (low cache = expensive cold reads); caps are GREEN low / YELLOW ≥70
 # / RED ≥90. ANSI is suppressed under NO_COLOR.
@@ -318,6 +329,10 @@ if cap_current "$seven_pct" "$seven_reset"; then
 	fi
 	g3_parts+=("${DIM}7d${RST} ${seven_seg}")
 fi
+# Fable's own meter (percent of its cap, half the week), from the plan cache.
+fable_pct="$(plan FABLE_PCT)"
+cap_current "$fable_pct" "$(plan SEVEN_DAY_RESET)" \
+	&& g3_parts+=("${DIM}fable${RST} $(cap_color "$fable_pct")$(iround "$fable_pct")%${RST}")
 g3=""
 ((${#g3_parts[@]})) && { g3="${g3_parts[0]}"; for ((i = 1; i < ${#g3_parts[@]}; i++)); do g3+=" ${DIM}·${RST} ${g3_parts[$i]}"; done; }
 

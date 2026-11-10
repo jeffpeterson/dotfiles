@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+#
+# claude-plan-usage — cache the plan's usage meters, Fable's among them.
+#
+# The status line's JSON carries the week and the five hours but no per-model
+# meter. The usage endpoint behind Claude Code's /usage does: limits[] has a
+# weekly_scoped row for each capped model, and weekly_scoped_shares says how
+# many points of the week that model used (the light-blue segment of the usage
+# page's weekly bar). This reads it with Claude Code's own sign-in
+# (~/.claude/.credentials.json; the token goes only to its issuer and is never
+# refreshed here) and writes ~/.cache/claude-usage/plan, at most once every
+# five minutes however many callers ask. A read that fails leaves the last
+# reading in place.
+#
+# Keys, named as in claude-status's usage.* files: SEVEN_DAY_PCT
+# SEVEN_DAY_RESET FIVE_HOUR_PCT FIVE_HOUR_RESET UPDATED_AT, plus
+# FABLE_PCT       Fable's meter: percent of its own cap
+# FABLE_WEEK_PCT  the points of the week Fable used, which a Fable reset
+#                 gives back
+#
+# Deps: bash, jq, curl, date.
+
+set -uo pipefail
+dir="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
+creds="${CLAUDE_CREDENTIALS:-$HOME/.claude/.credentials.json}"
+url="${CLAUDE_USAGE_URL:-https://api.anthropic.com/api/oauth/usage}"
+now="$(date +%s)"
+
+marker="$dir/.last-plan-fetch"
+last="$(cat "$marker" 2>/dev/null)"
+[[ "$last" =~ ^[0-9]+$ ]] || last=0
+((now - last < 300)) && exit 0
+mkdir -p "$dir" && printf '%s' "$now" >"$marker"
+
+token="$(jq -r --argjson now "$now" '.claudeAiOauth
+	| select(.expiresAt / 1000 > $now) | .accessToken // empty' "$creds" 2>/dev/null)"
+[ -n "$token" ] || exit 0
+# The header goes in on stdin, so the token never shows in the process list.
+body="$(curl -fsS -m 10 -K - "$url" 2>/dev/null <<-EOF
+	header = "Authorization: Bearer $token"
+	header = "anthropic-beta: oauth-2025-04-20"
+EOF
+)" || exit 0
+
+# Fable's share of the week is the server's own figure; where a reply lacks
+# it, half the meter, since Fable's cap is half the week.
+data="$(printf '%s' "$body" | jq -r '
+	([(.limits // []) | to_entries[]
+		| select(.value.kind == "weekly_scoped"
+			and ((.value.scope.model.display_name // "") | ascii_downcase) == "fable")]
+		| first) as $f
+	| ([(.weekly_scoped_shares // [])[]
+		| select($f != null and .limit_index == $f.key)] | first) as $s
+	| "SEVEN_DAY_PCT=\(.seven_day.utilization // "")",
+	  "SEVEN_DAY_RESET=\(.seven_day.resets_at // "")",
+	  "FIVE_HOUR_PCT=\(.five_hour.utilization // "")",
+	  "FIVE_HOUR_RESET=\(.five_hour.resets_at // "")",
+	  "FABLE_PCT=\($f.value.percent // "")",
+	  "FABLE_WEEK_PCT=\($s.used_percent_of_weekly
+			// (if $f then $f.value.percent / 2 else "" end))"
+' 2>/dev/null)" || exit 0
+val() { printf '%s\n' "$data" | sed -n "s/^$1=//p"; }
+# The server's reset wobbles by a fraction of a second around the hour.
+epoch() { [ -n "$1" ] && date -d "$1" +%s.%N 2>/dev/null | awk '{ printf "%.0f", $1 }'; }
+[ -n "$(val SEVEN_DAY_PCT)" ] || exit 0
+
+{
+	printf 'SEVEN_DAY_PCT=%s\n' "$(val SEVEN_DAY_PCT)"
+	printf 'SEVEN_DAY_RESET=%s\n' "$(epoch "$(val SEVEN_DAY_RESET)")"
+	printf 'FIVE_HOUR_PCT=%s\n' "$(val FIVE_HOUR_PCT)"
+	printf 'FIVE_HOUR_RESET=%s\n' "$(epoch "$(val FIVE_HOUR_RESET)")"
+	printf 'FABLE_PCT=%s\n' "$(val FABLE_PCT)"
+	printf 'FABLE_WEEK_PCT=%s\n' "$(val FABLE_WEEK_PCT)"
+	printf 'UPDATED_AT=%s\n' "$now"
+} >"$dir/plan.tmp.$$" && mv "$dir/plan.tmp.$$" "$dir/plan"
+rm -f "$dir/plan.tmp.$$"
