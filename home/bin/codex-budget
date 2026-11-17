@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# codex-budget — Codex's weekly use, from the newest `rate_limits` line in
+# ~/.codex/sessions. The newest session file often has none, so this looks
+# through recent files, newest first, and reads the last such line in the
+# first one that has one.
+#
+#   codex-budget          one line; exit 1 when the week is used up (further
+#                         Codex runs spend credits, which is money)
+#   codex-budget --json   the line's primary window as JSON
+#
+# Deps: bash, jq, find, grep, date.
+
+set -uo pipefail
+dir="${CODEX_SESSIONS_DIR:-$HOME/.codex/sessions}"
+now="$(date +%s)"
+
+line=""
+while IFS= read -r f; do
+	line="$(grep '"rate_limits":{[^}]*"primary":{' "$f" 2>/dev/null | tail -1)"
+	[ -n "$line" ] && break
+done < <(find "$dir" -name '*.jsonl' -mtime -8 -printf '%T@ %p\n' 2>/dev/null | sort -rn | cut -d' ' -f2-)
+[ -n "$line" ] || { echo "codex-budget: no rate_limits line in $dir" >&2; exit 2; }
+
+read -r used mins reset at < <(jq -r '[.payload.rate_limits.primary.used_percent, .payload.rate_limits.primary.window_minutes, .payload.rate_limits.primary.resets_at, .timestamp] | @tsv' <<<"$line")
+over=$(awk -v u="$used" 'BEGIN { print (u >= 100) ? 1 : 0 }')
+# A reset already past means the reading is from the previous window.
+stale=$(( reset <= now ? 1 : 0 ))
+
+if [ "${1:-}" = "--json" ]; then
+	printf '{"used_percent":%s,"window_minutes":%s,"resets_at":"%s","over":%s,"stale":%s,"read_at":"%s"}\n' \
+		"$used" "$mins" "$(date -u -d "@$reset" +%FT%TZ)" \
+		"$( [ "$over" = 1 ] && echo true || echo false)" \
+		"$( [ "$stale" = 1 ] && echo true || echo false)" "$at"
+else
+	printf 'codex %s%% used of its %sh window (resets %s); read %s' \
+		"$used" "$((mins / 60))" "$(date -u -d "@$reset" '+%a %H:%MZ')" "$at"
+	[ "$stale" = 1 ] && printf '; reading predates the last reset'
+	[ "$over" = 1 ] && printf '\ncodex is past 100%% of its week: every further Codex run spends credits (money); stop Codex work'
+	printf '\n'
+fi
+exit "$over"

@@ -16,7 +16,10 @@
 #   claude-budget          one line; exit 1 when over pace
 #   claude-budget --json   the same as JSON
 #
-# Deps: bash, awk, date, claude-plan-usage.
+# Codex's weekly use follows on a second line (codex-budget); a Codex week used
+# up makes the exit status 1 too, since further Codex runs spend credits.
+#
+# Deps: bash, awk, date, claude-plan-usage, codex-budget.
 
 set -uo pipefail
 dir="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
@@ -67,5 +70,11 @@ else
 		"$week" "$split" "$week_gone" "$(date -u -d "@$week_reset" '+%a %H:%MZ')" \
 		"$cap" "${hour:-?}" "${hour_gone:-?}" \
 		"$( [ "$over" = 1 ] && echo over pace || echo under pace)" "$age"
+fi
+# Codex's weekly use, beside Claude's. Past its limit it spends credits.
+if [ "${1:-}" != "--json" ]; then
+	codex="$("$(dirname "$0")/codex-budget" 2>&1)"; codex_rc=$?
+	[ -n "$codex" ] && echo "$codex"
+	[ "$codex_rc" = 1 ] && over=1
 fi
 exit "$over"
