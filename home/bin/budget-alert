@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+# budget-alert — a letter to Jeff when the Claude week, Fable's cap or the
+# Codex week reaches its limit. One letter per limit per week: the limit's
+# reset time is its week, and it is recorded after the letter is requested.
+# Run by budget-alert.timer.
+#
+#   budget-alert          send what is due
+#   budget-alert --dry    print what would be sent
+#
+# Deps: bash, jq, yak, claude-budget, codex-budget.
+
+set -uo pipefail
+bin="$(dirname "$(readlink -f "$0")")"
+state="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}/budget-alerted"
+mkdir -p "$(dirname "$state")"; touch "$state"
+
+claude="$("$bin/claude-budget" --json 2>/dev/null | head -1)"
+codex="$("$bin/codex-budget" --json 2>/dev/null)"
+
+# Lines of "key<TAB>reset<TAB>what it is": the limits at or past 100%.
+due="$( {
+	jq -r 'select((.week // 0) >= 100) | ["claude-week", .week_reset, "The Claude week is used up (\(.week)%)."] | @tsv' <<<"$claude" 2>/dev/null
+	jq -r 'select((.fable // 0) >= 100) | ["fable-cap", .week_reset, "Fable'"'"'s cap is used up (\(.fable)%). Fable work stops; other Claude models still run."] | @tsv' <<<"$claude" 2>/dev/null
+	jq -r 'select(.over == true and .stale == false) | ["codex-week", .resets_at, "The Codex week is used up (\(.used_percent)%). Further Codex runs spend OpenAI credits, which cost money."] | @tsv' <<<"$codex" 2>/dev/null
+} )"
+[ -n "$due" ] || exit 0
+
+wip="$(yak task list '.task.status=wip' --limit 1000 2>/dev/null | wc -l)"
+open="$(yak task list --limit 2000 2>/dev/null | wc -l)"
+
+while IFS=$'\t' read -r key reset what; do
+	[ -n "$key" ] || continue
+	grep -qxF "$key $reset" "$state" && continue
+	subject="${key//-/ } limit reached; resets $(date -u -d "$reset" '+%a %H:%MZ')"
+	body="$what
+
+It resets $(date -u -d "$reset" '+%a %d %b at %H:%MZ').
+
+Waiting: $wip tasks in progress, $open open. Once the limit resets, the workers need a nudge to continue."
+	if [ "${1:-}" = "--dry" ]; then printf '%s\n%s\n\n' "$subject" "$body"; continue; fi
+	yak mail send jeff@yak.sh "$subject" --body "$body" --from task@bot.yak.sh >/dev/null \
+		&& echo "$key $reset" >> "$state"
+done <<<"$due"
