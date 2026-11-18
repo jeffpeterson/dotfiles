@@ -1,5 +1,5 @@
 [Unit]
-Description=Expire old Wrangler CLI logs
+Description=Move old Wrangler CLI logs to recoverable trash
 
 [Service]
 Type=oneshot

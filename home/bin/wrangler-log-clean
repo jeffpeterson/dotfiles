@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Expire Wrangler CLI logs after seven days, keeping logs still in use."""
+"""Trash Wrangler CLI logs after seven days, keeping logs still in use."""
 
 import os
+import json
+import uuid
 import re
 import subprocess
 import sys
@@ -33,7 +35,16 @@ def clean(logs):
         for entry in entries:
             if (LOG.fullmatch(entry.name) and entry.is_file(follow_symlinks=False)
                 and entry.path not in open_files and entry.stat().st_mtime < before):
-                os.unlink(entry.path)
+                root = logs / '.trash'
+                root.mkdir(exist_ok=True, mode=0o700)
+                record = root / str(uuid.uuid4())
+                record.mkdir(mode=0o700)
+                source = record / 'source.json'
+                with source.open('x') as saved:
+                    os.chmod(source, 0o600)
+                    json.dump({'path': str(Path(entry.path).resolve()), 'at': int(time.time() * 1000)}, saved)
+                    saved.write('\n')
+                os.rename(entry.path, record / 'data')
 
 
 if __name__ == '__main__':
