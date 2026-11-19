@@ -7,7 +7,8 @@
 # its own meter, capped at half the week, and a Fable reset gives its share of
 # the week back. So pace is judged on the rest: the week's percent minus the
 # points Fable used, against the share of the window already gone. Using 15%
-# of the week outside Fable 18% of the way in is under pace.
+# of the week outside Fable 18% of the way in is under pace. The yaks repo's
+# bin/pace.ts judges it (@yaks/model pace), as the spawn's account pick does.
 #
 # Without a plan reading for the open week (signed out, endpoint down), the
 # newest usage.<project> file claude-status writes gives the week alone; the
@@ -27,12 +28,13 @@
 # Codex's weekly use follows on a second line (codex-budget); a Codex week used
 # up makes the exit status 1 too, since further Codex runs spend credits.
 #
-# Deps: bash, awk, date, jq, yak, claude-plan-usage, codex-budget.
+# Deps: bash, awk, date, jq, deno, yak, claude-plan-usage, codex-budget.
 
 set -uo pipefail
 dir="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
 now="$(date +%s)"
 bin="$(dirname "$0")"
+repo="${YAKS_REPO:-$HOME/code/tasks}"
 
 # The Claude accounts: CLAUDE_ACCOUNTS, else the graph's rows of the claude
 # provider, else ~/.claude.
@@ -44,16 +46,17 @@ accounts="${CLAUDE_ACCOUNTS:-$(yak graph query '.account *' --json 2>/dev/null \
 [ -n "$accounts" ] || accounts="$HOME/.claude"
 count="$(wc -w <<<"$accounts")"
 
-# Share of a window gone, in percent: windows are 7 days and 5 hours long.
-gone() { awk -v r="$1" -v n="$now" -v len="$2" \
-	'BEGIN { g = 100 * (len - (r - n)) / len; printf "%.0f", (g < 0 ? 0 : g) }'; }
+# A window against its pace: the share gone, the points held against it and
+# the points under pace (below zero, over). Arguments: the window in minutes,
+# the percent used, its reset in epoch seconds, the points a reset gives back.
+pace() { deno run -q --config "$repo/deno.json" "$repo/bin/pace.ts" "$@"; }
 num() { awk -v v="$1" 'BEGIN { printf "%g", v }'; }
 
 # One account's line; answers 1 when it is over pace, 2 when it has no
 # reading.
 account() {
 	local home="${1%/}" name suffix file reset week week_reset hour hour_reset
-	local fable fable_week updated week_gone hour_gone age other over
+	local fable fable_week updated week_gone hour_gone age other under over
 	name="${home##*/}"; name="${name#.}"
 	[ "$home" = "$HOME/.claude" ] && suffix="" || suffix=".$name"
 	if [ -n "$suffix" ]; then
@@ -85,13 +88,12 @@ account() {
 		echo "claude-budget: no weekly reading yet in $file" >&2; return 2; }
 
 	week="$(num "$week")"
-	week_gone="$(gone "$week_reset" 604800)"
-	hour_gone="$( [ -n "$hour_reset" ] && gone "$hour_reset" 18000 || echo "")"
+	# Other is what a Fable reset does not give back; the whole week when Fable
+	# is unknown.
+	read -r week_gone other under < <(pace 10080 "$week" "$week_reset" "${fable_week:-0}")
+	[ -n "$hour_reset" ] && read -r hour_gone _ _ < <(pace 300 "${hour:-0}" "$hour_reset")
 	age=$(( now - ${updated:-$now} ))
-	# What a Fable reset does not give back; the whole week when Fable is unknown.
-	other="$(awk -v w="$week" -v f="${fable_week:-0}" \
-		'BEGIN { o = w - f; printf "%g", (o < 0 ? 0 : o) }')"
-	over=$(awk -v u="$other" -v g="$week_gone" 'BEGIN { print (u > g) ? 1 : 0 }')
+	over=$(awk -v u="$under" 'BEGIN { print (u < 0) ? 1 : 0 }')
 
 	if [ "$json" = 1 ]; then
 		printf '{"account":"%s","week":%s,"fable":%s,"fable_week":%s,"other":%s,"week_gone":%s,"week_reset":"%s","five_hour":%s,"five_hour_gone":%s,"over_pace":%s,"age_s":%s}\n' \
