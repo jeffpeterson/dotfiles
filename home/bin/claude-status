@@ -39,6 +39,13 @@
 set -uo pipefail
 
 CACHE_DIR="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
+# The account this session signs in with: ~/.claude, or the one
+# CLAUDE_CONFIG_DIR names. Another account's readings go in files of its own
+# (usage.<label>.<its name>, plan.<its name>) naming it in CLAUDE_CONFIG_DIR,
+# so one account's week is never read as another's.
+ACCOUNT="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"; ACCOUNT="${ACCOUNT%/}"
+ACCOUNT_NAME="${ACCOUNT##*/}"; ACCOUNT_NAME="${ACCOUNT_NAME#.}"
+[ "$ACCOUNT" = "$HOME/.claude" ] && SUFFIX="" || SUFFIX=".$ACCOUNT_NAME"
 # Prompt-cache TTL: the warm-cache window is a 300s sliding timer reset on each
 # turn. Bump to 3600 if the 1h extended-TTL cache is ever adopted.
 CACHE_TTL_SECONDS=300
@@ -84,11 +91,11 @@ label=""
 # Sanitize to a safe filename (keeps the project name readable).
 label="$(safe_label "$label")"
 [ -n "$label" ] || label="unknown"
-CACHE_FILE="$CACHE_DIR/usage.$label"
+CACHE_FILE="$CACHE_DIR/usage.$label$SUFFIX"
 
 # Retire the basename-keyed cache after a venture adopts a canonical id. The
 # CWD guard keeps an unrelated project with the same basename untouched.
-legacy="$CACHE_DIR/usage.$fallback"
+legacy="$CACHE_DIR/usage.$fallback$SUFFIX"
 if [ "$legacy" != "$CACHE_FILE" ] && [ -f "$legacy" ] \
 	&& [ "$(sed -n 's/^CWD=//p' "$legacy" | head -1)" = "$cwd" ]; then
 	if [ -f "$CACHE_FILE" ]; then rm -f "$legacy"
@@ -189,6 +196,7 @@ mkdir -p "$CACHE_DIR" 2>/dev/null
 	printf 'CACHE_PCT=%s\n' "$cache_pct"
 	printf 'SEND_COST=%s\n' "$send_cost"
 	printf 'LAST_TURN_TS=%s\n' "$last_turn_ts"
+	[ -n "$SUFFIX" ] && printf 'CLAUDE_CONFIG_DIR=%s\n' "$ACCOUNT"
 	printf 'UPDATED_AT=%s\n' "$now"
 } >"$CACHE_FILE.tmp.$$" 2>/dev/null && mv "$CACHE_FILE.tmp.$$" "$CACHE_FILE" 2>/dev/null
 # Write-then-rename is atomic for readers but not self-cleaning for us: a failed
@@ -240,7 +248,7 @@ prune_corpses 2>/dev/null
 
 # Refresh the plan's meters without holding up the render.
 "$(dirname "$0")/claude-plan-usage" </dev/null >/dev/null 2>&1 &
-PLAN_FILE="$CACHE_DIR/plan"
+PLAN_FILE="$CACHE_DIR/plan$SUFFIX"
 plan() { sed -n "s/^$1=//p" "$PLAN_FILE" 2>/dev/null; }
 
 # ---- render the pane footer -------------------------------------------------

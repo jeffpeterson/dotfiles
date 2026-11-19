@@ -6,6 +6,7 @@ BIN="$(cd "$(dirname "$0")" && pwd)/claude-status"
 DIR="$(mktemp -d)"
 pass=0 fail=0
 trap 'rm -rf "$DIR"' EXIT
+export CLAUDE_ACCOUNTS="$HOME/.claude" # one account, not the graph's
 export CLAUDE_CREDENTIALS=/dev/null # no sign-in: nothing here reads the usage endpoint
 BUDGET="$(dirname "$BIN")/claude-budget"
 

@@ -13,67 +13,121 @@
 # newest usage.<project> file claude-status writes gives the week alone; the
 # line then says Fable is unknown and pace is judged on the whole week.
 #
-#   claude-budget          one line; exit 1 when over pace
-#   claude-budget --json   the same as JSON
+# Each Claude account has a week of its own and gets a line of its own: the
+# graph's account rows (yak graph query '.account'), else ~/.claude alone, or
+# the directories CLAUDE_ACCOUNTS lists. ~/.claude's readings are plan and
+# usage.<project>; another account's are plan.<its name> and the usage files
+# naming it in CLAUDE_CONFIG_DIR (claude-status, claude-plan-usage).
+#
+#   claude-budget          one line per account; exit 1 when every one is
+#                          over pace
+#   claude-budget --json   the same as JSON, one object per line, each naming
+#                          its account
 #
 # Codex's weekly use follows on a second line (codex-budget); a Codex week used
 # up makes the exit status 1 too, since further Codex runs spend credits.
 #
-# Deps: bash, awk, date, claude-plan-usage, codex-budget.
+# Deps: bash, awk, date, jq, yak, claude-plan-usage, codex-budget.
 
 set -uo pipefail
 dir="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
 now="$(date +%s)"
-"$(dirname "$0")/claude-plan-usage" 2>/dev/null
+bin="$(dirname "$0")"
 
-file="$dir/plan"
-val() { sed -n "s/^$1=//p" "$file" 2>/dev/null; }
-reset="$(val SEVEN_DAY_RESET)"
-[[ "$reset" =~ ^[0-9]+$ ]] && ((reset > now)) \
-	|| file="$(ls -t "$dir"/usage.* 2>/dev/null | head -1)"
-[ -n "$file" ] || { echo "claude-budget: no usage cache in $dir" >&2; exit 2; }
-
-week="$(val SEVEN_DAY_PCT)"; week_reset="$(val SEVEN_DAY_RESET)"
-hour="$(val FIVE_HOUR_PCT)"; hour_reset="$(val FIVE_HOUR_RESET)"
-fable="$(val FABLE_PCT)"; fable_week="$(val FABLE_WEEK_PCT)"
-updated="$(val UPDATED_AT)"
-[ -n "$week" ] && [ -n "$week_reset" ] || {
-	echo "claude-budget: no weekly reading yet in $file" >&2; exit 2; }
+# The Claude accounts: CLAUDE_ACCOUNTS, else the graph's rows of the claude
+# provider, else ~/.claude.
+claude_provider=6371705b-c531-8a6a-bdf8-8691674ffb87
+accounts="${CLAUDE_ACCOUNTS:-$(yak graph query '.account *' --json 2>/dev/null \
+	| jq -r --arg p "$claude_provider" \
+		'.result[] | select(.account.provider == $p) | .account.home' 2>/dev/null \
+	| sort)}"
+[ -n "$accounts" ] || accounts="$HOME/.claude"
+count="$(wc -w <<<"$accounts")"
 
 # Share of a window gone, in percent: windows are 7 days and 5 hours long.
 gone() { awk -v r="$1" -v n="$now" -v len="$2" \
 	'BEGIN { g = 100 * (len - (r - n)) / len; printf "%.0f", (g < 0 ? 0 : g) }'; }
 num() { awk -v v="$1" 'BEGIN { printf "%g", v }'; }
-week="$(num "$week")"
-week_gone="$(gone "$week_reset" 604800)"
-hour_gone="$( [ -n "$hour_reset" ] && gone "$hour_reset" 18000 || echo "")"
-age=$(( now - ${updated:-$now} ))
-# What a Fable reset does not give back; the whole week when Fable is unknown.
-other="$(awk -v w="$week" -v f="${fable_week:-0}" \
-	'BEGIN { o = w - f; printf "%g", (o < 0 ? 0 : o) }')"
-over=$(awk -v u="$other" -v g="$week_gone" 'BEGIN { print (u > g) ? 1 : 0 }')
 
-if [ "${1:-}" = "--json" ]; then
-	printf '{"week":%s,"fable":%s,"fable_week":%s,"other":%s,"week_gone":%s,"week_reset":"%s","five_hour":%s,"five_hour_gone":%s,"over_pace":%s,"age_s":%s}\n' \
-		"$week" "${fable:-null}" "${fable_week:-null}" "$other" "$week_gone" \
-		"$(date -u -d "@$week_reset" +%FT%TZ)" \
-		"${hour:-null}" "${hour_gone:-null}" \
-		"$( [ "$over" = 1 ] && echo true || echo false)" "$age"
-else
-	if [ -n "$fable" ]; then
-		split="$(num "$fable_week") Fable, which a reset gives back, + $other other"
-		cap="Fable $(num "$fable")% of its cap"
+# One account's line; answers 1 when it is over pace, 2 when it has no
+# reading.
+account() {
+	local home="${1%/}" name suffix file reset week week_reset hour hour_reset
+	local fable fable_week updated week_gone hour_gone age other over
+	name="${home##*/}"; name="${name#.}"
+	[ "$home" = "$HOME/.claude" ] && suffix="" || suffix=".$name"
+	if [ -n "$suffix" ]; then
+		CLAUDE_CONFIG_DIR="$home" CLAUDE_CREDENTIALS="$home/.credentials.json" \
+			"$bin/claude-plan-usage" 2>/dev/null
 	else
-		split="Fable's share unknown"; cap="Fable unknown"
+		"$bin/claude-plan-usage" 2>/dev/null
 	fi
-	printf 'week %s%% used (%s), %s%% gone (resets %s); %s; 5h %s%% used, %s%% gone; other %s; reading %ss old\n' \
-		"$week" "$split" "$week_gone" "$(date -u -d "@$week_reset" '+%a %H:%MZ')" \
-		"$cap" "${hour:-?}" "${hour_gone:-?}" \
-		"$( [ "$over" = 1 ] && echo over pace || echo under pace)" "$age"
-fi
+	file="$dir/plan$suffix"
+	val() { sed -n "s/^$1=//p" "$file" 2>/dev/null; }
+	reset="$(val SEVEN_DAY_RESET)"
+	if ! { [[ "$reset" =~ ^[0-9]+$ ]] && ((reset > now)); }; then
+		# The status line's newest reading of this account.
+		if [ -n "$suffix" ]; then
+			file="$(grep -lx "CLAUDE_CONFIG_DIR=$home" "$dir"/usage.* 2>/dev/null \
+				| xargs -r ls -t 2>/dev/null | head -1)"
+		else
+			file="$(grep -L '^CLAUDE_CONFIG_DIR=' "$dir"/usage.* 2>/dev/null \
+				| xargs -r ls -t 2>/dev/null | head -1)"
+		fi
+	fi
+	[ -n "$file" ] || { echo "claude-budget: no usage reading of $home in $dir" >&2; return 2; }
+
+	week="$(val SEVEN_DAY_PCT)"; week_reset="$(val SEVEN_DAY_RESET)"
+	hour="$(val FIVE_HOUR_PCT)"; hour_reset="$(val FIVE_HOUR_RESET)"
+	fable="$(val FABLE_PCT)"; fable_week="$(val FABLE_WEEK_PCT)"
+	updated="$(val UPDATED_AT)"
+	[ -n "$week" ] && [ -n "$week_reset" ] || {
+		echo "claude-budget: no weekly reading yet in $file" >&2; return 2; }
+
+	week="$(num "$week")"
+	week_gone="$(gone "$week_reset" 604800)"
+	hour_gone="$( [ -n "$hour_reset" ] && gone "$hour_reset" 18000 || echo "")"
+	age=$(( now - ${updated:-$now} ))
+	# What a Fable reset does not give back; the whole week when Fable is unknown.
+	other="$(awk -v w="$week" -v f="${fable_week:-0}" \
+		'BEGIN { o = w - f; printf "%g", (o < 0 ? 0 : o) }')"
+	over=$(awk -v u="$other" -v g="$week_gone" 'BEGIN { print (u > g) ? 1 : 0 }')
+
+	if [ "$json" = 1 ]; then
+		printf '{"account":"%s","week":%s,"fable":%s,"fable_week":%s,"other":%s,"week_gone":%s,"week_reset":"%s","five_hour":%s,"five_hour_gone":%s,"over_pace":%s,"age_s":%s}\n' \
+			"$home" "$week" "${fable:-null}" "${fable_week:-null}" "$other" "$week_gone" \
+			"$(date -u -d "@$week_reset" +%FT%TZ)" \
+			"${hour:-null}" "${hour_gone:-null}" \
+			"$( [ "$over" = 1 ] && echo true || echo false)" "$age"
+	else
+		local split cap
+		if [ -n "$fable" ]; then
+			split="$(num "$fable_week") Fable, which a reset gives back, + $other other"
+			cap="Fable $(num "$fable")% of its cap"
+		else
+			split="Fable's share unknown"; cap="Fable unknown"
+		fi
+		[ "$count" -gt 1 ] && printf '%s: ' "$name"
+		printf 'week %s%% used (%s), %s%% gone (resets %s); %s; 5h %s%% used, %s%% gone; other %s; reading %ss old\n' \
+			"$week" "$split" "$week_gone" "$(date -u -d "@$week_reset" '+%a %H:%MZ')" \
+			"$cap" "${hour:-?}" "${hour_gone:-?}" \
+			"$( [ "$over" = 1 ] && echo over pace || echo under pace)" "$age"
+	fi
+	return "$over"
+}
+
+json=0; [ "${1:-}" = "--json" ] && json=1
+over=1 read_any=0
+for home in $accounts; do
+	account "$home"; rc=$?
+	[ "$rc" = 2 ] && continue
+	read_any=1
+	[ "$rc" = 0 ] && over=0
+done
+[ "$read_any" = 1 ] || exit 2
 # Codex's weekly use, beside Claude's. Past its limit it spends credits.
 if [ "${1:-}" != "--json" ]; then
-	codex="$("$(dirname "$0")/codex-budget" 2>&1)"; codex_rc=$?
+	codex="$("$bin/codex-budget" 2>&1)"; codex_rc=$?
 	[ -n "$codex" ] && echo "$codex"
 	[ "$codex_rc" = 1 ] && over=1
 fi

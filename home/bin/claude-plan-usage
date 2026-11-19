@@ -12,6 +12,10 @@
 # five minutes however many callers ask. A read that fails leaves the last
 # reading in place.
 #
+# Each account reads its own plan: the one CLAUDE_CONFIG_DIR names
+# (~/.claude-teams-bob) signs in from that directory's .credentials.json and
+# is written to plan.<its name>, claude-teams-bob; ~/.claude's stays plan.
+#
 # Keys, named as in claude-status's usage.* files: SEVEN_DAY_PCT
 # SEVEN_DAY_RESET FIVE_HOUR_PCT FIVE_HOUR_RESET UPDATED_AT, plus
 # FABLE_PCT       Fable's meter: percent of its own cap
@@ -22,11 +26,14 @@
 
 set -uo pipefail
 dir="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}"
-creds="${CLAUDE_CREDENTIALS:-$HOME/.claude/.credentials.json}"
+account="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"; account="${account%/}"
+name="${account##*/}"; name="${name#.}"
+[ "$account" = "$HOME/.claude" ] && suffix="" || suffix=".$name"
+creds="${CLAUDE_CREDENTIALS:-$account/.credentials.json}"
 url="${CLAUDE_USAGE_URL:-https://api.anthropic.com/api/oauth/usage}"
 now="$(date +%s)"
 
-marker="$dir/.last-plan-fetch"
+marker="$dir/.last-plan-fetch$suffix"
 last="$(cat "$marker" 2>/dev/null)"
 [[ "$last" =~ ^[0-9]+$ ]] || last=0
 ((now - last < 300)) && exit 0
@@ -72,5 +79,5 @@ epoch() { [ -n "$1" ] && date -d "$1" +%s.%N 2>/dev/null | awk '{ printf "%.0f",
 	printf 'FABLE_PCT=%s\n' "$(val FABLE_PCT)"
 	printf 'FABLE_WEEK_PCT=%s\n' "$(val FABLE_WEEK_PCT)"
 	printf 'UPDATED_AT=%s\n' "$now"
-} >"$dir/plan.tmp.$$" && mv "$dir/plan.tmp.$$" "$dir/plan"
-rm -f "$dir/plan.tmp.$$"
+} >"$dir/plan$suffix.tmp.$$" && mv "$dir/plan$suffix.tmp.$$" "$dir/plan$suffix"
+rm -f "$dir/plan$suffix.tmp.$$"

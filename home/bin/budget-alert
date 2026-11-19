@@ -15,13 +15,18 @@ bin="$(dirname "$(readlink -f "$0")")"
 state="${CLAUDE_USAGE_DIR:-$HOME/.cache/claude-usage}/budget-alerted"
 mkdir -p "$(dirname "$state")"; touch "$state"
 
-claude="$("$bin/claude-budget" --json 2>/dev/null | head -1)"
+claude="$("$bin/claude-budget" --json 2>/dev/null)"
 codex="$("$bin/codex-budget" --json 2>/dev/null)"
 
 # Lines of "key<TAB>reset<TAB>what it is": the limits at or past 100%.
 due="$( {
-	jq -r 'select((.week // 0) >= 100) | ["claude-week", .week_reset, "The Claude week is used up (\(.week)%)."] | @tsv' <<<"$claude" 2>/dev/null
-	jq -r 'select((.fable // 0) >= 100) | ["fable-cap", .week_reset, "Fable'"'"'s cap is used up (\(.fable)%). Fable work stops; other Claude models still run."] | @tsv' <<<"$claude" 2>/dev/null
+	# One line per Claude account; ~/.claude's keys are unsuffixed, as before.
+	jq -r --arg own "$HOME/.claude" '
+		(if .account == $own then "" else "-" + (.account | split("/") | last | ltrimstr(".")) end) as $of
+		| (if $of == "" then "The Claude" else "The \(.account | split("/") | last) Claude" end) as $plan
+		| (select((.week // 0) >= 100) | ["claude-week\($of)", .week_reset, "\($plan) week is used up (\(.week)%)."]),
+		  (select((.fable // 0) >= 100) | ["fable-cap\($of)", .week_reset, "\($plan) account'"'"'s Fable cap is used up (\(.fable)%). Fable work stops there; other Claude models still run."])
+		| @tsv' <<<"$claude" 2>/dev/null
 	jq -r 'select(.over == true and .stale == false) | ["codex-week", .resets_at, "The Codex week is used up (\(.used_percent)%). Further Codex runs spend OpenAI credits, which cost money."] | @tsv' <<<"$codex" 2>/dev/null
 } )"
 [ -n "$due" ] || exit 0
